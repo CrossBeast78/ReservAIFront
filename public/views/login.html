@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReservAI - Login</title>
+  <link rel="stylesheet" href="/estilos/Styles.css">
+  <script defer src="/Scripts/Login.js"></script>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="logo">
+        <img src="/Images/ReservAiLogo.png" alt="ReservAI Logo">
+        <h1>ReservAI</h1>
+      </div>
+
+      <h2>Iniciar Sesión</h2>
+
+      <form>
+        <div class="input-group">
+          <input type="email" placeholder="Correo electrónico" required>
+        </div>
+
+        <div class="input-group password-group">
+          <input type="password" id="password" placeholder="Contraseña" required>
+          <button type="button" class="toggle-password" onclick="togglePassword()"><img src="/Images/ojo.png" height="33"></button>
+        </div>
+
+        <a class="Ingresar" href="/Inicio.html">
+        <button type="submit" class="btn" >Ingresar</button>
+        </a>
+      </form>
+      
+
+      <p class="terms">
+        Al iniciar sesión aceptas nuestras políticas de privacidad y 
+        <a href="#">términos y condiciones</a>.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

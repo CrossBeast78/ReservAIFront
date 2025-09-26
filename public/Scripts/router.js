@@ -7,6 +7,7 @@ router.get('/', (req, res) => res.sendFile(path.resolve(__dirname + "/../views
 router.get('/login', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/login.html")));
 router.get('/inicio', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/inicio.html")));
 router.get('/register', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/register.html")));
+router.get('/QR', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/QR.html")));
 router.get('/verify_email', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/verify_email.html")));
 
 

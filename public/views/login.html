@@ -4,40 +4,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ReservAI - Login</title>
-  <link rel="stylesheet" href="/estilos/Styles.css">
-  <script defer src="/Scripts/Login.js"></script>
+  <link rel="stylesheet" href="../estilos/Styles.css">
 </head>
 <body>
   <div class="login-container">
     <div class="login-box">
       <div class="logo">
-        <img src="/Images/ReservAiLogo.png" alt="ReservAI Logo">
+        <img src="../Images/ReservAiLogo.png" alt="ReservAI Logo">
         <h1>ReservAI</h1>
       </div>
 
       <h2>Iniciar Sesión</h2>
 
-      <form>
+      <!-- Formulario con id para JS -->
+      <form id="loginForm">
         <div class="input-group">
-          <input type="email" placeholder="Correo electrónico" required>
+          <input type="email" id="email" placeholder="Correo electrónico" required>
         </div>
 
         <div class="input-group password-group">
           <input type="password" id="password" placeholder="Contraseña" required>
-          <button type="button" class="toggle-password" onclick="togglePassword()"><img src="/Images/ojo.png" height="33"></button>
+          <button type="button" class="toggle-password" onclick="togglePassword()">
+            <img src="/Images/ojo.png" height="33">
+          </button>
         </div>
 
-        <a class="Ingresar" href="/Inicio.html">
-        <button type="submit" class="btn" >Ingresar</button>
-        </a>
+        <!-- Solo el botón de submit, sin <a> -->
+        <button type="submit" id="loginbtn" class="btn">Ingresar</button>
       </form>
       
-
       <p class="terms">
         Al iniciar sesión aceptas nuestras políticas de privacidad y 
         <a href="#">términos y condiciones</a>.
       </p>
     </div>
   </div>
+    <script  src="../Scripts/AppStorage.js"></script>
+    <script  src="../Scripts/Login.js"></script>
 </body>
 </html>

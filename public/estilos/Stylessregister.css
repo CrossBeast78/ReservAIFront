@@ -1,0 +1,268 @@
+/* ===========================
+   PALETA DE COLORES ReservAI
+=========================== */
+:root {
+    --primary-color: #00AEEF;;     /* Azul principal */
+    --primary-hover: #1d4ed8;     /* Azul más oscuro */
+    --bg-dark: #0D0D0D;  /* Fondo gris claro */
+    --white: #ffffff;
+    --text-light: #FFFFFF;
+     --bg-card: #1A1A1A;
+    --text-dark: #111827;
+   --text-gray: #A0A0A0;
+
+}
+
+/* ===========================
+   GLOBAL
+=========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* ===========================
+   CONTENEDORES DE LOGIN/REGISTER
+=========================== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.login-box {
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;  /* Aumentado */
+  min-width: 400px;  /* Para móviles */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.logo img {
+  width: 52px;
+  height: 52px;
+  margin-right: 8px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-light);
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  height: 70px;
+  padding: 10px 15px;
+  margin: 9px 0;
+  border: 1px solid  #2C2C2C;
+  background: #2C2C2C;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  outline: none;
+  color: white;
+  border-color: var(--primary-color);
+}
+
+input:focus {
+  border-color: var(--text-light);
+}
+
+/* Campo de contraseña con botón */
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  flex: 1;
+  padding-right: 42px;
+}
+
+.password-field button {
+  position: absolute;
+  width: 30px;
+  right: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-gray);
+}
+
+
+
+
+
+
+/* ===========================
+   BOTONES
+=========================== */
+.btn {
+  width: 100%;
+  height: 70px;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background-color: var(--primary-hover);
+}
+
+
+
+/* ===========================
+   TOGGLE SWITCH (Tipo de cuenta)
+=========================== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin: 0 10px;
+  
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.account-type {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 12px 0;
+  font-size: 1.3rem;
+  color: var(--text-gray);
+}
+
+.account-type #accountLabel {
+  font-weight: bold;
+  margin-left: 6px;
+}
+
+/* ===========================
+   LINKS (Ej: ir a login/registro)
+=========================== */
+.link {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   MODAL (reutilizable en app principal)
+=========================== */
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: var(--white);
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.close {
+  position: absolute;
+  right: 16px; top: 12px;
+  font-size: 1.5rem;
+  color: var(--text-gray);
+  cursor: pointer;
+}
+
+.close:hover {
+  color: var(--danger);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

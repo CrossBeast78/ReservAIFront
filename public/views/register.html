@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReservAI - Crear Cuenta</title>
+  <link rel="stylesheet" href="../estilos/Stylessregister.css">
+  <script defer src="../Scripts/register.js"></script>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="logo">
+        <img src="../Images/ReservAiLogo.png" alt="ReservAI Logo">
+        <h1>ReservAI</h1>
+      </div>
+
+      <h2>Crear Cuenta</h2>
+
+      <input type="text" id="name" placeholder="Nombre">
+      <input type="email" id="email" placeholder="Correo electrónico">
+
+      <div class="password-field">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button type="button"  id="togglePassword">👁</button>
+      </div>
+
+      <div class="password-field">
+        <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
+        <button type="button"  id="toggleConfirmPassword">👁</button>
+      </div>
+
+      <div class="account-type">
+        <label for="accountType">Tipo de cuenta</label>
+        <label class="switch">
+          <input type="checkbox" id="accountType">
+          <span class="slider"></span>
+        </label>
+        <span id="accountLabel">Usuario</span>
+      </div>
+
+      <button id="registerBtn" class="btn">Registrarse</button>
+    </div>
+  </div>
+</body>
+</html>

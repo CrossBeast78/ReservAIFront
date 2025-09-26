@@ -1,6 +1,4 @@
-/* ===========================
-   PALETA DE COLORES ReservAI
-=========================== */
+
 :root {
     --primary-color: #00AEEF;;     /* Azul principal */
     --primary-hover: #1d4ed8;     /* Azul más oscuro */
@@ -13,9 +11,7 @@
 
 }
 
-/* ===========================
-   GLOBAL
-=========================== */
+/* GLOBAL */
 * {
   margin: 0;
   padding: 0;
@@ -32,9 +28,7 @@ body {
   height: 100vh;
 }
 
-/* ===========================
-   CONTENEDORES DE LOGIN/REGISTER
-=========================== */
+/* CONTENEDORES DE LOGIN/REGISTER*/
 .login-container {
   display: flex;
   justify-content: center;
@@ -77,9 +71,7 @@ h2 {
   color: var(--text-light);
 }
 
-/* ===========================
-   INPUTS
-=========================== */
+/*INPUTS*/
 input[type="text"],
 input[type="email"],
 input[type="password"] {
@@ -123,14 +115,7 @@ input:focus {
   color: var(--text-gray);
 }
 
-
-
-
-
-
-/* ===========================
-   BOTONES
-=========================== */
+/*BOTONES */
 .btn {
   width: 100%;
   height: 70px;
@@ -151,9 +136,7 @@ input:focus {
 
 
 
-/* ===========================
-   TOGGLE SWITCH (Tipo de cuenta)
-=========================== */
+/*TOGGLE SWITCH (Tipo de cuenta)*/
 .switch {
   position: relative;
   display: inline-block;
@@ -211,9 +194,7 @@ input:checked + .slider:before {
   margin-left: 6px;
 }
 
-/* ===========================
-   LINKS (Ej: ir a login/registro)
-=========================== */
+/*LINKS*/
 .link {
   display: block;
   margin-top: 1rem;
@@ -226,9 +207,7 @@ input:checked + .slider:before {
   text-decoration: underline;
 }
 
-/* ===========================
-   MODAL (reutilizable en app principal)
-=========================== */
+/*MODAL (reutilizable en app principal) */
 .modal {
   display: none; 
   position: fixed;

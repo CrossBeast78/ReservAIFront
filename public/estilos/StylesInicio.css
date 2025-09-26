@@ -9,7 +9,7 @@
   --text-gray: #A0A0A0;
 }
 
-/* Reset básico */
+
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; }
 
 body {

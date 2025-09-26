@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.getElementById("password");
    
 
-    const loginSystem = new LoginInfo("http://192.168.1.128:8080/account");
+    const loginSystem = new LoginInfo("");
 
     loginBtn.addEventListener("click", async (event) => {
         event.preventDefault();

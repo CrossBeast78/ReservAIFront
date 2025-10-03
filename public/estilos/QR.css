@@ -1,5 +1,5 @@
 :root {
-    --primary: #00AEEF;
+    --primary:  #0983d6;
     --bg-dark: #0D0D0D;
     --bg-card: #1A1A1A;
     --text-light: #FFFFFF;
@@ -8,7 +8,7 @@
 
 body {
     font-family: 'Segoe UI', sans-serif;
-    background: var(--bg-dark);
+    background: linear-gradient(15deg, var(--bg-dark), #0983d6);
     color: var(--text-light);
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@ body {
 }
 
 .qr-container {
-        background: var(--bg-card);
+        background: var(--bg-dark);
         padding: 40px 30px;
         border-radius: 20px;
         text-align: center;

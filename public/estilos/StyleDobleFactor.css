@@ -1,0 +1,107 @@
+:root {
+  --primary:  #0983d6;
+  --bg-dark: #0D0D0D;
+  --bg-card: #1A1A1A;
+  --text-light: #FFFFFF;
+  --text-gray: #A0A0A0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(15deg, var(--bg-dark), #0983d6);
+  color: var(--text-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.verify-container {
+  background: var(--bg-dark);
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  max-width: 700px;
+  width: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.logo img {
+  width: 52px;
+  height: 52px;
+   margin-right: 8px;
+}
+
+.logo h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.instruction {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.instruction span {
+  font-weight: bold;
+  color: var(--color-accent);
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.code-inputs input {
+  width: 70px;
+  height: 90px;
+  font-size: 1.5rem;
+  text-align: center;
+ border: 1px solid;
+  border-radius: 8px;
+  outline: none;
+  background: var(--bg-card);
+  color: var(--color-text-dark);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.code-inputs input:focus {
+  border: 2px solid var(--color-primary);
+  transform: scale(1.05);
+}
+
+.btn-verify {
+  width: 70%;
+  height: 70px;
+  padding: 0.8rem;
+  background: var(--primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.btn-verify:hover {
+  background: #008bbd;
+}

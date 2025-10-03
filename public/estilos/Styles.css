@@ -1,5 +1,5 @@
 :root {
-  --primary: #00AEEF;
+  --primary:  #0983d6;
   --bg-dark: #0D0D0D;
   --bg-card: #1A1A1A;
   --text-light: #FFFFFF;
@@ -14,7 +14,7 @@
 }
 
 body {
-  background: var(--bg-dark);
+  background: linear-gradient(15deg, var(--bg-dark), #0983d6);
   color: var(--text-light);
   display: flex;
   justify-content: center;
@@ -30,12 +30,12 @@ body {
 }
 
 .login-box {
- background: var(--bg-card);
+  background: var(--bg-dark);
   padding: 2rem;
   border-radius: 12px;
   width: 100%;
   max-width: 700px;  /* Aumentado */
-  min-width: 400px;  /* Para móviles */
+  min-width: 400px;  
   box-shadow: 0 4px 12px rgba(0,0,0,0.6);
   text-align: center;
 }
@@ -72,9 +72,9 @@ h2 {
 .input-group {
   margin-bottom: 1rem;
   position: relative;
-  background: #2C2C2C;
+  background: var(--bg-card);
   border-radius: 10px;
- 
+  border: 1px solid;
 }
 
 .input-group input {
@@ -82,15 +82,12 @@ h2 {
   height: 70px;
   padding: 10px 15px;
   border-radius: 10px;
-  border-color: var(--primary);
   outline: none;
-  background: #2C2C2C;
+  background: var(--bg-card);
   color: white;
 }
 
-input:focus {
-  border-color: var(--text-light);
-}
+
 
 .password-group {
   display: flex;

@@ -1,5 +1,12 @@
+import LoginInfo from "../models/logininfo.js";
+import SessionStorageManager from "./AppStorage.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
+  const toggleBtn = document.getElementById("togglePasswordBtn");
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", togglePassword);
+  }
 
   if (!form) {
     console.error("No se encontró el formulario con id='loginForm'");
@@ -9,48 +16,40 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // Obtener datos de los inputs
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    if (!email || !password) {
-      alert("Por favor completa todos los campos.");
+    let loginInfo;
+    try {
+      loginInfo = new LoginInfo(email, password);
+    } catch (err) {
+      alert("Información inválida: " + err.message);
       return;
     }
 
     try {
-      // Llamada al backend
-      const response = await fetch("http://localhost:3000/account", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
+      const data = await loginInfo.login();
+
+   
+     SessionStorageManager.saveSession({
+        access_token: data.token, // Siempre guarda el token recibido
+        token_type: data.token_type, // Guarda también el tipo de token
+        account_type: data.account_type,
+        account_name: email
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Error al iniciar sesión");
+
+      // Redirección según el estado de twofa y verificación
+      if (data.twofaenabled) {
+        window.location.href = "/twofa";
+      } else if (data.verified) {
+        window.location.href = "/QR";
+      } else {
+        window.location.href = "/verify_email";
       }
 
-      const data = await response.json();
-
-      // Guardar tokens en SessionStorageManager
-      SessionStorageManager.saveSession({
-        access_token: data.access_token,
-        email_sender_token: data.email_sender_token,
-        authorization_token: data.authorization_token,
-        account_type: data["account-type"],
-        account_name: data["account-name"]
-      });
-
-      console.log("Sesión guardada:", SessionStorageManager.getSession());
-
-      // Redirigir al home
-      window.location.href = "../views/home.html";
-
     } catch (err) {
-      console.error("❌ Error en login:", err.message);
+      console.error("Error en login:", err.message);
       alert("Error: " + err.message);
     }
   });

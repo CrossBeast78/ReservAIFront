@@ -13,7 +13,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", sans-serif; }
 
 body {
-  background: linear-gradient(15deg, var(--bg-dark), #0983d6);
+  background: linear-gradient(2deg, var(--bg-dark), #0983d6);
   color: var(--text-light);
   min-height: 100vh;
   display: flex;
@@ -30,12 +30,12 @@ body {
   border-bottom: 1px solid var(--bg-input);
 }
 .logo { display: flex; align-items: center; gap: .6rem; }
-.logo-img { width: 34px; height: 34px; object-fit: contain; }
-.logo-text { color: var(--text-light); font-weight: 600; font-size: 1.1rem; }
+.logo-img { width: 42px; height: 42px; object-fit: contain; }
+.logo-text { color: var(--text-light); font-weight: 600; font-size: 2rem; }
 
 .profile { position: relative; }
 .profile-btn { background: none; border: none; padding: 0; cursor: pointer; }
-.profile-icon { width: 36px; height: 36px; border-radius: 50%; }
+.profile-icon { width: 42px; height: 42px; border-radius: 50%; }
 
 /* Dropdown simple */
 .dropdown {
@@ -61,6 +61,7 @@ body {
   overflow: auto;
   width: 90%;
   margin: 0 auto;
+ 
 }
 
 h2 { margin-bottom: .5rem; color: var(--text-light); }
@@ -125,7 +126,7 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: var(--primary);
+  background: linear-gradient(15deg, var(--bg-dark), #0983d6);
   color: #fff;
   border: none;
   font-size: 28px;

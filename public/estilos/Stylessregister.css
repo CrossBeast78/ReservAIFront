@@ -43,7 +43,8 @@ body {
   height: 90vh;
   max-width: 700px;  /* Aumentado */
   min-width: 400px;  /* Para móviles */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    box-shadow:70px 70px 140px #1c4c5d,
+             -50px -50px 100px var(--primary-color);
   text-align: center;
 }
 .logo {
@@ -117,10 +118,40 @@ input:focus {
   color: var(--text-gray);
 }
 
+.error {
+  color: #ff6b6b;              /* Rojo más suave y moderno */
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: block;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* Cuando hay error en un input */
+input.error-input {
+  border: 1.5px solid #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.05);
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efecto al enfocar el input con error */
+input.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 107, 107, 0.5);
+  background-color: rgba(255, 107, 107, 0.08);
+}
+
+input.error-input::placeholder {
+  color: #ff6b6b;        /* el texto del error en rojo */
+  font-weight: 500;
+}
+
 /*BOTONES */
 .btn {
   width: 100%;
-  height: 65px;
+  height: 60px;
   padding: 10px;
   background-color: var(--primary-color);
   color: var(--white);
@@ -140,46 +171,54 @@ input:focus {
 
 /*TOGGLE SWITCH (Tipo de cuenta)*/
 .switch {
+  font-size: 15px;
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 24px;
+  width: 3.5em;
+  height: 1.8em;
   margin: 0 10px;
-  
 }
 
+/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
+/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 24px;
+  box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+  transition: .4s;
+  border-radius: 5px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px; width: 18px;
-  left: 3px; bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
+  height: 1.5em;
+  width: 0.1em;
+  border-radius: 0px;
+  left: 0.3em;
+  bottom: 0.3em;
+  background-color: black;
+  transition: .4s;
 }
 
 input:checked + .slider {
   background-color: var(--primary-color);
+  box-shadow: inset 2px 5px 10px rgb(0, 0, 0);
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(2.8em) rotate(360deg);
 }
 
 .account-type {

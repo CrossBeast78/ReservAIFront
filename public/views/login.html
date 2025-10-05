@@ -24,13 +24,14 @@
 
         <div class="input-group password-group">
           <input type="password" id="password" placeholder="Contraseña" required>
-          <button type="button" class="toggle-password" onclick="togglePassword()">
+          <button type="button" id="togglePasswordBtn" class="toggle-password">
             👁
           </button>
         </div>
 
         <!-- Solo el botón de submit, sin <a> -->
-        <button type="submit" id="loginbtn" class="btn">Ingresar</button>
+        <button type="submit" id="loginbtn" class="loginbtn">Ingresar</button> <br><br>
+
       </form>
       
       <p class="terms">
@@ -39,7 +40,7 @@
       </p>
     </div>
   </div>
-    <script  src="../Scripts/AppStorage.js"></script>
-    <script  src="../Scripts/Login.js"></script>
+    <script type="module"  src="../Scripts/AppStorage.js"></script>
+    <script  type="module" src="../Scripts/Login.js"></script>
 </body>
 </html>

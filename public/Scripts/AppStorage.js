@@ -1,66 +1,45 @@
-class AppStorage{
+class SessionStorageManager {
+  static keys = {
+    accessToken: "access_token",
+    emailSenderToken: "email_sender_token",
+    authorizationToken: "authorization_token",
+    accountType: "account_type",
+    accountName: "account_name"
+  };
 
-    static init(){
-        if (!sessionStorage.getItem("initialized")){
-            sessionStorage.setItem("initialized", true);
-        }
-        if (!sessionStorage.getItem("logged")){
-            sessionStorage.setItem("logged", false);
-        }
-        if (!sessionStorage.getItem("token")){
-            sessionStorage.setItem("token", "");
-        }
-        if (!sessionStorage.getItem("user")){
-            sessionStorage.setItem("user", "");
-        }
-    }
+  static setItem(key, value) {
+    sessionStorage.setItem(key, value);
+  }
 
-    static setInitialized(value){
-        sessionStorage.setItem("initialized", value.toString());
-    }
+  static getItem(key) {
+    return sessionStorage.getItem(key);
+  }
 
-    static setLogged(value){
-        sessionStorage.setItem("logged", value.toString());
-    }
+  static removeItem(key) {
+    sessionStorage.removeItem(key);
+  }
 
-    static setToken(Token){
-        sessionStorage.setItem("token", Token);
-    }
+  static saveSession({ access_token, email_sender_token, authorization_token, account_type, account_name }) {
+    if (access_token) this.setItem(this.keys.accessToken, access_token);
+    if (email_sender_token) this.setItem(this.keys.emailSenderToken, email_sender_token);
+    if (authorization_token) this.setItem(this.keys.authorizationToken, authorization_token);
+    if (account_type) this.setItem(this.keys.accountType, account_type);
+    if (account_name) this.setItem(this.keys.accountName, account_name);
+  }
 
-    static setUser(userObj){
-        sessionStorage.setItem("user", JSON.stringify(userObj));
-    }
+  static getSession() {
+    return {
+      access_token: this.getItem(this.keys.accessToken),
+      email_sender_token: this.getItem(this.keys.emailSenderToken),
+      authorization_token: this.getItem(this.keys.authorizationToken),
+      account_type: this.getItem(this.keys.accountType),
+      account_name: this.getItem(this.keys.accountName),
+    };
+  }
 
-    static isInitialized(){
-        return sessionStorage.getItem("initialized") === "true";
-    }
-
-    static isLogged(){
-        return sessionStorage.getItem("logged") === "true";
-    }
-
-    static getToken(){
-        return sessionStorage.getItem("token");
-    }
-
-    static getUser(){
-        return JSON.parse(sessionStorage.getItem("user"));
-    }
-
-
-    static clear(){
-        sessionStorage.removeItem("initialized");
-        sessionStorage.removeItem("logged");
-        sessionStorage.removeItem("token");
-        sessionStorage.removeItem("user");
-    }
-
-    static logedd(token, account){
-        AppStorage.setToken(token);
-        AppStorage.setUser(account);
-        AppStorage.setLogged(true);
-        AppStorage.setInitialized(true);
-    }
-
-
+  static clearSession() {
+    Object.values(this.keys).forEach(key => sessionStorage.removeItem(key));
+  }
 }
+
+export default SessionStorageManager;

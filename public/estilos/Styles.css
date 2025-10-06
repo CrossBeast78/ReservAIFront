@@ -100,6 +100,37 @@ h2 {
   padding-right: 2.5rem;
 }
 
+
+.error {
+  color: #ff6b6b;              /* Rojo más suave y moderno */
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: block;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* Cuando hay error en un input */
+input.error-input {
+  border: 1.5px solid #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.05);
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efecto al enfocar el input con error */
+input.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 107, 107, 0.5);
+  background-color: rgba(255, 107, 107, 0.08);
+}
+
+input.error-input::placeholder {
+  color: #ff6b6b;        /* el texto del error en rojo */
+  font-weight: 500;
+}
+
 .toggle-password {
   position: absolute;
   right: 10px;

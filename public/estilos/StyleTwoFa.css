@@ -89,12 +89,52 @@ body {
   transform: scale(1.05);
 }
 
+.twofa-error {
+  color: #d32f2f;
+  font-size: 0.95em;
+  margin-top: 1px;
+  min-height: 10px;
+  text-align: center;
+ 
+}
+
+.error {
+  color: #ff6b6b;              /* Rojo más suave y moderno */
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: block;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* Cuando hay error en un input */
+input.error-input {
+  border: 1.5px solid #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.05);
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efecto al enfocar el input con error */
+input.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 107, 107, 0.5);
+  background-color: rgba(255, 107, 107, 0.08);
+}
+
+input.error-input::placeholder {
+  color: #ff6b6b;        /* el texto del error en rojo */
+  font-weight: 500;
+}
+
 .btn-verify {
   width: 70%;
   height: 70px;
   padding: 0.8rem;
   background: var(--primary);
   border: none;
+  margin-top: 8px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1.2rem;

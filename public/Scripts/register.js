@@ -27,6 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
     input.classList.add("error-input");
   }
 
+  [nameInput,emailInput,passwordInput,confirmPasswordInput].forEach(input => {
+    input.addEventListener('focus', () => {
+      input.classList.remove('error-input');
+      if (input === emailInput) input.placeholder = "Correo electrónico";
+      if (input === passwordInput) input.placeholder = "Contraseña";
+      if (input === nameInput) input.placeholder = "Nombre";
+      if (input === confirmPasswordInput) input.placeholder = "Confirmar contraseña";
+    });
+  });
+
   // Cambiar etiqueta de tipo de cuenta
   accountType.addEventListener("change", () => {
     accountLabel.textContent = accountType.checked ? "Admin" : "Usuario";
@@ -45,15 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let valid = true;
 
     if (!name) {
-      showError(nameInput, "El nombre es obligatorio");
+      showError(nameInput, "El nombre es necesario");
       valid = false;
     }
     if (!email) {
-      showError(emailInput, "El correo es obligatorio");
+      showError(emailInput, "El correo es necesario");
       valid = false;
     }
     if (!pass) {
-      showError(passwordInput, "La contraseña es obligatoria");
+      showError(passwordInput, "La contraseña es necesaria");
       valid = false;
     }
     if (!confirm) {

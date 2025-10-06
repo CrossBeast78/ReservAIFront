@@ -77,10 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 window.location.href = "/inicio";
             } else {
-                showError("Verificación fallida");
+                 alert("Error: " + err.message);
+                 console.error("Error:", err);
             }
         } catch (err) {
-            showError("Error: " + err.message);
+
         }
     });
 });

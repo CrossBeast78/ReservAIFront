@@ -22,8 +22,12 @@
         Por favor revisa tu bandeja de entrada (y la carpeta de spam si no lo encuentras).
       </h1>
 
-      <button class="btn" onclick="resendEmail()">Reenviar correo</button>
+      <div id="botones" class="botones">
+        <button class="verifybtn" onclick="checkVerification()">He verificado mi correo</button>
+        <button class="resendbtn" onclick="resendEmail()">Reenviar correo</button>
+      </div>
     </div>
   </div>
+  <script type="module" src="../Scripts/verify_email.js"></script>
 </body>
 </html>

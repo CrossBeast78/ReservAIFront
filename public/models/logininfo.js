@@ -40,7 +40,6 @@ export default class LoginInfo {
     async login() {
         const endpointUrl = 'https://app.reservai-passmanager.com/account'; 
         try {
-            console.log("Datos enviados:", this.email, this.password);
             const response = await fetch(endpointUrl, {
                 method: 'POST',
                 headers: {

@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const PORT = 3000;
+const PORT = process.argv[2] || 3000
 const router = require('./public/Scripts/router');
 
 // Ruta para servir el HTML

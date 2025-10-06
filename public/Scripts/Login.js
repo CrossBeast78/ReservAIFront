@@ -82,12 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       // Redirección según el estado de twofa y verificación
-      if (data.twofaenabled) {
-        window.location.href = "/twofa";
-      } else if (data.verified) {
-        window.location.href = "/QR";
-      } else {
+
+      if(data.verified === false){
         window.location.href = "/verify_email";
+      }else if (data.verified === true && data.twofaenabled === false){
+        window.location.href = "/QR";
+      }else if (data.verified === true && data.twofaenabled === true){
+        window.location.href = "/twofa";
       }
 
     } catch (err) {

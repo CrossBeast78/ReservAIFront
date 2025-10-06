@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fetchPasswordById(item.id)
             .then(password => {
+                let def = '*************'
                 // password es ahora una instancia de la clase Password
                 modalBody.innerHTML = password.toHTML();
                 
@@ -259,11 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Botón de mostrar/ocultar contraseña
                 if (toggleBtn && passwordText && eyeIcon) {
                     toggleBtn.addEventListener('click', () => {
-                        const isVisible = passwordText.textContent !== '*************';
+                        const isVisible = passwordText.textContent !== def;
                         
                         if (isVisible) {
                             // Ocultar contraseña
-                            passwordText.textContent = '*************';
+                            passwordText.textContent = def;
                             eyeIcon.className = 'fas fa-eye eye-icon';
                             toggleBtn.title = 'Mostrar contraseña';
                             toggleBtn.classList.remove('active');

@@ -21,6 +21,4 @@ router.get('/QR', (req, res) => res.sendFile(path.resolve(__dirname + "/../vie
 router.get('/verify_email', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/verify_email.html")));
 router.get('/twofa', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/twofa.html")));
 
-router.get('')
-
 module.exports = router;

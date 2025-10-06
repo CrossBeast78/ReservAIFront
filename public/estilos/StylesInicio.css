@@ -141,11 +141,11 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   inset: 0;                 
   z-index: 9999;
   background: rgba(0,0,0,0.6);
+  align-items: center;
+  justify-content: center;
 }
 .modal.show {
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Modal box */
@@ -154,22 +154,179 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   max-width: calc(100% - 40px);
   background: var(--bg-dark);
   color: var(--text-light);
-  padding: 1.25rem 1.25rem;
   border-radius: 12px;
   position: relative;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+  border-bottom: 1px solid var(--bg-input);
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--text-light);
+}
+
+/* Modal body */
+.modal-body {
+  padding: 1.5rem 1.25rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  font-size: 1.1rem;
+}
+
+/* Modal footer */
+.modal-footer {
+  padding: 0.5rem 1.25rem 1.25rem 1.25rem;
+  border-top: 1px solid var(--bg-input);
+  display: flex;
+  justify-content: center;
+}
+
+/* Password details styling */
+.password-details {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid var(--bg-input);
+}
+
+.edit-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.edit-icon:hover {
+  opacity: 1;
+}
+
+.password-info {
+  margin-right: 2rem; /* Espacio para el icono de editar */
+}
+
+.password-name,
+.password-field,
+.password-description {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: var(--bg-dark);
+  border-radius: 6px;
+  border-left: 3px solid var(--primary);
+}
+
+.password-value-container {
+  margin-top: 0.5rem;
+}
+
+.password-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  position: relative;
+}
+
+.password-text {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  word-break: break-all;
+  min-height: 1.2rem;
+  flex: 1;
+}
+
+.password-actions {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.toggle-password-btn,
+.copy-password-btn {
+  background: var(--primary);
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 0.9rem;
+  position: relative;
+  flex-shrink: 0; /* No se encogen */
+}
+
+.toggle-password-btn:hover,
+.copy-password-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+.eye-icon,
+.copy-icon {
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.toggle-password-btn.active .eye-icon {
+  transform: scale(0.9);
+}
+
+.copy-password-btn.copied .copy-icon {
+  transform: scale(1.2);
+  color: #4CAF50;
+}
+
+.password-name strong,
+.password-field strong,
+.password-description strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.password-description {
+  font-style: italic;
+  color: var(--text-gray);
 }
 
 /* Close button */
 .close {
-  position: absolute;
-  right: 12px;
-  top: 8px;
   background: none;
   border: none;
   font-size: 22px;
   color: var(--text-light);
   cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.close:hover {
+  background: var(--bg-input);
 }
 
 /* Inputs inside modal */

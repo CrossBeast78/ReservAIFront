@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ReservAI - Inicio</title>
   <link rel="stylesheet" href="/estilos/StylesInicio.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
 <body>
   <!-- Navbar -->
@@ -71,23 +72,59 @@
  <!-- Modal Ver Contraseña -->
     <div id="viewModal" class="modal">
         <div class="modal-content">
-            <span class="close" data-close="viewModal">&times;</span>
-            <h2>Ver Contraseña</h2>
-
-            <p><strong>Nombre:</strong> <span id="viewName"></span></p>
-
-            <div class="password-field">
-                <strong>Contraseña:</strong>
-                <input type="password" id="viewPassword" readonly>
-                <button id="togglePassword">👁</button>
+            <!-- Header con botón de cerrar -->
+            <div class="modal-header">
+                <h2>Ver Contraseña</h2>
+                <span class="close" data-close="viewModal" aria-label="Cerrar">&times;</span>
             </div>
 
-            <p><strong>Descripción:</strong></p>
-            <p id="viewDescription"></p>
+            <!-- Body dinámico -->
+            <div class="modal-body" id="modalBody">
+                <!-- El contenido se llena dinámicamente -->
+            </div>
 
-            <button class="close-btn" data-close="viewModal">Cerrar</button>
+            <!-- Footer con botón de cerrar -->
+            <div class="modal-footer">
+                <button class="close-btn" data-close="viewModal">Cerrar</button>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Lógica de cierre de modales
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cerrar modal al hacer clic en el botón X
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-close');
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            });
+
+            // Cerrar modal al hacer clic en el botón "Cerrar"
+            document.querySelectorAll('.close-btn').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-close');
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                    }
+                });
+            });
+        });
+    </script>
 
   <script type="module" src="../Scripts/inicio2.js"></script>
 </body>

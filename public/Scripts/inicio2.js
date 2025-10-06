@@ -1,4 +1,5 @@
 import SessionStorageManager from '../Scripts/AppStorage.js';
+import Password from '../models/passwords.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // =========================
@@ -23,11 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savePasswordBtn = document.getElementById('savePasswordBtn');
     const closebtn = document.querySelectorAll('.close-btn');
 
-    const viewName = document.getElementById('viewName');
-    const viewPassword = document.getElementById('viewPassword');
-    const viewDescription = document.getElementById('viewDescription');
-    const copyBtn = document.getElementById('copyBtn');
-    const togglePasswordBtn = document.getElementById('togglePassword');
+    const modalBody = document.getElementById('modalBody');
 
     // =========================
     // VARIABLES
@@ -146,11 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            if(btn.dataset.close === 'createModal') createModal.style.display = 'none';
-            else viewModal.style.display = 'none';
-            passwordVisible = false;
-            if(viewPassword) viewPassword.type = 'password';
-            if(togglePasswordBtn) togglePasswordBtn.textContent = 'Mostrar';
+            if(btn.dataset.close === 'createModal') createModal.classList.remove('show');
+            else viewModal.classList.remove('show');
         });
     });
 
@@ -171,24 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    if(togglePasswordBtn) togglePasswordBtn.addEventListener('click', () => {
-        if(viewPassword) {
-            passwordVisible = !passwordVisible;
-            viewPassword.type = passwordVisible ? 'text' : 'password';
-            togglePasswordBtn.textContent = passwordVisible ? 'Ocultar' : 'Mostrar';
-        }
-    });
 
-    // =========================
-    // COPIAR CONTRASEÑA
-    // =========================
-    if(copyBtn) copyBtn.addEventListener('click', () => {
-        if(viewPassword) {
-            navigator.clipboard.writeText(viewPassword.value).then(() => {
-                alert('Contraseña copiada al portapapeles');
-            }).catch(err => alert('Error al copiar: ' + err));
-        }
-    });
 
     // =========================
     // GUARDAR NUEVA CONTRASEÑA
@@ -216,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newPassword = await response.json();
             passwords.push(newPassword);
             alert("Contraseña guardada correctamente");
-            if(createModal) createModal.style.display = 'none';
+            if(createModal) createModal.classList.remove('show');
             renderList();
         } catch(err) {
             alert("Error: " + err.message);
@@ -237,8 +214,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!response.ok) throw new Error(`Error al obtener la contraseña: ${response.status}`);
 
-                const data = await response.json();
-                resolve(data.password);
+                const jsonResponse = await response.json();
+                const password = Password.fromJson(jsonResponse);
+                
+                if (password) {
+                    resolve(password);
+                } else {
+                    throw new Error('Error al parsear la respuesta del servidor');
+                }
             } catch (err) {
                 reject(err);
             }
@@ -246,30 +229,83 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resetViewModal() {
-        if (!viewModal || !viewPassword || !togglePasswordBtn) return;
-        viewPassword.type = 'password';
-        viewPassword.value = '';
-        passwordVisible = false;
-        togglePasswordBtn.textContent = 'Mostrar';
-        viewModal.style.display = 'none'; // cerramos el modal si estaba abierto
+        if (!viewModal || !modalBody) return;
+        modalBody.innerHTML = '';
+        viewModal.classList.remove('show'); // cerramos el modal si estaba abierto
     }
 
     function openViewModal(item) {
-        if (!viewName || !viewPassword || !viewDescription || !togglePasswordBtn || !viewModal) return;
+        if (!modalBody || !viewModal) return;
 
         // Reset antes de abrir
         resetViewModal();
 
-        viewName.textContent = item.name || 'Sin nombre';
-        viewDescription.textContent = item.description || '';
+        // Mostrar indicador de carga
+        modalBody.innerHTML = '<div style="text-align: center; font-size: 1.2rem;">⏳ Cargando contraseña...</div>';
+        viewModal.classList.add('show'); // mostramos modal inmediatamente con el indicador de carga
 
         fetchPasswordById(item.id)
             .then(password => {
-                viewPassword.value = password;
-                viewModal.style.display = 'block'; // mostramos modal solo cuando tenemos la contraseña
+                // password es ahora una instancia de la clase Password
+                modalBody.innerHTML = password.toHTML();
+                
+                // Agregar event listeners para los botones
+                const toggleBtn = modalBody.querySelector('.toggle-password-btn');
+                const copyBtn = modalBody.querySelector('.copy-password-btn');
+                const passwordText = modalBody.querySelector('.password-text');
+                const eyeIcon = modalBody.querySelector('.eye-icon');
+                const copyIcon = modalBody.querySelector('.copy-icon');
+                
+                // Botón de mostrar/ocultar contraseña
+                if (toggleBtn && passwordText && eyeIcon) {
+                    toggleBtn.addEventListener('click', () => {
+                        const isVisible = passwordText.textContent !== '*************';
+                        
+                        if (isVisible) {
+                            // Ocultar contraseña
+                            passwordText.textContent = '*************';
+                            eyeIcon.className = 'fas fa-eye eye-icon';
+                            toggleBtn.title = 'Mostrar contraseña';
+                            toggleBtn.classList.remove('active');
+                        } else {
+                            // Mostrar contraseña
+                            passwordText.textContent = passwordText.dataset.password;
+                            eyeIcon.className = 'fas fa-eye-slash eye-icon';
+                            toggleBtn.title = 'Ocultar contraseña';
+                            toggleBtn.classList.add('active');
+                        }
+                    });
+                }
+                
+                // Botón de copiar contraseña
+                if (copyBtn && passwordText && copyIcon) {
+                    copyBtn.addEventListener('click', async () => {
+                        try {
+                            const passwordToCopy = passwordText.dataset.password;
+                            await navigator.clipboard.writeText(passwordToCopy);
+                            
+                            // Efecto visual de copiado
+                            copyIcon.className = 'fas fa-check copy-icon';
+                            copyBtn.classList.add('copied');
+                            copyBtn.title = '¡Copiado!';
+                            
+                            // Restaurar después de 2 segundos
+                            setTimeout(() => {
+                                copyIcon.className = 'fas fa-copy copy-icon';
+                                copyBtn.classList.remove('copied');
+                                copyBtn.title = 'Copiar contraseña';
+                            }, 2000);
+                            
+                        } catch (err) {
+                            console.error('Error al copiar:', err);
+                            alert('No se pudo copiar la contraseña');
+                        }
+                    });
+                }
             })
             .catch(err => {
                 console.error('Error al obtener la contraseña por ID:', err);
+                modalBody.innerHTML = '<div style="text-align: center; font-size: 1.2rem; color: #f44336;">❌ Error al cargar la contraseña</div>';
                 alert('No se pudo obtener la contraseña. Intenta de nuevo.');
             });
     }
@@ -295,12 +331,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('click', e => {
-        if(e.target === createModal) createModal.style.display = 'none';
+        if(e.target === createModal) createModal.classList.remove('show');
         if(e.target === viewModal) {
-            viewModal.style.display = 'none';
-            passwordVisible = false;
-            if(viewPassword) viewPassword.type = 'password';
-            if(togglePasswordBtn) togglePasswordBtn.textContent = 'Mostrar';
+            viewModal.classList.remove('show');
         }
     });
 });

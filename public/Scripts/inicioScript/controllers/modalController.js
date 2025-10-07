@@ -191,6 +191,46 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
                                 newPassSpan.dataset.password = newValue;
                                 newPassSpan.textContent = '*************';
                                 passDisplay.replaceChild(newPassSpan, input);
+
+                                // --- REASIGNA LOS LISTENERS ---
+                                const toggleBtn = modalBody.querySelector('.toggle-password-btn');
+                                const eyeIcon = modalBody.querySelector('.eye-icon');
+                                if (toggleBtn && newPassSpan && eyeIcon) {
+                                    toggleBtn.addEventListener('click', () => {
+                                        const isVisible = newPassSpan.textContent !== '*************';
+                                        if (isVisible) {
+                                            newPassSpan.textContent = '*************';
+                                            eyeIcon.className = 'fas fa-eye eye-icon';
+                                            toggleBtn.classList.remove('active');
+                                            toggleBtn.title = 'Mostrar contraseña';
+                                        } else {
+                                            newPassSpan.textContent = newPassSpan.dataset.password;
+                                            eyeIcon.className = 'fas fa-eye-slash eye-icon';
+                                            toggleBtn.classList.add('active');
+                                            toggleBtn.title = 'Ocultar contraseña';
+                                        }
+                                    });
+                                }
+                                const copyBtn = modalBody.querySelector('.copy-password-btn');
+                                const copyIcon = modalBody.querySelector('.copy-icon');
+                                if (copyBtn && newPassSpan && copyIcon) {
+                                    copyBtn.addEventListener('click', async () => {
+                                        try {
+                                            await navigator.clipboard.writeText(newPassSpan.dataset.password);
+                                            copyIcon.className = 'fas fa-check copy-icon';
+                                            copyBtn.classList.add('copied');
+                                            copyBtn.title = '¡Copiado!';
+                                            setTimeout(() => {
+                                                copyIcon.className = 'fas fa-copy copy-icon';
+                                                copyBtn.classList.remove('copied');
+                                                copyBtn.title = 'Copiar contraseña';
+                                            }, 2000);
+                                        } catch {
+                                            showMessage('No se pudo copiar la contraseña');
+                                        }
+                                    });
+                                }
+                                // --- FIN REASIGNACIÓN ---
                             } catch (err) {
                                 showMessage("Error al actualizar contraseña");
                                 passDisplay.replaceChild(passSpan, input);

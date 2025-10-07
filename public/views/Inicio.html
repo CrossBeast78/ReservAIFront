@@ -28,14 +28,14 @@
   <!-- Main -->
   <main class="container">
     <h2>Resumen de Contraseñas</h2>
-    <p class="summary">Total: <span id="totalPasswords">0</span></p>
+    <p class="summary">Total: <span id="totalPasswords"></span></p>
 
     <input id="search" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar">
 
     <ul id="password-list" class="password-list" aria-live="polite"></ul>
 
     <div class="pagination">
-      <button id="prev" type="button">k</button>
+      <button id="prev" type="button"><</button>
       <span id="page-info">Página 1</span>
       <button id="next" type="button">></button>
     </div>
@@ -45,25 +45,27 @@
   <button class="fab" id="addPasswordBtn" aria-label="Agregar contraseña">+</button>
 
   <!-- Modal Crear Contraseña -->
-<div id="createModal" class="modal">
-  <div class="modal-content">
-    <span class="close" data-close="createModal" aria-label="Cerrar">&times;</span>
+<div id="createModal" class="modalcreate">
+  <div class="modal-content2">
+    <div class="modal-header2">
+    <span class="closecreate" data-close="createModal" aria-label="Cerrar">&times;</span>
     <h2>Crear Contraseña</h2>
+    </div>
 
     <input type="text" id="createName" placeholder="Nombre de la contraseña">
 
-    <div class="password-field">
+    <div class="password-field2">
       <input type="password" id="createPassword" placeholder="Contraseña">
-      <button type="button" id="toggleCreatePassword">👁</button>
+      <button type="button" id="toggleCreatePassword"><i class="fas fa-eye"></i></button>
     </div>
 
-    <div class="password-field">
+    <div class="password-field2">
       <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
-      <button type="button" id="toggleConfirmPassword">👁</button>
+      <button type="button" id="toggleConfirmPassword"><i class="fas fa-eye"></i></button>
     </div>
 
     <textarea id="createDescription" placeholder="Descripción (opcional)" rows="3"></textarea>
-    <div class="modal-actions">
+    <div class="modal-actions2">
     <button id="savePasswordBtn" class="close-btn">Guardar</button>
     </div>
   </div>
@@ -123,9 +125,33 @@
                     }
                 });
             });
+       
+
+        document.querySelectorAll('.modalcreate').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                    }
+                });
+            });
         });
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const logoutBtn = document.getElementById("logout");
+                if (logoutBtn) {
+                logoutBtn.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    sessionStorage.clear();
+                    window.location.href = "/login";
+                });
+                }
+            });
+
+
+        
     </script>
 
-  <script type="module" src="../Scripts/inicio2.js"></script>
+  <script type="module" src="../Scripts/inicioScript/Inicio.js"></script>
 </body>
 </html>

@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      
       const data = await loginInfo.login();
 
       SessionStorageManager.saveSession({
@@ -81,8 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
         account_name: email
       });
 
-      // Redirección según el estado de twofa y verificación
 
+  
       if(data.verified === false){
         window.location.href = "/verify_email";
       }else if (data.verified === true && data.twofaenabled === false){
@@ -90,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }else if (data.verified === true && data.twofaenabled === true){
         window.location.href = "/twofa";
       }
+   
 
     } catch (err) {
       const match = err.message.match(/\d+/);

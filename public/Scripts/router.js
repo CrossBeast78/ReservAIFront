@@ -20,5 +20,6 @@ router.get('/register', (req, res) => res.sendFile(path.resolve(__dirname + "/
 router.get('/QR', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/QR.html")));
 router.get('/verify_email', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/verify_email.html")));
 router.get('/twofa', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/twofa.html")));
+router.get('/inicioAdmin', (req, res) => res.sendFile(path.resolve(__dirname + "/../views/inicioAdmin.html")));
 
 module.exports = router;

@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createName = document.getElementById('createName');
     const createPassword = document.getElementById('createPassword');
+    const createDescription = document.getElementById('createDescription');
     const confirmPassword = document.getElementById('confirmPassword');
     const toggleCreatePassword = document.getElementById('toggleCreatePassword');
     const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
@@ -32,14 +33,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = SessionStorageManager.getSession()?.access_token;
     let passwords = [];
     let currentPage = 1;
-    const itemsPerPage = 5;
-    let passwordVisible = false;
+    let totalPages = 1;
+    const itemsPerPage = 4;
+ 
 
     if (!token) {
         alert("No hay sesión activa. Inicia sesión de nuevo.");
         window.location.href = "/";
         return;
     }
+
 
     // =========================
     // FETCH CONTRASEÑAS
@@ -52,16 +55,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { "Authorization": token }
             });
 
-            if (!response.ok) throw new Error(`Error al obtener las contraseñas: ${response.status}`);
+            if (!response.ok) {
+                if (response.status === 401) {
+                    alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
+                    SessionStorageManager.clear();
+                    window.location.href = "/login";
+                    return;
+                }
+                throw new Error(`Error al obtener las contraseñas: ${response.status}`);
+            }
 
             const result = await response.json();
 
-            // Validar que sea un array y filtrar solo objetos con 'name'
-            passwords = Array.isArray(result) 
-                ? result.filter(p => p && typeof p.name === 'string')
-                : (Array.isArray(result.data) ? result.data.filter(p => p && typeof p.name === 'string') : []);
+            // Manejar distintas estructuras del backend
+            if (Array.isArray(result.data)) {
+                passwords = result.data.filter(p => p && typeof p.name === 'string');
+                totalPages = result.totalPages || Math.ceil(result.total / itemsPerPage) || 1;
+            } else if (Array.isArray(result)) {
+                passwords = result.filter(p => p && typeof p.name === 'string');
+                totalPages = 1; // si el backend no pagina
+            } else {
+                passwords = [];
+                totalPages = 1;
+            }
 
             renderList();
+            updatePaginationButtons();
         } catch (err) {
             alert("Error al cargar las contraseñas: " + err.message);
             console.error("Error fetching passwords:", err);
@@ -76,38 +95,50 @@ document.addEventListener('DOMContentLoaded', () => {
    function renderList() {
         if (!listEl) return;
 
-        const mapped = passwords.map((p, idx) => ({ p, idx }));
         const query = (searchEl?.value || '').trim().toLowerCase();
 
-        // Filtrar solo objetos con 'name'
-        const filtered = mapped.filter(obj => obj.p?.name?.toLowerCase().includes(query));
+        // Filtrar solo contraseñas con 'name' y que coincidan con la búsqueda
+        const filtered = passwords.filter(p => 
+            p && typeof p.name === 'string' && p.name.toLowerCase().includes(query)
+        );
 
+        // Mostrar el total real de contraseñas (no solo las filtradas)
         totalEl.textContent = passwords.length;
 
-        if (filtered.length === 0) {
-            listEl.innerHTML = '<li class="empty">No se encontraron contraseñas.</li>';
-            pageInfo.textContent = `Página 0 de 0`;
-            if(prevBtn) prevBtn.disabled = true;
-            if(nextBtn) nextBtn.disabled = true;
-            return;
-        }
+        // Calcular total de páginas basado en el filtro actual
+        const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
 
-        const totalPages = Math.ceil(filtered.length / itemsPerPage);
+        // Ajustar currentPage si está fuera de rango
         if (currentPage > totalPages) currentPage = totalPages;
         if (currentPage < 1) currentPage = 1;
 
+        // Obtener los elementos de la página actual
         const start = (currentPage - 1) * itemsPerPage;
         const pageItems = filtered.slice(start, start + itemsPerPage);
 
-        listEl.innerHTML = pageItems.map(obj => {
-            const name = escapeHtml(obj.p.name || 'Sin nombre');
-            return `<li class="password-item" data-idx="${obj.idx}" tabindex="0">${name}</li>`;
+        // Mostrar mensaje si no hay resultados
+        if (pageItems.length === 0) {
+            listEl.innerHTML = '<li class="empty">No se encontraron contraseñas.</li>';
+            pageInfo.textContent = `Página 0 de 0`;
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+        }
+
+        // Renderizar la lista actual
+        listEl.innerHTML = pageItems.map((p, idx) => {
+            const name = escapeHtml(p.name || 'Sin nombre');
+            return `<li class="password-item" data-idx="${start + idx}" tabindex="0">${name}</li>`;
         }).join('');
 
+        // Actualizar información de paginación
         pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-        if(prevBtn) prevBtn.disabled = currentPage === 1;
-        if(nextBtn) nextBtn.disabled = currentPage === totalPages;
-    }
+
+        // Actualizar botones
+        if (prevBtn) prevBtn.disabled = currentPage === 1;
+        if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+    }   
+
 
 
     function escapeHtml(text) {
@@ -119,16 +150,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // PAGINACIÓN
     // =========================
-    if(prevBtn) prevBtn.addEventListener('click', () => {
-        if(currentPage > 1) { currentPage--; fetchPasswords(currentPage, searchEl?.value); }
-    });
+    function updatePaginationButtons() {
+        if (prevBtn) prevBtn.disabled = currentPage <= 1;
+        if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+    }
 
-    if(nextBtn) nextBtn.addEventListener('click', () => {
-        const totalPages = Math.ceil(passwords.length / itemsPerPage) || 1;
-        if(currentPage < totalPages) { currentPage++; fetchPasswords(currentPage, searchEl?.value); }
-    });
+   if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchPasswords(currentPage, searchEl?.value || '');
+            }
+        });
+    }
 
-    if(searchEl) searchEl.addEventListener('input', () => { currentPage = 1; fetchPasswords(currentPage, searchEl.value); });
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                fetchPasswords(currentPage, searchEl?.value || '');
+            }
+        });
+    }
+
+    if (searchEl) {
+        searchEl.addEventListener('input', () => {
+            currentPage = 1;
+            fetchPasswords(currentPage, searchEl.value);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchPasswords(currentPage);
+    });
 
     // =========================
     // MODALES CREAR / VER
@@ -173,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(savePasswordBtn) savePasswordBtn.addEventListener('click', async () => {
         const name = createName?.value.trim();
         const pass = createPassword?.value;
+        const description = createDescription?.value.trim() || "";
         const confirm = confirmPassword?.value;
 
         if(!name || !pass || !confirm) { alert("Todos los campos son obligatorios"); return; }
@@ -182,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch("https://app.reservai-passmanager.com/p", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "Authorization": token },
-                body: JSON.stringify({ name, password: pass, description: "" })
+                body: JSON.stringify({ name: name, password: pass, description: description })
             });
 
             if(!response.ok) {

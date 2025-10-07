@@ -75,7 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     account_type: data.account_type,
                     account_name: SessionStorageManager.getSession().account_name
                 });
-                window.location.href = "/inicio";
+
+
+                if (SessionStorageManager.getSession().account_type === "admin") {
+                    window.location.href = "/inicioAdmin";
+                } else {
+                    window.location.href = "/inicio";
+                }
             } else {
                  alert("Error: " + err.message);
                  console.error("Error:", err);

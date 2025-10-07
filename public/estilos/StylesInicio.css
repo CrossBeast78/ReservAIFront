@@ -214,19 +214,28 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   border: 1px solid var(--bg-input);
 }
 
+.editable-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+}
 .edit-icon {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  font-size: 1.2rem;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+    cursor: pointer;
+    font-size: 1em;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    margin-left: 0.2em;
 }
-
 .edit-icon:hover {
-  opacity: 1;
+    opacity: 1;
+    color: #007bff;
 }
-
+.edit-input, textarea.edit-input {
+    
+    padding: 2px 4px;
+    margin-left: 0;
+    margin-right: 0;
+}
 .password-info {
   margin-right: 2rem; /* Espacio para el icono de editar */
 }
@@ -254,7 +263,7 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
 }
 
 .password-text {
-  font-family: 'Courier New', monospace;
+  font-family: "Segoe UI", sans-serif;
   font-size: 1.1rem;
   word-break: break-all;
   min-height: 1.2rem;
@@ -358,6 +367,7 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   padding: .6rem .9rem;
   border-radius: 8px;
   cursor: pointer;
+ 
 }
 .btn-outline {
   background: transparent;
@@ -391,6 +401,7 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   background: var(--primary);
   color: #fff;
   cursor: pointer;
+  
 }
 
 .password-field button:hover {

@@ -1,5 +1,6 @@
-import { createPassword as createPasswordService, fetchPasswordById } from '../services/passwordService.js';
+import { createPassword as createPasswordService, fetchPasswordById, updatePasswordAttribute } from '../services/passwordService.js';
 import { showMessage } from '../service/uiHelpers.js';
+
 
 export function setupModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList }) {
     const { createName, createPassword: createPasswordInput, createDescription, confirmPassword, savePasswordBtn } = fields;
@@ -72,10 +73,144 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
         modalBody.innerHTML = '<div style="text-align:center;">⏳ Cargando contraseña...</div>';
         viewModal.classList.add('show');
 
+
+
         try {
             const fullPass = await fetchPasswordById(passwordId);
             modalBody.innerHTML = fullPass.toHTML();
 
+
+            // Solo permite editar si updateableByClient es true
+            if (fullPass.updateableByClient) {
+                        // Editar nombre
+            const nameDiv = modalBody.querySelector('.password-name');
+            const nameSpan = nameDiv?.querySelector('.editable-name');
+            const nameEditIcon = nameDiv?.querySelector('.edit-icon[title="Editar nombre"]');
+            if (nameDiv && nameSpan && nameEditIcon) {
+                nameEditIcon.addEventListener('click', async () => {
+                    const currentValue = nameSpan.textContent.trim();
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentValue;
+                    input.className = 'edit-input';
+                    nameDiv.replaceChild(input, nameSpan);
+                    input.focus();
+
+                    input.addEventListener('blur', async () => {
+                        const newValue = input.value.trim();
+                        if (newValue && newValue !== currentValue) {
+                            try {
+                                await updatePasswordAttribute(fullPass.id, "name", newValue);
+                                showMessage("Nombre actualizado");
+                                fullPass.name = newValue;
+                                const newSpan = document.createElement('span');
+                                newSpan.className = 'editable-name';
+                                newSpan.textContent = newValue;
+                                nameDiv.replaceChild(newSpan, input);
+                            } catch (err) {
+                                showMessage("Error al actualizar nombre");
+                                nameDiv.replaceChild(nameSpan, input);
+                            }
+                        } else {
+                            nameDiv.replaceChild(nameSpan, input);
+                        }
+                    });
+
+                    input.addEventListener('keydown', (ev) => {
+                        if (ev.key === 'Enter') input.blur();
+                        if (ev.key === 'Escape') nameDiv.replaceChild(nameSpan, input);
+                    });
+                });
+            }
+
+            // Editar descripción
+            const descDiv = modalBody.querySelector('.password-description');
+            const descSpan = descDiv?.querySelector('.editable-description');
+            const descEditIcon = descDiv?.querySelector('.edit-icon[title="Editar descripción"]');
+            if (descDiv && descSpan && descEditIcon) {
+                descEditIcon.addEventListener('click', async () => {
+                    const currentValue = descSpan.textContent.trim();
+                    const textarea = document.createElement('textarea');
+                    textarea.value = currentValue;
+                    textarea.className = 'edit-input';
+                    descDiv.replaceChild(textarea, descSpan);
+                    textarea.focus();
+
+                    textarea.addEventListener('blur', async () => {
+                        const newValue = textarea.value.trim();
+                        if (newValue !== currentValue) {
+                            try {
+                                await updatePasswordAttribute(fullPass.id, "description", newValue);
+                                showMessage("Descripción actualizada");
+                                fullPass.description = newValue;
+                                const newSpan = document.createElement('span');
+                                newSpan.className = 'editable-description';
+                                newSpan.textContent = newValue;
+                                descDiv.replaceChild(newSpan, textarea);
+                            } catch (err) {
+                                showMessage("Error al actualizar descripción");
+                                descDiv.replaceChild(descSpan, textarea);
+                            }
+                        } else {
+                            descDiv.replaceChild(descSpan, textarea);
+                        }
+                    });
+
+                    textarea.addEventListener('keydown', (ev) => {
+                        if (ev.key === 'Enter') textarea.blur();
+                        if (ev.key === 'Escape') descDiv.replaceChild(descSpan, textarea);
+                    });
+                });
+            }
+
+            // Editar contraseña
+            const passDiv = modalBody.querySelector('.password-value-container');
+            const passSpan = passDiv?.querySelector('.password-text');
+            const passEditIcon = passDiv?.querySelector('.edit-icon[title="Editar contraseña"]');
+            if (passDiv && passSpan && passEditIcon) {
+                passEditIcon.addEventListener('click', async () => {
+                    const currentValue = passSpan.dataset.password || '';
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentValue;
+                    input.className = 'edit-input';
+                    // Cambia aquí:
+                    const passDisplay = passDiv.querySelector('.password-display');
+                    passDisplay.replaceChild(input, passSpan);
+                    input.focus();
+
+                    input.addEventListener('blur', async () => {
+                        const newValue = input.value.trim();
+                        if (newValue && newValue !== currentValue) {
+                            try {
+                                await updatePasswordAttribute(fullPass.id, "value", newValue);
+                                showMessage("Contraseña actualizada");
+                                fullPass.password = newValue;
+                                const newPassSpan = document.createElement('div');
+                                newPassSpan.className = 'password-text';
+                                newPassSpan.dataset.password = newValue;
+                                newPassSpan.textContent = '*************';
+                                passDisplay.replaceChild(newPassSpan, input);
+                            } catch (err) {
+                                showMessage("Error al actualizar contraseña");
+                                passDisplay.replaceChild(passSpan, input);
+                            }
+                        } else {
+                            passDisplay.replaceChild(passSpan, input);
+                        }
+                    });
+
+                    input.addEventListener('keydown', (ev) => {
+                        if (ev.key === 'Enter') input.blur();
+                        if (ev.key === 'Escape') passDisplay.replaceChild(passSpan, input);
+                    });
+                });
+            }
+
+            } else {
+                // Si no es editable, quitar iconos de edición
+                modalBody.querySelectorAll('.edit-icon').forEach(icon => icon.remove());
+            }
             // --- Botón Mostrar/Ocultar ---
             const toggleBtn = modalBody.querySelector('.toggle-password-btn');
             const passwordText = modalBody.querySelector('.password-text');

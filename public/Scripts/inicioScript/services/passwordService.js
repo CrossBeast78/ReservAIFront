@@ -50,3 +50,20 @@ const token = SessionStorageManager.getSession()?.access_token;
         }
         return await response.json();
     }
+
+    export async function updatePasswordAttribute(id, attribute, value) {
+    const token = SessionStorageManager.getSession()?.access_token;
+    if (!token) throw new Error("No hay sesión activa");
+
+    const response = await fetch(`https://app.reservai-passmanager.com/p/${id}?attribute=${attribute}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": token
+        },
+        body: JSON.stringify({ value })
+    });
+
+    if (!response.ok) throw new Error(await response.text());
+    return await response.json();
+}

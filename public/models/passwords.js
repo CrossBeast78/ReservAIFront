@@ -44,40 +44,38 @@ export default class Password {
     }
 
     toHTML() {
-        const editIcon = this.updateableByClient 
-            ? '<div class="edit-icon" title="Editable">✏️</div>' 
-            : '';
+    return `
+        <div class="password-details">
         
-        return `
-            <div class="password-details">
-                ${editIcon}
-                <div class="password-info">
-                    <div class="password-name">
-                        <strong>Nombre:</strong> ${this.name || 'Sin nombre'}
-                    </div>
-                    <div class="password-field">
-                        <div class="password-value-container">
-                            <strong>Contraseña:</strong>
-                            <div class="password-display">
-                                <div class="password-text" data-password="${this.password || ''}">*************</div>
-                                <div class="password-actions">
-                                    <button class="toggle-password-btn" type="button" title="Mostrar contraseña">
-                                        <i class="fas fa-eye eye-icon"></i>
-                                    </button>
-                                    <button class="copy-password-btn" type="button" title="Copiar contraseña">
-                                        <i class="fas fa-copy copy-icon"></i>
-                                    </button>
-                                </div>
+            <div class="password-info">
+                <div class="password-name">
+                    <strong>Nombre:</strong> <span class="editable-name">${this.name || 'Sin nombre'}</span>
+                     ${this.updateableByClient ? '<span class="edit-icon" title="Editar nombre">✏️</span>' : ''}
+                </div>
+                <div class="password-field">
+                    <div class="password-value-container">
+                        <strong>Contraseña:</strong>
+                        <div class="password-display">
+                            <div class="password-text" data-password="${this.password || ''}">*************</div>
+                            ${this.updateableByClient ? '<span class="edit-icon" title="Editar contraseña">✏️</span>' : ''}
+                            <div class="password-actions">
+                                <button class="toggle-password-btn" type="button" title="Mostrar contraseña">
+                                    <i class="fas fa-eye eye-icon"></i>
+                                </button>
+                                <button class="copy-password-btn" type="button" title="Copiar contraseña">
+                                    <i class="fas fa-copy copy-icon"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    ${this.description ? `
-                        <div class="password-description">
-                            <strong>Descripción:</strong> ${this.description}
-                        </div>
-                    ` : ''}
+                </div>
+                <div class="password-description">
+                    <strong>Descripción:</strong> <span class="editable-description">${this.description || ''}</span>
+                     ${this.updateableByClient ? '<span class="edit-icon" title="Editar descripción">✏️</span>' : ''}
                 </div>
             </div>
-        `;
+        </div>
+    `;
     }
+
 }

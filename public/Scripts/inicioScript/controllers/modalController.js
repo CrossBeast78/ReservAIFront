@@ -183,7 +183,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
                         const newValue = input.value.trim();
                         if (newValue && newValue !== currentValue) {
                             try {
-                                await updatePasswordAttribute(fullPass.id, "value", newValue);
+                                await updatePasswordAttribute(fullPass.id, "password", newValue);
                                 showMessage("Contraseña actualizada");
                                 fullPass.password = newValue;
                                 const newPassSpan = document.createElement('div');

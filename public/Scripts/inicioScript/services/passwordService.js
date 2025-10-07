@@ -55,6 +55,7 @@ const token = SessionStorageManager.getSession()?.access_token;
     const token = SessionStorageManager.getSession()?.access_token;
     if (!token) throw new Error("No hay sesión activa");
 
+    
     const response = await fetch(`https://app.reservai-passmanager.com/p/${id}?attribute=${attribute}`, {
         method: "PUT",
         headers: {
@@ -63,7 +64,8 @@ const token = SessionStorageManager.getSession()?.access_token;
         },
         body: JSON.stringify({ value })
     });
-
+    const result = await response.json();
+    console.log("Respuesta del endpoint:", result);
     if (!response.ok) throw new Error(await response.text());
-    return await response.json();
+    return result;
 }

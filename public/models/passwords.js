@@ -50,14 +50,14 @@ export default class Password {
             <div class="password-info">
                 <div class="password-name">
                     <strong>Nombre:</strong> <span class="editable-name">${this.name || 'Sin nombre'}</span>
-                     ${this.updateableByClient ? '<span class="edit-icon" title="Editar nombre">✏️</span>' : ''}
+                     ${this.updateableByClient ? '<span class="edit-icon" title="Editar nombre"> <i class="fas fa-pen-to-square"></i></span>' : ''}
                 </div>
                 <div class="password-field">
                     <div class="password-value-container">
                         <strong>Contraseña:</strong>
                         <div class="password-display">
                             <div class="password-text" data-password="${this.password || ''}">*************</div>
-                            ${this.updateableByClient ? '<span class="edit-icon" title="Editar contraseña">✏️</span>' : ''}
+                            ${this.updateableByClient ? '<span class="edit-icon" title="Editar contraseña"><i class="fas fa-pen-to-square"></i></span>' : ''}
                             <div class="password-actions">
                                 <button class="toggle-password-btn" type="button" title="Mostrar contraseña">
                                     <i class="fas fa-eye eye-icon"></i>
@@ -71,7 +71,7 @@ export default class Password {
                 </div>
                 <div class="password-description">
                     <strong>Descripción:</strong> <span class="editable-description">${this.description || ''}</span>
-                     ${this.updateableByClient ? '<span class="edit-icon" title="Editar descripción">✏️</span>' : ''}
+                     ${this.updateableByClient ? '<span class="edit-icon" title="Editar descripción"><i class="fas fa-pen-to-square"></i></span>' : ''}
                 </div>
             </div>
         </div>

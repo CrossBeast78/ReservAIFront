@@ -11,7 +11,7 @@ export async function fetchPasswordById(accountId, passwordId) {
   return await response.json();
 }
 
-export async function createPasswordForAccount(accountId, passwordData) {
+export async function createPasswordForAccount({accountId, name, password, description, updateablebyclient, visibility}) {
   const token = sessionStorage.getItem("access_token");
   const url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}`;
   const response = await fetch(url, {
@@ -20,7 +20,7 @@ export async function createPasswordForAccount(accountId, passwordData) {
       "Content-Type": "application/json",
       "Authorization": token
     },
-    body: JSON.stringify(passwordData)
+    body: JSON.stringify({ name, password, description, updateablebyclient, visibility })
   });
   if (!response.ok) throw new Error(await response.text());
   return await response.json();

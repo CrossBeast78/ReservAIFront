@@ -17,8 +17,10 @@
 
     <!-- Searchbar para cuentas -->
     <div class="searchbar">
-      <input id="account-search" class="search" type="text" placeholder="Buscar cuenta por nombre..." aria-label="Buscar cuentas">
+        <input id="account-search" class="search" type="text" placeholder="Buscar cuenta por nombre..." aria-label="Buscar cuentas">
     </div>
+    <a href="/register" id="registerBtn" class="register-btn">Registrar nueva cuenta</a>
+
 
     <div class="profile">
       <button class="profile-btn" aria-haspopup="true" aria-expanded="false">
@@ -50,29 +52,45 @@
   <button class="fab" id="addPasswordBtn" aria-label="Agregar contraseña">+</button>
 
   <!-- Modal Crear Contraseña -->
-  <div id="createModal" class="modal">
-    <div class="modal-content">
-      <span class="close" data-close="createModal" aria-label="Cerrar">&times;</span>
-      <h2>Crear Contraseña</h2>
+  <div id="createModal" class="modalcreate">
+  <div class="modal-content2">
+    <div class="modal-header2">
+    <span class="closecreate" data-close="createModal" aria-label="Cerrar">&times;</span>
+    <h2>Crear Contraseña</h2>
+    </div>
 
-      <input type="text" id="createName" placeholder="Nombre de la contraseña">
+    <input type="text" id="createName" placeholder="Nombre de la contraseña">
 
-      <div class="password-field">
-        <input type="password" id="createPassword" placeholder="Contraseña">
-        <button type="button" id="toggleCreatePassword">👁</button>
-      </div>
+    <div class="password-field2">
+      <input type="password" id="createPassword" placeholder="Contraseña">
+      <button type="button" id="toggleCreatePassword"><i class="fas fa-eye"></i></button>
+    </div>
 
-      <div class="password-field">
-        <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
-        <button type="button" id="toggleConfirmPassword">👁</button>
-      </div>
+    <div class="password-field2">
+      <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
+      <button type="button" id="toggleConfirmPassword"><i class="fas fa-eye"></i></button>
+    </div>
 
-      <textarea id="createDescription" placeholder="Descripción (opcional)" rows="3"></textarea>
-      <div class="modal-actions">
-        <button id="savePasswordBtn" class="close-btn">Guardar</button>
-      </div>
+    <textarea id="createDescription" placeholder="Descripción (opcional)" rows="3"></textarea>
+    <div class="modal-actions2">
+     <div class="checkbox-field">
+            <label>
+                <input type="checkbox" id="updateableSwitch" checked>
+                <span>Permitir que el cliente actualice la contraseña</span>
+            </label>
+        </div>
+
+        <div class="checkbox-field">
+            <label>
+                <input type="checkbox" id="visibilitySwitch" checked>
+                <span>Permitir que el cliente visualice la contraseña</span>
+            </label>
+        </div>
+    <button id="savePasswordBtn" class="close-btn">Guardar</button>
     </div>
   </div>
+</div>
+
 
   <!-- Modal Ver Contraseña -->
   <div id="viewModal" class="modal">

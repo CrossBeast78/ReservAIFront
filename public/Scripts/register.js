@@ -1,5 +1,10 @@
 import SessionStorageManager from "./AppStorage.js";
 
+const session = SessionStorageManager.getSession();
+if (!session || !session.access_token) {
+    window.location.href = "/login";
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const nameInput = document.getElementById('name');
   const emailInput = document.getElementById('email');
@@ -108,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           email: email,
           password: pass,
-          nombre: name,
+          name: name,
           type: type
         })
       });
@@ -126,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
           }
 
-          alert("Cuenta creada con éxito ✅");
+          alert("Cuenta creada con éxito");
           window.location.href = "/verify_email";
         } catch (err) {
           showError(emailInput, "Error: " + err.message);

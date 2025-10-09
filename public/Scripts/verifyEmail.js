@@ -1,5 +1,12 @@
 import SessionStorageManager from "./AppStorage.js";
 
+
+const session = SessionStorageManager.getSession();
+if (!session || !session.access_token) {
+    window.location.href = "/login";
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const verifyBtn = document.querySelector(".verifybtn");
   const resendBtn = document.querySelector(".resendbtn");
@@ -7,10 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = SessionStorageManager.getSession().access_token;
 
 
-  if (!token) {
-    alert("No hay sesión activa. Inicia sesión de nuevo.");
-    return;
-  }
+
 
 
   //Reenviar email

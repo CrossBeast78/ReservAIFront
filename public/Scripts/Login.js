@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showError(passwordInput, "La contraseña es necesaria");
       valid = false;
     }
+    
     if (!valid) return;
 
     let loginInfo;
@@ -66,7 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (err.message.includes("Contraseña")) {
         showError(passwordInput, err.message);
       } else {
-        alert("Error: " + err.message);
+        const match = err.message.match(/\d+/);
+        const code = match ? parseInt(match[0]) : null;
+        if (code >= 400 && code < 500) {
+          showError(emailInput, "Correo o contraseña inválidos");
+          showError(passwordInput, "Correo o contraseña inválidos");
+          return;
+        }
       }
       return;
     }

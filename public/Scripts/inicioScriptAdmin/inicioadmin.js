@@ -1,28 +1,37 @@
+import SessionStorageManager from "../AppStorage.js";
 import { setupAdminModals } from "./controllers/modalControllerAdmin.js";
-import { renderAdminPasswordList } from "./service/renderListAdmin.js";
+import { setupAdminSearch } from "./controllers/passwordListControllerAdmin.js";
 
+const session = SessionStorageManager.getSession();
+if (!session || !session.access_token) {
+    window.location.href = "/login";
+}
 document.addEventListener("DOMContentLoaded", () => {
+  let selectedAccountId = null; // <-- Declaración global
+
   const addBtn = document.getElementById('addPasswordBtn');
   const createModal = document.getElementById('createModal');
   const viewModal = document.getElementById('viewModal');
-  const listEl = document.getElementById('password-list');
-  const searchInput = document.getElementById('account-search');
+  const passwordListEl = document.getElementById('password-list');
+  const accountSearchEl = document.getElementById('account-search');
+  const passwordSearchEl = document.getElementById('search');
+  const selectedAccountEl = document.getElementById('selected-account');
+  const totalPasswords = document.getElementById('totalPasswords');
   const createName = document.getElementById('createName');
   const createPassword = document.getElementById('createPassword');
   const createDescription = document.getElementById('createDescription');
   const confirmPassword = document.getElementById('confirmPassword');
   const savePasswordBtn = document.getElementById('savePasswordBtn');
-  const selectedAccount = document.getElementById('selected-account');
-  const totalPasswords = document.getElementById('totalPasswords');
-  const passwordSearch = document.getElementById('search');
 
-  // Render y búsqueda de cuentas
-  renderAdminPasswordList({
-    searchInput,
-    listEl,
-    selectedAccount,
-    totalPasswords,
-    passwordSearch
+  // Búsqueda y renderizado de cuentas y contraseñas
+  setupAdminSearch({
+    accountSearchEl,
+    accountListEl: document.getElementById('account-list'),
+    passwordSearchEl,
+    passwordListEl: passwordListEl,
+    selectedAccountEl,
+    // Nueva función para actualizar el accountId global
+    onAccountSelected: (accountId) => { selectedAccountId = accountId; }
   });
 
   // Modales de crear/ver/editar
@@ -37,7 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
       confirmPassword,
       savePasswordBtn
     },
-    listEl,
-    searchInput
+    listEl: passwordListEl,
+    // Pasa una función para obtener el accountId actual
+    getSelectedAccountId: () => selectedAccountId,
+    searchInput: accountSearchEl
   });
 });

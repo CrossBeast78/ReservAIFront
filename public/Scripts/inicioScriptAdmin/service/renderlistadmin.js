@@ -1,45 +1,38 @@
-import { fetchAccountById } from "../services/adminUserService.js";
-import { renderPasswordList } from "./uiHelpersAdmin.js";
-
-let currentPasswords = [];
-let currentAccountId = null;
-
-export function renderAdminPasswordList({ searchInput, listEl, selectedAccount, totalPasswords, passwordSearch }) {
-  async function searchAndRender() {
-    const accountId = searchInput.value.trim();
-    if (!accountId) {
-      selectedAccount.textContent = "Ninguna seleccionada";
-      totalPasswords.textContent = "0";
-      listEl.innerHTML = "<li class='error'>Ingresa un ID de cuenta.</li>";
-      return;
+export function renderAdminAccountList(accounts, listEl, onSelect) {
+    if (!listEl) return;
+    if (!accounts.length) {
+        listEl.innerHTML = "<div class='account-item'>No se encontraron cuentas.</div>";
+        return;
     }
-    listEl.innerHTML = "<li>Buscando...</li>";
-    try {
-      const accountData = await fetchAccountById(accountId);
-      currentAccountId = accountId;
-      currentPasswords = accountData.passwords || [];
-      selectedAccount.textContent = accountData.name || accountId;
-      totalPasswords.textContent = currentPasswords.length;
-      renderPasswordList(currentPasswords, listEl);
-
-      // Filtro por nombre de contraseña
-      if (passwordSearch) {
-        passwordSearch.oninput = function() {
-          const val = passwordSearch.value.toLowerCase();
-          const filtered = currentPasswords.filter(p => p.name.toLowerCase().includes(val));
-          renderPasswordList(filtered, listEl);
-        };
-      }
-    } catch (err) {
-      selectedAccount.textContent = "Ninguna seleccionada";
-      totalPasswords.textContent = "0";
-      listEl.innerHTML = `<li class='error'>${err.message}</li>`;
-    }
-  }
-
-  // Buscar al presionar Enter
-  searchInput.addEventListener("keydown", e => { if (e.key === "Enter") searchAndRender(); });
-
-  // Inicializa vacía
-  listEl.innerHTML = "<li>Busca una cuenta para ver sus contraseñas.</li>";
+    listEl.innerHTML = accounts.map(acc => `
+        <div class="account-item" data-id="${acc.id}">
+            <div><b>Email:</b> ${acc.email || 'Sin correo'}</div>
+            <div><b>Nombre:</b> ${acc.name || acc.nombre || 'Sin nombre'}</div>
+        </div>
+    `).join('');
+    listEl.querySelectorAll('.account-item').forEach(item => {
+        item.addEventListener('click', () => {
+            onSelect(item.dataset.id);
+        });
+    });
 }
+
+export function renderAdminPasswordList(passwords, listEl, onView) {
+    if (!listEl) return;
+    listEl.innerHTML = passwords.length
+        ? passwords.map(p => `
+            <li class="password-item" data-id="${p.id}" style="cursor:pointer;">
+                <b>Nombre:</b> ${p.name}
+            </li>
+        `).join('')
+        : "<li>No hay contraseñas para esta cuenta.</li>";
+
+    if (onView) {
+        listEl.querySelectorAll('.password-item').forEach(item => {
+            item.addEventListener('click', () => {
+                onView(item.dataset.id);
+            });
+        });
+    }
+}
+

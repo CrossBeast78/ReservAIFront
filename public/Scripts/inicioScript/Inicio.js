@@ -2,6 +2,11 @@ import SessionStorageManager from '../AppStorage.js';
 import { setupPasswordList } from './controllers/passwordListController.js';
 import { setupModals } from './controllers/modalController.js';
 
+const session = SessionStorageManager.getSession();
+if (!session || !session.access_token) {
+    window.location.href = "/login";
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const token = SessionStorageManager.getSession()?.access_token;
     if (!token) {

@@ -639,3 +639,44 @@ textarea {
             font-size: 16px;
             font-weight: bold;
         }
+
+
+/* --- Mejora visual de la lista de cuentas --- */
+#account-list {
+  margin: 1.5rem 0 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.account-item {
+  background: var(--bg-card);
+  color: var(--text-light);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  cursor: pointer;
+  transition: background 0.18s, transform 0.08s;
+  font-size: 1.08rem;
+  border-left: 4px solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.account-item:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-2px) scale(1.01);
+}
+
+.account-item b {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.account-item .account-email {
+  color: var(--text-gray);
+  font-size: 0.98rem;
+  margin-left: 0.5rem;
+}

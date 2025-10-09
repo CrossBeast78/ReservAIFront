@@ -1,5 +1,10 @@
 import SessionStorageManager from "./AppStorage.js";
 
+const session = SessionStorageManager.getSession();
+if (!session || !session.access_token) {
+    window.location.href = "/login";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const inputs = document.querySelectorAll('.code-inputs input');
     const verifyBtn = document.querySelector('.btn-verify');

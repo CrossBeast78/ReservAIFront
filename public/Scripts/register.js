@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showError(confirmPasswordInput, "Confirma tu contraseña");
       valid = false;
     }
-    if (pass && confirm && pass !== confirm) {
+    if (pass !== confirm ) {
       showError(confirmPasswordInput, "Las contraseñas no coinciden");
       valid = false;
     }
@@ -124,7 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Si no es JSON, probablemente es HTML de error
             result = { error: "El servidor respondió con un error inesperado." };
           }
-          console.log("Respuesta del backend:", result);
+
+          if (response.status === 418) {
+            window.location.href = '/login';
+            return; // Detén la ejecución
+          }
+         
 
           if (!response.ok) {
             showError(emailInput, result.error || result.message || "Error al registrar");

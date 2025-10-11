@@ -108,8 +108,19 @@ document.addEventListener("DOMContentLoaded", () => {
         showError(passwordInput, "Correo o contraseña inválidos");
         return;
       }
+      if (err.response && err.response.status === 418) {
+        // Redirige al login
+        window.location.href = '/login';
+        return; // Detén la ejecución
+      }
     }
   });
+  
+  // Toggle de mostrar/ocultar contraseña
+  function togglePassword() {
+    const passwordField = document.getElementById("password");
+    passwordField.type = passwordField.type === "password" ? "text" : "password";
+  }
 });
 
 // Toggle de mostrar/ocultar contraseña

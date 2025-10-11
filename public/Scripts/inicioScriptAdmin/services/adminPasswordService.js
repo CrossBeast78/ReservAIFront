@@ -10,6 +10,10 @@ export async function fetchPasswordById(accountId, passwordId) {
             "Authorization": token
         }
     });
+    if (response.status === 418) {
+      window.location.href = '/login';
+      return; // Detén la ejecución
+    }
     if (!response.ok) throw new Error(await response.text());
     const result = await response.json();
     return result;
@@ -17,7 +21,15 @@ export async function fetchPasswordById(accountId, passwordId) {
 
 export async function createPasswordForAccount({accountId, name, password, description, updateablebyclient, visibility}) {
   const token = SessionStorageManager.getSession()?.access_token;
-  if (!token) throw new Error("No hay sesión activa");
+  const body = {
+    name,
+    password,
+    description,
+    updateablebyclient,
+    visibility
+  };
+
+  console.log("JSON enviado al backend para crear contraseña:", body);
   const url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}`;
   const response = await fetch(url, {
     method: "POST",
@@ -25,8 +37,12 @@ export async function createPasswordForAccount({accountId, name, password, descr
       "Content-Type": "application/json",
       "Authorization": token
     },
-    body: JSON.stringify({ name, password, description, updateablebyclient, visibility })
+    body: JSON.stringify(body)
   });
+  if (response.status === 418) {
+    window.location.href = '/login';
+    return; // Detén la ejecución
+  }
   if (!response.ok) throw new Error(await response.text());
   return await response.json();
 }
@@ -43,6 +59,10 @@ export async function updatePasswordAttribute(accountId, passwordId, attribute, 
     },
     body: JSON.stringify({ value })
   });
+  if (response.status === 418) {
+    window.location.href = '/login';
+    return; // Detén la ejecución
+  }
   if (!response.ok) throw new Error(await response.text());
   return await response.json();
 }
@@ -57,6 +77,10 @@ export async function deletePassword(accountId, passwordId) {
       "Authorization": token
     }
   });
+  if (response.status === 418) {
+    window.location.href = '/login';
+    return; // Detén la ejecución
+  }
   if (!response.ok) throw new Error(await response.text());
   return true;
 }

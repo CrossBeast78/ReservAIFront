@@ -1,9 +1,5 @@
 import SessionStorageManager from "./AppStorage.js";
 
-const session = SessionStorageManager.getSession();
-if (!session || !session.access_token) {
-    window.location.href = "/login";
-}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const qrCodeDiv = document.querySelector(".qr-code");
@@ -24,6 +20,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
+    if (response.status === 418) {
+      window.location.href = '/login';
+      return; // Detén la ejecución
+    }
+
     if (!response.ok) {
       throw new Error("No se pudo obtener el QR. Intenta más tarde.");
     }
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       qrMessage.textContent = "No se recibió el QR. Contacta soporte.";
     }
   } catch (err) {
+
     qrMessage.textContent = "Error: " + err.message;
   }
 });

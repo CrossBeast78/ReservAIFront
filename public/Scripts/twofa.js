@@ -66,6 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ code })
             });
 
+            if (response.status === 418) {
+                window.location.href = '/login';
+                return; // Detén la ejecución
+            }
+
             if (!response.ok) {
                 const error = await response.json();
                 showError(error.message || "Código incorrecto");

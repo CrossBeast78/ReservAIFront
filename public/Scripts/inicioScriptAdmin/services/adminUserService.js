@@ -1,9 +1,6 @@
 import SessionStorageManager from "../../AppStorage.js";
 
 const session = SessionStorageManager.getSession();
-if (!session || !session.access_token) {
-    window.location.href = "/login";
-}
 
 // Utilidad para detectar UUID v4
 function isUUID(str) {
@@ -22,6 +19,10 @@ export async function fetchAccountById(accountId, page = 1, search = '') {
             headers: { Authorization: token }
         }
     );
+    if (response.status === 418) {
+        window.location.href = '/login';
+        return; // Detén la ejecución
+    }
     if (!response.ok) throw new Error('No se pudo obtener la cuenta');
     const result = await response.json();
     return result;
@@ -31,13 +32,7 @@ export async function fetchAccounts({ page = 1, search = "" }) {
     if (!token) throw new Error("No hay sesión de administrador");
 
     let url;
-    if (search && isUUID(search)) {
-        // Buscar por ID
-        url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(search)}?page=${page}&search=`;
-    } else {
-        // Buscar por nombre/correo
-        url = `https://app.reservai-passmanager.com/a?page=${page}&search=${encodeURIComponent(search)}`;
-    }
+    url = `https://app.reservai-passmanager.com/a?page=${page}&search=${encodeURIComponent(search)}`;
 
     const response = await fetch(url, {
         method: "GET",
@@ -46,6 +41,15 @@ export async function fetchAccounts({ page = 1, search = "" }) {
         }
     });
 
+    if (response.status === 418) {
+        window.location.href = '/login';
+        return; // Detén la ejecución
+    }
+
+    
+
     if (!response.ok) throw new Error(await response.text());
-    return await response.json();
+    const result = await response.json();
+    console.log("Fetched accounts:", result);
+    return result;
 }

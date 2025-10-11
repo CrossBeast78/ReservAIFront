@@ -15,10 +15,11 @@ const token = SessionStorageManager.getSession()?.access_token;
         });
 
         if (!response.ok) {
-            if (response.status === 401) {
-                SessionStorageManager.clear();
-                window.location.href = "/login";
-            }
+             if (response.status === 418) {
+                // Redirige al login
+                window.location.href = '/login';
+                return; // Detén la ejecución
+        }
             throw new Error(`Error al obtener contraseñas: ${response.status}`);
         }
 
@@ -28,6 +29,10 @@ const token = SessionStorageManager.getSession()?.access_token;
 
     export async function fetchPasswordById(id) {
         const response = await fetch(`${BASE_URL}/${id}`, { headers: { "Authorization": token } });
+        if (response.status === 418) {
+            window.location.href = '/login';
+            return; // Detén la ejecución
+        }
         if (!response.ok) throw new Error(`Error ${response.status}: no se pudo obtener la contraseña`);
         const data = await response.json();
         return Password.fromJson(data);
@@ -43,6 +48,12 @@ const token = SessionStorageManager.getSession()?.access_token;
             },
             body: JSON.stringify({ name, password, description })
         });
+
+          if (response.status === 418) {
+
+            window.location.href = '/login';
+            return; 
+        }
         if (!response.ok) {
             const error = await response.json().catch(() => ({}));
             throw new Error(error.message || "Error al crear contraseña");
@@ -63,6 +74,13 @@ const token = SessionStorageManager.getSession()?.access_token;
         },
         body: JSON.stringify({ value })
     });
+
+     if (response.status === 418) {
+        // Redirige al login
+        window.location.href = '/login';
+        return; // Detén la ejecución
+    }
+
     const result = await response.json();
     if (!response.ok) throw new Error(await response.text());
     return result;

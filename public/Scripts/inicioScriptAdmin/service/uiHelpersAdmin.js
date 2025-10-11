@@ -30,3 +30,9 @@ export function showMessage(msg) {
   msgDiv.textContent = msg;
   setTimeout(() => { msgDiv.textContent = ""; }, 2500);
 }
+
+export function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}

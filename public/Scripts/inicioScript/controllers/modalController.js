@@ -1,5 +1,5 @@
 import { createPassword as createPasswordService, fetchPasswordById, updatePasswordAttribute } from '../services/passwordService.js';
-import { showMessage } from '../service/uiHelpers.js';
+import { showError, showMessage } from '../service/uiHelpers.js';
 
 
 export function setupModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList }) {
@@ -7,11 +7,20 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
 
     // --- Modal Crear ---
     addBtn?.addEventListener('click', () => {
-        createName.value = '';
-        createPasswordInput.value = '';
-        createDescription.value = '';
-        confirmPassword.value = '';
+        // Muestra pantalla de cargando
+        const overlay = document.getElementById("createLoadingOverlay");
+        if (overlay) overlay.style.display = "flex";
         createModal.classList.add('show');
+
+        // Simula carga y luego muestra el formulario (ajusta el tiempo si quieres)
+        setTimeout(() => {
+            if (overlay) overlay.style.display = "none";
+            // Limpia los campos si es necesario
+            createName.value = '';
+            createPasswordInput.value = '';
+            createDescription.value = '';
+            confirmPassword.value = '';
+        }, 700); // 100ms de "cargando"
     });
 
     document.querySelectorAll('.close-btn').forEach(btn =>
@@ -49,17 +58,38 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
         const pass = createPasswordInput.value;
         const confirm = confirmPassword.value;
         const desc = createDescription.value.trim();
+    
+        let valid = true;
 
-        if (!name || !pass || !confirm) return showMessage("Todos los campos son obligatorios");
-        if (pass !== confirm) return showMessage("Las contraseñas no coinciden");
+        if (!name) {
+        showError(createName, "El nombre es necesario");
+        valid = false;
+        }
+        if (!pass) {
+        showError(createPasswordInput, "La contraseña es necesaria");
+        valid = false;
+        }
+        if (!confirm) {
+        showError(confirmPassword, "Confirma tu contraseña");
+        valid = false;
+        }
+        if (pass && confirm && pass !== confirm) {
+        showError(confirmPassword, "Las contraseñas no coinciden");
+        showError(createPasswordInput, "Las contraseñas no coinciden");
+        valid = false;
+        }
+        if (!valid) return;
+
 
         try {
             await createPasswordService({ name, password: pass, description: desc });
             showMessage("Contraseña guardada correctamente");
+            setTimeout(() => {
             createModal.classList.remove('show');
+            }, 1500);
             renderList();
         } catch (err) {
-            showMessage("Error: " + err.message);
+            showMessage("Error al guardar la contraseña: " + err.message);
         }
     });
 

@@ -21,7 +21,9 @@ export async function fetchAccountById(accountId) {
         }
     });
     if (!response.ok) throw new Error(await response.text());
-    return await response.json();
+    const result = await response.json();
+    console.log("Respuesta del backend:", result);
+    return result;
 }
 
 export async function fetchAccounts({ page = 1, search = "" }) {

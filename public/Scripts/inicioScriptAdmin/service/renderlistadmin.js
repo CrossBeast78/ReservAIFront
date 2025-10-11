@@ -1,3 +1,5 @@
+import { escapeHtml } from './uiHelpersAdmin.js';
+
 export function renderAdminAccountList(accounts, listEl, onSelect) {
     if (!listEl) return;
     if (!accounts.length) {
@@ -17,22 +19,20 @@ export function renderAdminAccountList(accounts, listEl, onSelect) {
     });
 }
 
-export function renderAdminPasswordList(passwords, listEl, onView) {
+
+export function renderAdminPasswordList(passwords, listEl) {
     if (!listEl) return;
-    listEl.innerHTML = passwords.length
-        ? passwords.map(p => `
-            <li class="password-item" data-id="${p.id}" style="cursor:pointer;">
-                <b>Nombre:</b> ${p.name}
-            </li>
-        `).join('')
-        : "<li>No hay contraseñas para esta cuenta.</li>";
 
-    if (onView) {
-        listEl.querySelectorAll('.password-item').forEach(item => {
-            item.addEventListener('click', () => {
-                onView(item.dataset.id);
-            });
-        });
+    console.log("Contraseñas recibidas para renderizar:", passwords);
+
+    if (!passwords || passwords.length === 0) {
+        listEl.innerHTML = '<li class="empty">No se encontraron contraseñas.</li>';
+        return;
     }
-}
 
+    listEl.innerHTML = passwords.map((p) => {
+        // Ajusta aquí según el campo real de tus contraseñas
+        const name = escapeHtml(p.name || p.nombre || p.title || 'Sin nombre');
+        return `<li class="password-item" data-id="${p.id}" tabindex="0">${name}</li>`;
+    }).join('');
+}

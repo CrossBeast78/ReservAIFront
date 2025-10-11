@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", () => {
     passwordSearchEl,
     passwordListEl: passwordListEl,
     selectedAccountEl,
+    totalEl: document.getElementById('totalPasswords'),
+    prevBtn: document.getElementById('prev'),
+    nextBtn: document.getElementById('next'),
     // Nueva función para actualizar el accountId global
     onAccountSelected: (accountId) => { selectedAccountId = accountId; }
   });

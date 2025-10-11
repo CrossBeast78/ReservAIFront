@@ -1,4 +1,5 @@
 import SessionStorageManager from "../../AppStorage.js";
+
 export async function fetchPasswordById(accountId, passwordId) {
     const token = SessionStorageManager.getSession()?.access_token;
     if (!token) throw new Error("No hay sesión activa");
@@ -10,7 +11,9 @@ export async function fetchPasswordById(accountId, passwordId) {
         }
     });
     if (!response.ok) throw new Error(await response.text());
-    return await response.json();
+    const result = await response.json();
+    console.log("Respuesta del backend:", result);
+    return result;
 }
 
 export async function createPasswordForAccount({accountId, name, password, description, updateablebyclient, visibility}) {
@@ -57,21 +60,4 @@ export async function deletePassword(accountId, passwordId) {
   });
   if (!response.ok) throw new Error(await response.text());
   return true;
-}
-
-
-export async function fetchPasswords({ accountId, search = "" }) {
-    const token = SessionStorageManager.getSession()?.access_token;
-    if (!token) throw new Error("No hay sesión activa");
-
-    let url = `https://app.reservai-passmanager.com/p?account_id=${accountId}`;
-    if (search) url += `&search=${encodeURIComponent(search)}`;
-
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: { Authorization: token }
-    });
-
-    if (!response.ok) throw new Error(await response.text());
-    return await response.json();
 }

@@ -49,8 +49,11 @@
   <!-- Modal Crear Contraseña -->
 <div id="createModal" class="modalcreate">
   <div class="modal-content2">
+    <div id="createLoadingOverlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:10; display:flex; align-items:center; justify-content:center;">
+      <div style="font-size:1.2em;">⏳ Cargando...</div>
+    </div>
     <div class="modal-header2">
-    <span class="closecreate" data-close="createModal" aria-label="Cerrar">&times;</span>
+      <span class="closecreate" data-close="createModal" aria-label="Cerrar">&times;</span>
     <h2>Crear Contraseña</h2>
     </div>
 
@@ -67,6 +70,8 @@
     </div>
 
     <textarea id="createDescription" placeholder="Descripción (opcional)" rows="3"></textarea>
+
+    <p class="error-message" id="msg" aria-live="assertive"></p>
     <div class="modal-actions2">
     <button id="savePasswordBtn" class="close-btn">Guardar</button>
     </div>

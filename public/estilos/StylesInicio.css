@@ -430,8 +430,20 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
 }
 
 .close-btn {
+ 
   margin-top: 15px;
-  background: var(--primary);
+  background:  var(--primary);
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.delete-btn{
+  right: 100px;
+  margin-top: 15px;
+  background: red;
   color: #fff;
   padding: 10px 15px;
   border: none;
@@ -679,4 +691,46 @@ textarea {
   color: var(--text-gray);
   font-size: 0.98rem;
   margin-left: 0.5rem;
+}
+
+/* Mensaje de error */
+.error-message {
+  text-align: center;
+}
+
+
+
+.error {
+  color: #ff6b6b;              /* Rojo más suave y moderno */
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  display: block;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+/* Cuando hay error en un input */
+input.error-input {
+  border: 1.5px solid #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.05);
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efecto al enfocar el input con error */
+input.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 107, 107, 0.5);
+  background-color: rgba(255, 107, 107, 0.08);
+}
+
+input.error-input::placeholder {
+  color: #ff6b6b;        /* el texto del error en rojo */
+  font-weight: 500;
+}
+
+#createLoadingOverlay {
+  background: rgba(255,255,255,0.8); /* Cambia el color o la opacidad aquí */
+  color: #333; /* Cambia el color del texto */
 }

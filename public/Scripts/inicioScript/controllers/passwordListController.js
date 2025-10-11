@@ -1,6 +1,6 @@
 import { fetchPasswords } from '../services/passwordService.js';
 import { renderList } from '../service/renderList.js';
-import { showMessage } from '../service/uiHelpers.js';
+import { showError } from '../service/uiHelpers.js';
 
 export async function setupPasswordList(elements) {
     const { listEl, searchEl, prevBtn, nextBtn, pageInfo, totalEl } = elements;
@@ -28,7 +28,7 @@ export async function setupPasswordList(elements) {
                 totalEl.textContent = total;
             }
         } catch (err) {
-            showMessage("Error al cargar contraseñas: " + err.message);
+            showError(listEl, "Error al cargar contraseñas: " + err.message);
         }
     }
 

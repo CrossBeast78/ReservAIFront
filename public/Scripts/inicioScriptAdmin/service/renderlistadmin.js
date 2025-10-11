@@ -23,7 +23,6 @@ export function renderAdminAccountList(accounts, listEl, onSelect) {
 export function renderAdminPasswordList(passwords, listEl) {
     if (!listEl) return;
 
-    console.log("Contraseñas recibidas para renderizar:", passwords);
 
     if (!passwords || passwords.length === 0) {
         listEl.innerHTML = '<li class="empty">No se encontraron contraseñas.</li>';

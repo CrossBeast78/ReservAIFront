@@ -10,22 +10,22 @@ function isUUID(str) {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
 }
 
-export async function fetchAccountById(accountId) {
+export async function fetchAccountById(accountId, page = 1, search = '') {
     const token = SessionStorageManager.getSession()?.access_token;
-    if (!token) throw new Error("No hay sesión de administrador");
-    const url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}`;
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Authorization": token
+    const params = new URLSearchParams();
+    params.append('page', page);
+    if (search) params.append('search', search);
+
+    const response = await fetch(
+        `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}?${params.toString()}`,
+        {
+            headers: { Authorization: token }
         }
-    });
-    if (!response.ok) throw new Error(await response.text());
+    );
+    if (!response.ok) throw new Error('No se pudo obtener la cuenta');
     const result = await response.json();
-    console.log("Respuesta del backend:", result);
     return result;
 }
-
 export async function fetchAccounts({ page = 1, search = "" }) {
     const token = SessionStorageManager.getSession()?.access_token;
     if (!token) throw new Error("No hay sesión de administrador");

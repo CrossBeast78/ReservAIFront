@@ -1,54 +1,21 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-
-// Puerto configurable desde argumento o por defecto 3000
-const PORT = process.argv[2] || 3000;
-
-// Importar router principal (para las rutas HTML)
+const PORT = process.argv[2] || 3000
 const router = require('./public/Scripts/router');
 
-// ============================
-// CONFIGURACIONES DEL SERVIDOR
-// ============================
 
-// Middleware para parsear JSON
+
+
+// Ruta para servir el HTML
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(router);
+app.use(express.static('app'));
+app.use(express.static(path.join(__dirname, "public")));
+app.use('/views', express.static('views'));
+app.use('/public', express.static('public'));
 
-// Ocultar cabecera "X-Powered-By" (seguridad)
-app.disable('x-powered-by');
 
 
-app.use((req, res, next) => {
-    // Si la ruta viene con /api, la removemos para procesamiento interno
-    if (req.path.startsWith('/view')) {
-        req.url = req.url.replace('/view', '');
-        req.originalUrl = req.originalUrl.replace('/view', '');
-    }
-    next();
-});
-// Servir archivos estáticos (CSS, JS, imágenes, etc.) con alias "/static"
-app.use('/static', express.static(path.join(__dirname, 'public'), {
-  dotfiles: 'ignore',   // No mostrar archivos ocultos
-  index: false,         // No mostrar index.html automático
-  maxAge: '1y',         // Cache largo (1 año)
-}));
-
-// ============================
-// RUTAS PRINCIPALES (HTML)
-// ============================
-
-app.use('/', router);
-
-// Si se accede a una ruta no definida, redirige al login.html
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'views', 'login.html'));
-});
-
-// ============================
-// INICIO DEL SERVIDOR
-// ============================
-
-app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

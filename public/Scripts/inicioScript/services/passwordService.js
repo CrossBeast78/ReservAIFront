@@ -23,7 +23,6 @@ const token = SessionStorageManager.getSession()?.access_token;
         }
 
         const result = await response.json();
-        console.log("Respuesta del backend:", result);
         return result; // <-- Devuelve el objeto tal cual
     }
 
@@ -65,7 +64,6 @@ const token = SessionStorageManager.getSession()?.access_token;
         body: JSON.stringify({ value })
     });
     const result = await response.json();
-    console.log("Respuesta del endpoint:", result);
     if (!response.ok) throw new Error(await response.text());
     return result;
 }

@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Búsqueda y renderizado de cuentas y contraseñas
   setupAdminSearch({
     accountSearchEl,
-    accountListEl: document.getElementById('account-list'),
+    accountListEl: document.getElementById('account-list'), 
+    pageInfo: document.getElementById('pageinfo'),
     passwordSearchEl,
     passwordListEl: passwordListEl,
     selectedAccountEl,

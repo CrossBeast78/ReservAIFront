@@ -3,11 +3,16 @@ import { showMessage } from '../service/uiHelpersAdmin.js';
 import Password from '../../../models/passwordsAdmin.js';
 
 
-export function setupAdminModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList }) {
+export function setupAdminModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList, getSelectedAccountId }) {
     const { createName, createPassword: createPasswordInput, createDescription, confirmPassword, savePasswordBtn } = fields;
 
     // --- Modal Crear ---
     addBtn?.addEventListener('click', () => {
+        const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
+        if (!accountId) {
+            showMessage("Por favor, selecciona una cuenta antes de crear una contraseña.");
+            return;
+        }
         createName.value = '';
         createPasswordInput.value = '';
         createDescription.value = '';
@@ -51,8 +56,6 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
         const confirm = confirmPassword.value;
         const desc = createDescription.value.trim();
         const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
-        console.log("Creando contraseña para accountId:", accountId); // <-- AQUÍ
-
 
         // NUEVO: Lee los switches
         const updateableSwitch = document.getElementById('updateableSwitch');

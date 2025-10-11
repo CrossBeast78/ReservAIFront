@@ -12,7 +12,6 @@ export async function fetchPasswordById(accountId, passwordId) {
     });
     if (!response.ok) throw new Error(await response.text());
     const result = await response.json();
-    console.log("Respuesta del backend:", result);
     return result;
 }
 

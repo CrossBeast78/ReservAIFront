@@ -20,7 +20,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
             createPasswordInput.value = '';
             createDescription.value = '';
             confirmPassword.value = '';
-        }, 700); // 100ms de "cargando"
+        }, 700); 
     });
 
     document.querySelectorAll('.close-btn').forEach(btn =>

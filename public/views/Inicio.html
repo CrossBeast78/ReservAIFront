@@ -30,7 +30,6 @@
   <!-- Main -->
   <main class="container">
     <h2>Resumen de Contraseñas</h2>
-    <p class="summary">Total: <span id="totalPasswords"></span></p>
 
     <input id="search" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar">
 
@@ -49,7 +48,7 @@
   <!-- Modal Crear Contraseña -->
 <div id="createModal" class="modalcreate">
   <div class="modal-content2">
-    <div id="createLoadingOverlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:10; display:flex; align-items:center; justify-content:center;">
+    <div id="createLoadingOverlay">
       <div style="font-size:1.2em;">⏳ Cargando...</div>
     </div>
     <div class="modal-header2">
@@ -91,6 +90,7 @@
             <div class="modal-body" id="modalBody">
                 <!-- El contenido se llena dinámicamente -->
             </div>
+        </div>
 
             <!-- Footer con botón de cerrar -->
             <div class="modal-footer">

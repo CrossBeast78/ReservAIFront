@@ -15,7 +15,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
             createPasswordInput.value = '';
             createDescription.value = '';
             confirmPassword.value = '';
-        }, 700); 
+        }, 800); 
     });
 
     document.querySelectorAll('.close-btn').forEach(btn =>
@@ -99,10 +99,14 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
 
         try {
             const fullPass = await fetchPasswordById(passwordId);
+            console.log('fullPass:', fullPass); // Ahora sí, updateableByClient tendrá el valor correcto
+
             modalBody.innerHTML = fullPass.toHTML();
 
-            // Solo permite editar si updateableByClient es true
-            if (fullPass.updateableByClient) {
+            // Si NO es editable, quita los iconos de edición y no asigna listeners
+            if (!fullPass.updateableByClient) {
+                modalBody.querySelectorAll('.edit-icon').forEach(icon => icon.remove());
+            } else {
                 // Editar nombre
                 const nameDiv = modalBody.querySelector('.password-name');
                 const nameSpan = nameDiv?.querySelector('.editable-name');
@@ -319,11 +323,8 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
                         });
                     });
                 }
-
-            } else {
-                // Si no es editable, quitar iconos de edición
-                modalBody.querySelectorAll('.edit-icon').forEach(icon => icon.remove());
             }
+
             // --- Botón Mostrar/Ocultar ---
             const toggleBtn = modalBody.querySelector('.toggle-password-btn');
             const passwordText = modalBody.querySelector('.password-text');
@@ -368,6 +369,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
             }
 
         } catch (err) {
+            console.error("Error al cargar la contraseña:", err);
             modalBody.innerHTML = '<div style="text-align:center;color:red;">❌ Error al cargar la contraseña</div>';
             showMessage("Error al obtener la contraseña");
         }

@@ -53,3 +53,20 @@ export async function fetchAccounts({ page = 1, search = "" }) {
     console.log("Fetched accounts:", result);
     return result;
 }
+
+export async function deleteAccount(accountId) {
+    const token = SessionStorageManager.getSession()?.access_token;
+
+    const response = await fetch(`https://app.reservai-passmanager.com/account/${encodeURIComponent(accountId)}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": token
+        }
+    });
+    if (response.status === 418) {
+        window.location.href = '/login';
+        return; // Detén la ejecución
+    }
+    if (!response.ok) throw new Error(await response.text());
+    return await response.json();
+}

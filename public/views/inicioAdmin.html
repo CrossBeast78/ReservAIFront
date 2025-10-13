@@ -38,7 +38,6 @@
       <div id="account-list"></div>
 
     <h2>Contraseñas de la Cuenta: <span id="selected-account">Ninguna seleccionada</span></h2>
-    <p class="summary">Total de contraseñas: <span id="totalPasswords">0</span></p>
 
     <input id="search" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar">
 
@@ -105,6 +104,20 @@
 
           <div class="modal-body" id="modalBody">
               <!-- Contenido dinámico -->
+          </div>
+
+          <div class="checkbox-field2">
+            <label>
+                <input type="checkbox" id="updateableSwitch2" checked>
+                <span>Permitir que el cliente actualice la contraseña</span>
+            </label>
+          </div>
+
+          <div class="checkbox-field2">
+            <label>
+                <input type="checkbox" id="visibilitySwitch2" checked>
+                <span>Permitir que el cliente visualice la contraseña</span>
+            </label>
           </div>
 
           <div class="modal-footer">

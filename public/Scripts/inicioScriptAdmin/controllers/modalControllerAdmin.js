@@ -94,9 +94,11 @@ export async function openAdminPasswordModal(accountId, passwordId) {
     viewModal.classList.add('show');
 
     try {
-        const response = await fetchPasswordById(accountId, passwordId);
-        const fullPass = Password.fromJson(response);
+      
+        const fullPass = await fetchPasswordById(accountId, passwordId); // <-- Solo esto
+        console.log('fullPass:', fullPass); // Ahora sí, updateableByClient tendrá el valor correcto
         modalBody.innerHTML = fullPass ? fullPass.toHTML() : '<div style="color:red;">❌ Error al cargar la contraseña</div>';
+        
 
             // Editar nombre
             const nameDiv = modalBody.querySelector('.password-name');
@@ -198,6 +200,9 @@ export async function openAdminPasswordModal(accountId, passwordId) {
                         const newValue = input.value.trim();
                         if (newValue && newValue !== currentValue) {
                             try {
+                                 const pass = await fetchPasswordById(accountId, fullPass.id);
+                                console.log('Nombre actual:', pass.name);
+
                                 await updatePasswordAttribute(accountId, fullPass.id, "password", newValue);
                                 showMessage("Contraseña actualizada");
                                 fullPass.password = newValue;
@@ -324,6 +329,7 @@ export async function openAdminPasswordModal(accountId, passwordId) {
             };
         }
     } catch (err) {
+        console.error("Error al cargar la contraseña:", err);
         modalBody.innerHTML = '<div style="text-align:center;color:red;">❌ Error al cargar la contraseña</div>';
         showMessage("Error al obtener la contraseña");
     }

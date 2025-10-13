@@ -24,9 +24,6 @@ export async function setupPasswordList(elements) {
             pageInfo.textContent = next_page ? `Página ${currentPage} `: `Página ${currentPage}`;
             prevBtn.disabled = currentPage <= 1;
             nextBtn.disabled = !next_page;
-            if (totalEl) {
-                totalEl.textContent = total;
-            }
         } catch (err) {
             showError(listEl, "Error al cargar contraseñas: " + err.message);
         }

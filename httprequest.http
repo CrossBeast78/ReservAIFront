@@ -1,3 +1,12 @@
 GET https://app.reservai-passmanager.com/twofa
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4OGE5ZDhlLWYwYzgtNDg3NS1hYjg1LWQxZDFmMGFhOWM3MyIsInRva2VuX3R5cGUiOiJ0d29fZmFjdG9yX2F1dGhlbnRpY2F0aW9uIiwiaWF0IjoxNzU5NjkyNzg1LCJleHAiOjE3NTk2OTQ1ODV9.Kk8JVBbGFpbEqE8bkdPwew21kaFdxqsTUgNC90_c2cA
+
+###
+Put http://192.168.1.79:3000/p/d9ce08e7-d8c7-4209-a478-5172b67f57be?attribute=password
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA4OGE5ZDhlLWYwYzgtNDg3NS1hYjg1LWQxZDFmMGFhOWM3MyIsInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NjAzODY1NjEsImV4cCI6MTc2MDM4ODM2MX0.rK0-97XJRiAjSXYLXpUwJ0uLYZwNQsPi2hmUECjCZrg
+
+{
+  "value": "NuevaContraseña123!"
+}

@@ -36,6 +36,7 @@ export async function setupAdminSearch(elements) {
         }
     });
 
+        
     async function searchAccounts() {
         const search = accountSearchEl.value.trim();
         try {
@@ -45,7 +46,7 @@ export async function setupAdminSearch(elements) {
                 renderAdminAccountList([account], accountListEl, onAccountSelectedInternal);
                 if (account) {
                     selectedAccountId = account.id;
-                    selectedAccountEl.textContent = ` ${account.id}`;
+                    selectedAccountEl.textContent = ` ${account.email || account.id}`; // <-- Usa email si existe
                     loadPasswordsPage(1, passwordSearchEl.value);
                 }
             } else {
@@ -64,10 +65,10 @@ export async function setupAdminSearch(elements) {
         }
     }
 
-    async function onAccountSelectedInternal(accountId) {
-        selectedAccountId = accountId;
-        if (typeof onAccountSelected === "function") onAccountSelected(accountId);
-        selectedAccountEl.textContent = ` ${accountId}`;
+    async function onAccountSelectedInternal(account) {
+        selectedAccountId = account.id;
+        if (typeof onAccountSelected === "function") onAccountSelected(account.id);
+        selectedAccountEl.textContent = ` ${account.email || account.id}`; // <-- Usa email si existe
         loadPasswordsPage(1, passwordSearchEl.value);
     }
 

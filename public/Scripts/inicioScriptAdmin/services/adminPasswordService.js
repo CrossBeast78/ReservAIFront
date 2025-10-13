@@ -1,4 +1,5 @@
 import SessionStorageManager from "../../AppStorage.js";
+import Password from "../../../models/passwordsAdmin.js";
 
 export async function fetchPasswordById(accountId, passwordId) {
     const token = SessionStorageManager.getSession()?.access_token;
@@ -12,11 +13,11 @@ export async function fetchPasswordById(accountId, passwordId) {
     });
     if (response.status === 418) {
       window.location.href = '/login';
-      return; // Detén la ejecución
+      return;
     }
     if (!response.ok) throw new Error(await response.text());
     const result = await response.json();
-    return result;
+    return new Password(result.data); // <-- ¡Aquí el cambio!
 }
 
 export async function createPasswordForAccount({accountId, name, password, description, updateablebyclient, visibility}) {
@@ -49,21 +50,27 @@ export async function createPasswordForAccount({accountId, name, password, descr
 
 export async function updatePasswordAttribute(accountId, passwordId, attribute, value) {
   const token = SessionStorageManager.getSession()?.access_token;
-  if (!token) throw new Error("No hay sesión activa");
+  
   const url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}?attribute=${encodeURIComponent(attribute)}`;
+  const body = { value };
+  console.log("JSON enviado al backend para actualizar atributo de contraseña:", body);
   const response = await fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       "Authorization": token
     },
-    body: JSON.stringify({ value })
+    body: JSON.stringify(body)
   });
   if (response.status === 418) {
     window.location.href = '/login';
     return; // Detén la ejecución
   }
-  if (!response.ok) throw new Error(await response.text());
+  if (!response.ok) {
+  const errorText = await response.text();
+  console.error("Error del backend:", errorText);
+  throw new Error(errorText);
+}
   return await response.json();
 }
 

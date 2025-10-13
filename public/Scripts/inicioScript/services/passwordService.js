@@ -63,8 +63,6 @@ const token = SessionStorageManager.getSession()?.access_token;
 
     export async function updatePasswordAttribute(id, attribute, value) {
     const token = SessionStorageManager.getSession()?.access_token;
-    if (!token) throw new Error("No hay sesión activa");
-
     
     const response = await fetch(`https://app.reservai-passmanager.com/p/${id}?attribute=${attribute}`, {
         method: "PUT",
@@ -72,7 +70,7 @@ const token = SessionStorageManager.getSession()?.access_token;
             "Content-Type": "application/json",
             "Authorization": token
         },
-        body: JSON.stringify({ value })
+        body: JSON.stringify({ value: value })
     });
 
      if (response.status === 418) {
@@ -80,8 +78,10 @@ const token = SessionStorageManager.getSession()?.access_token;
         window.location.href = '/login';
         return; // Detén la ejecución
     }
-
-    const result = await response.json();
-    if (!response.ok) throw new Error(await response.text());
-    return result;
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error del backend:", errorText);
+        throw new Error(errorText);
+    }
+    return await response.json();
 }

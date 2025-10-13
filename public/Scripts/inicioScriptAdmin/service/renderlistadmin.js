@@ -13,8 +13,9 @@ export function renderAdminAccountList(accounts, listEl, onSelect) {
         </div>
     `).join('');
     listEl.querySelectorAll('.account-item').forEach(item => {
+        const acc = accounts.find(a => a.id === item.dataset.id);
         item.addEventListener('click', () => {
-            onSelect(item.dataset.id);
+            onSelect(acc);
         });
     });
 }

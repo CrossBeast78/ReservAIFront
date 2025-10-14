@@ -5,7 +5,7 @@ import { showError } from '../service/uiHelpers.js';
 export async function setupPasswordList(elements) {
     const { listEl, searchEl, prevBtn, nextBtn, pageInfo, totalEl } = elements;
     let currentPage = 1;
-    let serchTimeout = null;
+    let searchTimeout = null;
     let pageSize = 5; 
 
 

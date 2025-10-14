@@ -23,7 +23,7 @@ export async function setupAdminSearch(elements) {
     let currentAccounts = [];
     let searchTimeout = null;
 
-    // --- Búsqueda con debounce de 5 segundos o Enter ---
+    // --- Búsqueda con debounce de 2s
     accountSearchEl.addEventListener('input', () => {
         if (searchTimeout) clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {

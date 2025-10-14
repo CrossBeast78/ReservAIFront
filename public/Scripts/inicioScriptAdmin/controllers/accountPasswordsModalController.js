@@ -70,7 +70,6 @@ export async function openAccountPasswordsModal(account) {
 
             if (searchbar2 && passwordList.children.length > 0 && !passwordList.innerHTML.includes('Error')) {
                 searchbar2.style.display = 'block';
-                searchbar2.value = '';
             } else if (searchbar2) {
                 searchbar2.style.display = 'none';
             }
@@ -105,7 +104,7 @@ export async function openAccountPasswordsModal(account) {
         if (passwordSearchTimeout) clearTimeout(passwordSearchTimeout);
         passwordSearchTimeout = setTimeout(() => {
             loadPasswordsPage(1, passwordSearchEl.value);
-        }, 5000);
+        }, 2000);
     });
 
     passwordSearchEl?.addEventListener('keydown', (event) => {
@@ -125,7 +124,10 @@ export async function openAccountPasswordsModal(account) {
     backBtn.onclick = () => {
         modal.classList.remove('show');
         const searchbar2 = document.getElementById('search2');
-        if (searchbar2) searchbar2.style.display = 'none';
+        if (searchbar2){
+            searchbar2.style.display = 'none';
+            searchbar2.value = '';
+        }
         const pagination1 = document.querySelector('.pagination');
         if (pagination1) pagination1.style.display = 'none';
         // Remueve el listener al cerrar el modal

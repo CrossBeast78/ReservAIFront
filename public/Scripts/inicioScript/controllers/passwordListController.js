@@ -5,8 +5,10 @@ import { showError } from '../service/uiHelpers.js';
 export async function setupPasswordList(elements) {
     const { listEl, searchEl, prevBtn, nextBtn, pageInfo, totalEl } = elements;
     let currentPage = 1;
-    let totalPages = 1;
+    let serchTimeout = null;
     let pageSize = 5; 
+
+
  
 
     async function loadPage(page = 1, search = '') {
@@ -55,8 +57,19 @@ export async function setupPasswordList(elements) {
         loadPage(currentPage + 1, searchEl.value);
     });
 
+    // Búsqueda con debounce de 2 segundos o Enter
     searchEl?.addEventListener('input', () => {
-        loadPage(1, searchEl.value);
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            loadPage(1, searchEl.value);
+        }, 2000);
+    });
+
+    searchEl?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            if (searchTimeout) clearTimeout(searchTimeout);
+            loadPage(1, searchEl.value);
+        }
     });
 
     await loadPage(1, ''); // Iniciar con la primera página

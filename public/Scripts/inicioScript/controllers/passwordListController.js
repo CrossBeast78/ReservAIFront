@@ -10,6 +10,10 @@ export async function setupPasswordList(elements) {
  
 
     async function loadPage(page = 1, search = '') {
+        if (listEl) listEl.innerHTML = '<div style="text-align:center; margin:2em 0;">Cargando contraseñas...</div>';
+
+        const pagination = document.querySelector('.pagination');
+        if (pagination) pagination.style.display = 'none';
         try {
             const { data: passwords = [], total = 0, next_page, current_page } = await fetchPasswords(page, search);
             currentPage = current_page || page;
@@ -24,10 +28,24 @@ export async function setupPasswordList(elements) {
             pageInfo.textContent = next_page ? `Página ${currentPage} `: `Página ${currentPage}`;
             prevBtn.disabled = currentPage <= 1;
             nextBtn.disabled = !next_page;
+
+            if (pagination) {
+                if (passwords.length > 0) {
+                    pagination.style.display = 'flex'; // o 'block', según tu CSS
+                } else {
+                    pagination.style.display = 'none';
+                }
+            }
         } catch (err) {
             showError(listEl, "Error al cargar contraseñas: " + err.message);
+            const pagination = document.querySelector('.pagination');
+            if (pagination) pagination.style.display = 'none';
         }
     }
+
+    document.addEventListener('passwordUpdated', () => {
+        loadPage(currentPage, searchEl.value);
+    });
 
     prevBtn?.addEventListener('click', () => {
         if (currentPage > 1) {

@@ -130,6 +130,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
                                     await updatePasswordAttribute(fullPass.id, "name", newValue);
                                     showMessage("Nombre actualizado");
                                     fullPass.name = newValue;
+                                    document.dispatchEvent(new CustomEvent('passwordUpdated'));
                                     const newSpan = document.createElement('span');
                                     newSpan.className = 'editable-name';
                                     newSpan.textContent = newValue;
@@ -188,6 +189,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
                                     await updatePasswordAttribute(fullPass.id, "description", newValue);
                                     showMessage("Descripción actualizada");
                                     fullPass.description = newValue;
+                                    document.dispatchEvent(new CustomEvent('passwordUpdated'));
                                     const newSpan = document.createElement('span');
                                     newSpan.className = 'editable-description';
                                     newSpan.textContent = newValue;
@@ -248,6 +250,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
                                     await updatePasswordAttribute(fullPass.id, "password", newValue);
                                     showMessage("Contraseña actualizada");
                                     fullPass.password = newValue;
+                                    document.dispatchEvent(new CustomEvent('passwordUpdated'));
                                     const newPassSpan = document.createElement('div');
                                     newPassSpan.className = 'password-text';
                                     newPassSpan.dataset.password = newValue;

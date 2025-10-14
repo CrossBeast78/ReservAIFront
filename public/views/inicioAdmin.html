@@ -32,13 +32,19 @@
 
   <!-- Main -->
   <main class="container">
+      <h1>Gestión de Cuentas</h1>
+      <div id="accounts-loading" style="display:none; text-align:center; color:#fff; margin: 2em 0;">
+        ⏳Cargando cuentas...
+      </div>
     <div id="account-list"></div>
-     <div class="pagination2">
+      <div class="pagination2" style="display: none;">
         <button id="prevAccount" type="button"><</button>
         <span id="pageinfoAccount">Página 1</span>
         <button id="nextAccount" type="button">></button>
       </div>
-     <!-- Modal de página completa para contraseñas de una cuenta -->
+  </main>
+
+  <!-- Modal de página completa para contraseñas de una cuenta -->
 <div id="accountPasswordsModal" class="modal-fullscreen">
   <div class="modal-full-content">
     <div class="modal-full-header">
@@ -53,15 +59,14 @@
     </div>
     <div class="modal-full-body">
       
-      <!-- Aquí va el mensaje de cargando -->
       <div id="passwords-loading" style="display:none; text-align:center; color:#fff; margin: 2em 0;">
       ⏳Cargando contraseñas...
       </div>
 
-        <input id="search2" class="searchbar2" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar" style="display: none;">
+      <input id="search2" class="searchbar2" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar" style="display: none;">
 
       <ul id="password-list" class="password-list" aria-live="polite"></ul>
-      <div class="pagination">
+      <div class="pagination" style="display: none;">
         <button id="prev" type="button"><</button>
         <span id="pageinfo">Página 1</span>
         <button id="next" type="button">></button>

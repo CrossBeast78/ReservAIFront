@@ -5,7 +5,6 @@ import { setupAdminModals, openAdminPasswordModal } from './modalControllerAdmin
 import { deleteAccount } from '../services/adminUserService.js';
 import { showDeleteConfirmModal } from '../service/uiHelpersAdmin.js';
 
-
 export async function openAccountPasswordsModal(account) {
     const modal = document.getElementById('accountPasswordsModal');
     const emailTitle = document.getElementById('accountEmailTitle');
@@ -36,7 +35,6 @@ export async function openAccountPasswordsModal(account) {
     async function loadPasswordsPage(page = 1, search = '') {
         if (loadingEl) loadingEl.style.display = 'block';
         passwordList.innerHTML = '';
-        
 
         try {
             const response = await fetchAccountById(account.id, page, search);
@@ -62,6 +60,14 @@ export async function openAccountPasswordsModal(account) {
         } finally {
             if (loadingEl) loadingEl.style.display = 'none';
             const searchbar2 = document.getElementById('search2');
+            const pagination1 = document.querySelector('.pagination');
+
+            if (pagination1 && passwordList.children.length > 0 && !passwordList.innerHTML.includes('Error')) {
+                pagination1.style.display = 'flex';
+            } else if (pagination1) {
+                pagination1.style.display = 'none';
+            }
+
             if (searchbar2 && passwordList.children.length > 0 && !passwordList.innerHTML.includes('Error')) {
                 searchbar2.style.display = 'block';
                 searchbar2.value = '';
@@ -70,6 +76,15 @@ export async function openAccountPasswordsModal(account) {
             }
         }
     }
+
+    // --- Listener único para passwordUpdated ---
+    function passwordUpdatedHandler(e) {
+        const { accountId } = e.detail || {};
+        if (accountId === account.id) {
+            loadPasswordsPage(currentPage, passwordSearchEl ? passwordSearchEl.value : '');
+        }
+    }
+    document.addEventListener('passwordUpdated', passwordUpdatedHandler);
 
     // Listeners de paginación y búsqueda
     prevBtn?.addEventListener('click', () => {
@@ -94,15 +109,15 @@ export async function openAccountPasswordsModal(account) {
     // Mostrar modal
     modal.classList.add('show');
 
-
-    // Mostrar barra de búsqueda
-  
-
     // Botón regresar
     backBtn.onclick = () => {
         modal.classList.remove('show');
         const searchbar2 = document.getElementById('search2');
         if (searchbar2) searchbar2.style.display = 'none';
+        const pagination1 = document.querySelector('.pagination');
+        if (pagination1) pagination1.style.display = 'none';
+        // Remueve el listener al cerrar el modal
+        document.removeEventListener('passwordUpdated', passwordUpdatedHandler);
     };
 
     // Menú tres puntos
@@ -116,21 +131,31 @@ export async function openAccountPasswordsModal(account) {
             title: "Eliminar cuenta",
             message: "¿Seguro que deseas eliminar esta cuenta? Esta acción no se puede deshacer.<br>Escribe <b>eliminar</b> para confirmar.",
             onConfirm: async () => {
-            try {
-                await deleteAccount(account.id);
-                showMessage("Cuenta eliminada correctamente");
-                modal.classList.remove('show');
-                document.dispatchEvent(new CustomEvent('accountDeleted', { detail: account.id }));
-            } catch (err) {
-                showMessage("Error al eliminar la cuenta: " + err.message);
-            }
-        },
-        onCancel: () => {
-            // Acción al cancelar, si es necesario
-
+                try {
+                    await deleteAccount(account.id);
+                    showMessage("Cuenta eliminada correctamente");
+                    modal.classList.remove('show');
+                    document.dispatchEvent(new CustomEvent('accountDeleted', { detail: account.id }));
+                    // Remueve el listener al cerrar el modal
+                    document.removeEventListener('passwordUpdated', passwordUpdatedHandler);
+                } catch (err) {
+                    showMessage("Error al eliminar la cuenta: " + err.message);
+                }
+            },
+            onCancel: () => {
+                // Acción al cancelar, si es necesario
             }
         });
     };
+
+    // Cierre del modal de ver contraseña también actualiza la lista
+    const closeBtns = viewModal.querySelectorAll('.close-btn');
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            viewModal.classList.remove('show');
+            document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId: account.id } }));
+        });
+    });
 
     // --- Lógica para crear contraseña dentro del modal ---
     setupAdminModals({

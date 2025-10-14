@@ -160,6 +160,7 @@ export async function openAdminPasswordModal(accountId, passwordId) {
                                 await updatePasswordAttribute(accountId, fullPass.id, "name", newValue);
                                 showMessage("Nombre actualizado");
                                 fullPass.name = newValue;
+                                document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId, passwordId: fullPass.id } }));
                                 const newSpan = document.createElement('span');
                                 newSpan.className = 'editable-name';
                                 newSpan.textContent = newValue;
@@ -200,6 +201,7 @@ export async function openAdminPasswordModal(accountId, passwordId) {
                                 await updatePasswordAttribute(accountId, fullPass.id, "description", newValue);
                                 showMessage("Descripción actualizada");
                                 fullPass.description = newValue;
+                                document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId, passwordId: fullPass.id } }));
                                 const newSpan = document.createElement('span');
                                 newSpan.className = 'editable-description';
                                 newSpan.textContent = newValue;
@@ -239,12 +241,13 @@ export async function openAdminPasswordModal(accountId, passwordId) {
                         const newValue = input.value.trim();
                         if (newValue && newValue !== currentValue) {
                             try {
-                                 const pass = await fetchPasswordById(accountId, fullPass.id);
-                                console.log('Nombre actual:', pass.name);
+                                const pass = await fetchPasswordById(accountId, fullPass.id);
+                                
 
                                 await updatePasswordAttribute(accountId, fullPass.id, "password", newValue);
                                 showMessage("Contraseña actualizada");
                                 fullPass.password = newValue;
+                                document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId, passwordId: fullPass.id } }));
                                 const newPassSpan = document.createElement('div');
                                 newPassSpan.className = 'password-text';
                                 newPassSpan.dataset.password = newValue;

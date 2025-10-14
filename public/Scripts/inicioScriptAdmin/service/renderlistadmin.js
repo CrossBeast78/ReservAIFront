@@ -1,6 +1,8 @@
 import { escapeHtml } from './uiHelpersAdmin.js';
+import { openAccountPasswordsModal } from '../controllers/accountPasswordsModalController.js';
 
-export function renderAdminAccountList(accounts, listEl, onSelect) {
+export function renderAdminAccountList(accounts, listEl) {
+    console.log(accounts)
     if (!listEl) return;
     if (!accounts.length) {
         listEl.innerHTML = "<div class='account-item'>No se encontraron cuentas.</div>";
@@ -15,7 +17,7 @@ export function renderAdminAccountList(accounts, listEl, onSelect) {
     listEl.querySelectorAll('.account-item').forEach(item => {
         const acc = accounts.find(a => a.id === item.dataset.id);
         item.addEventListener('click', () => {
-            onSelect(acc);
+            openAccountPasswordsModal(acc); // <-- Solo aquí abres el modal
         });
     });
 }

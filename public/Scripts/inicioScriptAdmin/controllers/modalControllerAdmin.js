@@ -1,6 +1,5 @@
 import {createPasswordForAccount as createPasswordAdmin, fetchPasswordById, updatePasswordAttribute, deletePassword} from '../services/adminPasswordService.js';
 import { showMessage } from '../service/uiHelpersAdmin.js';
-import Password from '../../../models/passwordsAdmin.js';
 
 
 export function setupAdminModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList, getSelectedAccountId }) {
@@ -50,38 +49,43 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
         });
     }
 
-    savePasswordBtn?.addEventListener('click', async () => {
-        const name = createName.value.trim();
-        const pass = createPasswordInput.value;
-        const confirm = confirmPassword.value;
-        const desc = createDescription.value.trim();
-        const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
+    if (savePasswordBtn) {
+        const newSaveBtn = savePasswordBtn.cloneNode(true);
+        savePasswordBtn.parentNode.replaceChild(newSaveBtn, savePasswordBtn);
 
-        // NUEVO: Lee los switches
-        const updateableSwitch = document.getElementById('updateableSwitch');
-        const visibilitySwitch = document.getElementById('visibilitySwitch');
-        const updateablebyclient = updateableSwitch?.checked ?? true;
-        const visibility = visibilitySwitch?.checked ?? true;
+        newSaveBtn.addEventListener('click', async () => {
+            const name = createName.value.trim();
+            const pass = createPasswordInput.value;
+            const confirm = confirmPassword.value;
+            const desc = createDescription.value.trim();
+            const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
+            console.log("ID justo antes de crear contraseña:", accountId);
+            // NUEVO: Lee los switches
+            const updateableSwitch = document.getElementById('updateableSwitch');
+            const visibilitySwitch = document.getElementById('visibilitySwitch');
+            const updateablebyclient = updateableSwitch?.checked ?? true;
+            const visibility = visibilitySwitch?.checked ?? true;
 
-        if (!name || !pass || !confirm) return showMessage("Todos los campos son obligatorios");
-        if (pass !== confirm) return showMessage("Las contraseñas no coinciden");
+            if (!name || !pass || !confirm) return showMessage("Todos los campos son obligatorios");
+            if (pass !== confirm) return showMessage("Las contraseñas no coinciden");
 
-        try {
-            await createPasswordAdmin({
-                accountId,
-                name,
-                password: pass,
-                description: desc,
-                updateablebyclient,
-                visibility
-            });
-            showMessage("Contraseña guardada correctamente");
-            createModal.classList.remove('show');
-            renderList();
-        } catch (err) {
-            showMessage("Error: " + err.message);
-        }
-    });
+            try {
+                await createPasswordAdmin({
+                    accountId,
+                    name,
+                    password: pass,
+                    description: desc,
+                    updateablebyclient,
+                    visibility
+                });
+                showMessage("Contraseña guardada correctamente");
+                createModal.classList.remove('show');
+                renderList();
+            } catch (err) {
+                showMessage("Error: " + err.message);
+            }
+        });
+    }
 
     // --- Modal Ver/Editar Contraseña ---
 

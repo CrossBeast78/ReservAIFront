@@ -15,14 +15,10 @@
       <img src="/Images/ReservAiLogo.png" alt="ReservAI logo" class="logo-img">
       <span class="logo-text">ReservAI Admin</span>
     </div>
-
-    <!-- Searchbar para cuentas -->
     <div class="searchbar">
-        <input id="account-search" class="search" type="text" placeholder="Buscar cuenta por nombre..." aria-label="Buscar cuentas">
+      <input id="account-search" class="search" type="text" placeholder="Buscar cuenta por nombre..." aria-label="Buscar cuentas">
     </div>
     <a href="/register" id="registerBtn" class="register-btn">Registrar nueva cuenta</a>
-
-
     <div class="profile">
       <button class="profile-btn" aria-haspopup="true" aria-expanded="false">
         <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="profile-icon" alt="Perfil">
@@ -35,99 +31,110 @@
 
   <!-- Main -->
   <main class="container">
-      <div id="account-list"></div>
-
-    <h2>Contraseñas de la Cuenta: <span id="selected-account">Ninguna seleccionada</span></h2>
-
-    <input id="search" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar">
-
-    <ul id="password-list" class="password-list" aria-live="polite"></ul>
-
-    <div class="pagination">
-      <button id="prev" type="button"><</button>
-      <span id="pageinfo">Página 1</span>
-      <button id="next" type="button">></button>
-    </div>
-  </main>
-
-  <!-- FAB para agregar contraseñas -->
-  <button class="fab" id="addPasswordBtn" aria-label="Agregar contraseña">+</button>
-
-  <!-- Modal Crear Contraseña -->
-  <div id="createModal" class="modalcreate">
-  <div class="modal-content2">
-    <div class="modal-header2">
-    <span class="closecreate" data-close="createModal" aria-label="Cerrar">&times;</span>
-    <h2>Crear Contraseña</h2>
-    </div>
-
-    <input type="text" id="createName" placeholder="Nombre de la contraseña">
-
-    <div class="password-field2">
-      <input type="password" id="createPassword" placeholder="Contraseña">
-      <button type="button" id="toggleCreatePassword"><i class="fas fa-eye"></i></button>
-    </div>
-
-    <div class="password-field2">
-      <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
-      <button type="button" id="toggleConfirmPassword"><i class="fas fa-eye"></i></button>
-    </div>
-
-    <textarea id="createDescription" placeholder="Descripción (opcional)" rows="3"></textarea>
-    <div class="modal-actions2">
-     <div class="checkbox-field">
-            <label>
-                <input type="checkbox" id="updateableSwitch" checked>
-                <span>Permitir que el cliente actualice la contraseña</span>
-            </label>
+    <div id="account-list"></div>
+     <div class="pagination2">
+        <button id="prevAccount" type="button"><</button>
+        <span id="pageinfoAccount">Página 1</span>
+        <button id="nextAccount" type="button">></button>
+      </div>
+     <!-- Modal de página completa para contraseñas de una cuenta -->
+<div id="accountPasswordsModal" class="modal-fullscreen">
+  <div class="modal-full-content">
+    <div class="modal-full-header">
+      <button id="backToAccountsBtn" class="back-btn">&larr; Regresar</button>
+      <span id="accountEmailTitle"></span>
+      <div class="dropdown-menu">
+        <button id="accountMenuBtn" class="menu-btn"><i class="fas fa-ellipsis-v"></i></button>
+        <div class="dropdown-content" id="accountDropdown">
+          <button id="deleteAccountBtn" class="delete-account-btn">Eliminar cuenta</button>
         </div>
+      </div>
+    </div>
+    <div class="modal-full-body">
+      <!-- Aquí va tu bloque funcional -->
+        <input id="search2" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar">
 
-        <div class="checkbox-field">
-            <label>
-                <input type="checkbox" id="visibilitySwitch" checked>
-                <span>Permitir que el cliente visualice la contraseña</span>
-            </label>
-        </div>
-    <button id="savePasswordBtn" class="close-btn">Guardar</button>
+      <ul id="password-list" class="password-list" aria-live="polite"></ul>
+      <div class="pagination">
+        <button id="prev" type="button"><</button>
+        <span id="pageinfo">Página 1</span>
+        <button id="next" type="button">></button>
+      </div>
+        <!-- FAB para agregar contraseñas -->
+      <button class="fab" id="addPasswordBtn" aria-label="Agregar contraseña">+</button>
+
     </div>
   </div>
 </div>
 
 
-  <!-- Modal Ver Contraseña -->
-  <div id="viewModal" class="modal">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h2>Ver Contraseña</h2>
-              <span class="close" data-close="viewModal" aria-label="Cerrar">&times;</span>
-          </div>
-
-          <div class="modal-body" id="modalBody">
-              <!-- Contenido dinámico -->
-          </div>
-
-          <div class="checkbox-field2">
-            <label>
-                <input type="checkbox" id="updateableSwitch2" checked>
-                <span>Permitir que el cliente actualice la contraseña</span>
-            </label>
-          </div>
-
-          <div class="checkbox-field2">
-            <label>
-                <input type="checkbox" id="visibilitySwitch2" checked>
-                <span>Permitir que el cliente visualice la contraseña</span>
-            </label>
-          </div>
-
-          <div class="modal-footer">
-              <button class="close-btn" data-close="viewModal">Cerrar</button>
-              <button class="delete-btn" id="deletePasswordBtn">Eliminar</button>
-          </div>
+  <!-- Modal Crear Contraseña -->
+  <div id="createModal" class="modalcreate">
+    <div class="modal-content2">
+      <div class="modal-header2">
+        <span class="closecreate" data-close="createModal" aria-label="Cerrar">&times;</span>
+        <h2>Crear Contraseña</h2>
       </div>
+      <input type="text" id="createName" placeholder="Nombre de la contraseña">
+      <div class="password-field2">
+        <input type="password" id="createPassword" placeholder="Contraseña">
+        <button type="button" id="toggleCreatePassword"><i class="fas fa-eye"></i></button>
+      </div>
+      <div class="password-field2">
+        <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
+        <button type="button" id="toggleConfirmPassword"><i class="fas fa-eye"></i></button>
+      </div>
+      <textarea id="createDescription" placeholder="Descripción (opcional)" rows="3"></textarea>
+      <div class="modal-actions2">
+        <div class="checkbox-field">
+          <label>
+            <input type="checkbox" id="updateableSwitch" checked>
+            <span>Permitir que el cliente actualice la contraseña</span>
+          </label>
+        </div>
+        <div class="checkbox-field">
+          <label>
+            <input type="checkbox" id="visibilitySwitch" checked>
+            <span>Permitir que el cliente visualice la contraseña</span>
+          </label>
+        </div>
+        <button id="savePasswordBtn" class="close-btn">Guardar</button>
+      </div>
+    </div>
   </div>
 
-  <script>
+  <!-- Modal Ver Contraseña -->
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Ver Contraseña</h2>
+        <span class="close" data-close="viewModal" aria-label="Cerrar">&times;</span>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Contenido dinámico -->
+      </div>
+      <div class="checkbox-field2">
+        <label>
+          <input type="checkbox" id="updateableSwitch2" checked>
+          <span>Permitir que el cliente actualice la contraseña</span>
+        </label>
+      </div>
+      <div class="checkbox-field2">
+        <label>
+          <input type="checkbox" id="visibilitySwitch2" checked>
+          <span>Permitir que el cliente visualice la contraseña</span>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="close-btn" data-close="viewModal">Cerrar</button>
+        <button class="delete-btn" id="deletePasswordBtn">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de página completa para contraseñas de una cuenta -->
+
+    <script>
       // Lógica de cierre de modales
       document.addEventListener('DOMContentLoaded', function() {
           document.querySelectorAll('.close, .close-btn').forEach(btn => {
@@ -158,6 +165,8 @@
     });
   
   </script>
+
+
 
   <script type="module" src="../Scripts/inicioScriptAdmin/inicioadmin.js"></script>
 </body>

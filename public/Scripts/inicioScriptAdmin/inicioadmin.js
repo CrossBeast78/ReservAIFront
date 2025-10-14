@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const accountSearchEl = document.getElementById('account-search');
   const passwordSearchEl = document.getElementById('search');
   const selectedAccountEl = document.getElementById('selected-account');
-  const totalPasswords = document.getElementById('totalPasswords');
   const createName = document.getElementById('createName');
   const createPassword = document.getElementById('createPassword');
   const createDescription = document.getElementById('createDescription');
@@ -34,6 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
     totalEl: document.getElementById('totalPasswords'),
     prevBtn: document.getElementById('prev'),
     nextBtn: document.getElementById('next'),
+    prevAccountBtn: document.getElementById('prevAccount'),
+    nextAccountBtn: document.getElementById('nextAccount'),
+    pageInfoAccount: document.getElementById('pageinfoAccount'),
     // Nueva función para actualizar el accountId global
     onAccountSelected: (accountId) => { selectedAccountId = accountId; }
   });
@@ -55,4 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
     getSelectedAccountId: () => selectedAccountId,
     searchInput: accountSearchEl
   });
+
+  
 });

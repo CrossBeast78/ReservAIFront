@@ -7,12 +7,32 @@ function isUUID(str) {
 }
 
 export async function setupAdminSearch(elements) {
-    const { accountSearchEl, accountListEl, passwordSearchEl, passwordListEl, selectedAccountEl, prevBtn, nextBtn, pageInfo, totalEl, onAccountSelected } = elements;
+    console.log("setupAdminSearch ejecutándose");
+    const {
+        accountSearchEl,
+        accountListEl,
+        passwordSearchEl,
+        passwordListEl,
+        selectedAccountEl,
+        prevBtn,
+        nextBtn,
+        pageInfo,
+        totalEl,
+        onAccountSelected,
+        prevAccountBtn,
+        nextAccountBtn,
+        pageInfoAccount
+    } = elements;
+
     let selectedAccountId = null;
     let currentPage = 1;
     let nextPage = null;
     let totalPasswords = 0;
     let currentPasswords = [];
+    let currentAccountPage = 1;
+    let nextAccountPage = null;
+    let totalAccounts = 0;
+    let currentAccounts = [];
 
     accountSearchEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -36,8 +56,20 @@ export async function setupAdminSearch(elements) {
         }
     });
 
-        
-    async function searchAccounts() {
+    // --- PAGINACIÓN DE CUENTAS ---
+    prevAccountBtn?.addEventListener('click', () => {
+        if (currentAccountPage > 1) {
+            searchAccounts(currentAccountPage - 1);
+        }
+    });
+
+    nextAccountBtn?.addEventListener('click', () => {
+        if (nextAccountPage && nextAccountPage > currentAccountPage) {
+            searchAccounts(nextAccountPage);
+        }
+    });
+
+    async function searchAccounts(page = 1) {
         const search = accountSearchEl.value.trim();
         try {
             if (search && isUUID(search)) {
@@ -46,15 +78,31 @@ export async function setupAdminSearch(elements) {
                 renderAdminAccountList([account], accountListEl, onAccountSelectedInternal);
                 if (account) {
                     selectedAccountId = account.id;
-                    selectedAccountEl.textContent = ` ${account.email || account.id}`; // <-- Usa email si existe
+                    selectedAccountEl.textContent = ` ${account.email || account.id}`;
                     loadPasswordsPage(1, passwordSearchEl.value);
                 }
+                // Actualiza paginación de cuentas (solo una cuenta)
+                currentAccountPage = 1;
+                nextAccountPage = null;
+                totalAccounts = 1;
+                if (pageInfoAccount) pageInfoAccount.textContent = `Página 1`;
+                if (prevAccountBtn) prevAccountBtn.disabled = true;
+                if (nextAccountBtn) nextAccountBtn.disabled = true;
             } else {
-                const { data: accounts = [] } = await fetchAccounts({ page: 1, search });
+                const { data: accounts = [], total, next_page, current_page } = await fetchAccounts({ page, search });
+                currentAccounts = accounts;
                 renderAdminAccountList(accounts, accountListEl, onAccountSelectedInternal);
                 renderAdminPasswordList([], passwordListEl);
                 if (pageInfo) pageInfo.textContent = '';
                 if (totalEl) totalEl.textContent = '0';
+
+                // Actualiza paginación de cuentas
+                currentAccountPage = current_page || page;
+                nextAccountPage = next_page || null;
+                totalAccounts = total || accounts.length;
+                if (pageInfoAccount) pageInfoAccount.textContent = `Página ${currentAccountPage}`;
+                if (prevAccountBtn) prevAccountBtn.disabled = currentAccountPage <= 1;
+                if (nextAccountBtn) nextAccountBtn.disabled = !nextAccountPage || nextAccountPage <= currentAccountPage;
             }
         } catch (err) {
             showMessage("Error al buscar cuentas: " + err.message);
@@ -62,13 +110,16 @@ export async function setupAdminSearch(elements) {
             renderAdminPasswordList([], passwordListEl);
             if (pageInfo) pageInfo.textContent = '';
             if (totalEl) totalEl.textContent = '0';
+            if (pageInfoAccount) pageInfoAccount.textContent = '';
+            if (prevAccountBtn) prevAccountBtn.disabled = true;
+            if (nextAccountBtn) nextAccountBtn.disabled = true;
         }
     }
 
     async function onAccountSelectedInternal(account) {
         selectedAccountId = account.id;
         if (typeof onAccountSelected === "function") onAccountSelected(account.id);
-        selectedAccountEl.textContent = ` ${account.email || account.id}`; // <-- Usa email si existe
+        selectedAccountEl.textContent = ` ${account.email || account.id}`;
         loadPasswordsPage(1, passwordSearchEl.value);
     }
 
@@ -95,8 +146,6 @@ export async function setupAdminSearch(elements) {
                     });
                 });
             });
-
-
 
             if (pageInfo) pageInfo.textContent = `Página ${currentPage}`;
             if (totalEl) totalEl.textContent = totalPasswords;

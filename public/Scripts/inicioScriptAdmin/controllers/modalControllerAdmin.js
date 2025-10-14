@@ -60,8 +60,6 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
             const confirm = confirmPassword.value;
             const desc = createDescription.value.trim();
             const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
-            console.log("ID justo antes de crear contraseña:", accountId);
-            // NUEVO: Lee los switches
             const updateableSwitch = document.getElementById('updateableSwitch');
             const visibilitySwitch = document.getElementById('visibilitySwitch');
             const updateablebyclient = updateableSwitch?.checked ?? true;
@@ -88,10 +86,10 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
         });
     }
 
-    // --- Modal Ver/Editar Contraseña ---
-
+    
 }
 
+// --- Modal Ver/Editar Contraseña ---
 export async function openAdminPasswordModal(accountId, passwordId) {
     const viewModal = document.getElementById('viewModal');
     const modalBody = viewModal.querySelector('#modalBody');
@@ -100,8 +98,7 @@ export async function openAdminPasswordModal(accountId, passwordId) {
 
     try {
       
-        const fullPass = await fetchPasswordById(accountId, passwordId); // <-- Solo esto
-        console.log('fullPass:', fullPass); // Ahora sí, updateableByClient tendrá el valor correcto
+        const fullPass = await fetchPasswordById(accountId, passwordId);
         modalBody.innerHTML = fullPass ? fullPass.toHTML() : '<div style="color:red;">❌ Error al cargar la contraseña</div>';
         
 

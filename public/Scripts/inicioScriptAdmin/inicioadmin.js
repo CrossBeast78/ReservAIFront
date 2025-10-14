@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     prevAccountBtn: document.getElementById('prevAccount'),
     nextAccountBtn: document.getElementById('nextAccount'),
     pageInfoAccount: document.getElementById('pageinfoAccount'),
-    // Nueva función para actualizar el accountId global
+
     onAccountSelected: (accountId) => { selectedAccountId = accountId; }
   });
 

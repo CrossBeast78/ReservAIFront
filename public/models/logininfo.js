@@ -53,7 +53,7 @@ export default class LoginInfo {
             }
 
             const data = await response.json();
-            return data; //  respuesta del backend
+            return data; 
         } catch (error) {
             console.error("Error en login:", error);
             throw error;

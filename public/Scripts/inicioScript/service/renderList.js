@@ -11,7 +11,6 @@ export function renderList(passwords, listEl) {
     }
 
     listEl.innerHTML = passwords.map((p) => {
-        // Ajusta aquí según el campo real de tus contraseñas
         const name = escapeHtml(p.name || p.nombre || p.title || 'Sin nombre');
         return `<li class="password-item" data-id="${p.id}" tabindex="0">${name}</li>`;
     }).join('');

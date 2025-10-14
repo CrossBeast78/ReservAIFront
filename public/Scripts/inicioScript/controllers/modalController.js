@@ -99,7 +99,6 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
 
         try {
             const fullPass = await fetchPasswordById(passwordId);
-            console.log('fullPass:', fullPass); // Ahora sí, updateableByClient tendrá el valor correcto
 
             modalBody.innerHTML = fullPass.toHTML();
 

@@ -21,9 +21,19 @@ export async function setupAdminSearch(elements) {
     let nextAccountPage = null;
     let totalAccounts = 0;
     let currentAccounts = [];
+    let searchTimeout = null;
+
+    // --- Búsqueda con debounce de 5 segundos o Enter ---
+    accountSearchEl.addEventListener('input', () => {
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            searchAccounts();
+        }, 2000); 
+    });
 
     accountSearchEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
+            if (searchTimeout) clearTimeout(searchTimeout);
             searchAccounts();
         }
     });
@@ -92,7 +102,8 @@ export async function setupAdminSearch(elements) {
             if (pageInfoAccount) pageInfoAccount.textContent = '';
             if (prevAccountBtn) prevAccountBtn.disabled = true;
             if (nextAccountBtn) nextAccountBtn.disabled = true;
-        }finally {
+        } finally {
+            const loadingEl = document.getElementById('accounts-loading');
             if (loadingEl) loadingEl.style.display = 'none';
         }
     }

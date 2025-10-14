@@ -6,7 +6,7 @@ export async function setupPasswordList(elements) {
     const { listEl, searchEl, prevBtn, nextBtn, pageInfo, totalEl } = elements;
     let currentPage = 1;
     let totalPages = 1;
-    let pageSize = 5; // Cambia esto si tu backend usa otro tamaño de página
+    let pageSize = 5; 
  
 
     async function loadPage(page = 1, search = '') {
@@ -17,10 +17,8 @@ export async function setupPasswordList(elements) {
         try {
             const { data: passwords = [], total = 0, next_page, current_page } = await fetchPasswords(page, search);
             currentPage = current_page || page;
-            // Calcula el tamaño de página dinámicamente (puede variar en la última página)
             pageSize = passwords.length > 0 ? passwords.length : pageSize;
-          // Guarda el total si no está definido
-            totalPages = Math.max(1, Math.ceil(total / pageSize)); // <-- CORREGIDO
+            totalPages = Math.max(1, Math.ceil(total / pageSize)); 
 
 
             renderList(passwords, listEl);
@@ -31,7 +29,7 @@ export async function setupPasswordList(elements) {
 
             if (pagination) {
                 if (passwords.length > 0) {
-                    pagination.style.display = 'flex'; // o 'block', según tu CSS
+                    pagination.style.display = 'flex';
                 } else {
                     pagination.style.display = 'none';
                 }

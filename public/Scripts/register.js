@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Token de admin desde SessionStorage ---
     const adminToken = SessionStorageManager.getSession()?.access_token;
-    console.log(adminToken);
     const typeOfAccount = SessionStorageManager.getSession()?.account_type;
     if (typeOfAccount !== "admin") {
       showError(emailInput, "No tienes permisos para crear cuentas");
@@ -127,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (response.status === 418) {
             window.location.href = '/login';
-            return; // Detén la ejecución
+            return; 
           }
          
 

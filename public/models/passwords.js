@@ -1,6 +1,5 @@
 export default class Password {
     constructor({ id, name, description, password, updateableByClient, visibility, account_id }) {
-        console.log('Creating Password instance with:', { id, name, description, password, updateableByClient, visibility, account_id });
         this.id = id;
         this.name = name;
         this.description = description;
@@ -11,13 +10,7 @@ export default class Password {
     }
 
     static fromJson(jsonResponse) {
-        // Maneja la respuesta del endpoint que retorna:
-        // {
-        //   "data": { id, name, description, password, updateablebyclient, visibility, account_id },
-        //   "total": 1,
-        //   "message": "Password fetched successfully"
-        // }
-        console.log('Parsing JSON response:', jsonResponse);
+        
         if (jsonResponse && jsonResponse.data) {
             return new Password({
                 id: jsonResponse.data.id,

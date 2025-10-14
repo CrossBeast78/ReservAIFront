@@ -26,13 +26,13 @@ export function showError(input, message) {
 
 
 export function showMessage(msg) {
-  let msgDiv = document.getElementById("msg");
-  if (msgDiv) {
-    msgDiv.textContent = msg;
-    msgDiv.classList.add("show");
-    setTimeout(() => {
-      msgDiv.classList.remove("show");
-       msgDiv.textContent = "";
-    }, 1500);
-  }
+    let msgDiv = document.getElementById("msg");
+    if (msgDiv) {
+        msgDiv.textContent = msg;
+        msgDiv.classList.add("show");
+        setTimeout(() => {
+            msgDiv.classList.remove("show");
+            msgDiv.textContent = "";
+        }, 1500);
+    }
 }

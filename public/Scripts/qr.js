@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (response.status === 418) {
       window.location.href = '/login';
-      return; // Detén la ejecución
+      return; 
     }
 
     if (!response.ok) {

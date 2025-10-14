@@ -86,6 +86,8 @@ export async function openAccountPasswordsModal(account) {
     }
     document.addEventListener('passwordUpdated', passwordUpdatedHandler);
 
+    let passwordSearchTimeout = null;
+
     // Listeners de paginación y búsqueda
     prevBtn?.addEventListener('click', () => {
         if (currentPage > 1) {
@@ -100,7 +102,17 @@ export async function openAccountPasswordsModal(account) {
     });
 
     passwordSearchEl?.addEventListener('input', () => {
-        loadPasswordsPage(1, passwordSearchEl.value);
+        if (passwordSearchTimeout) clearTimeout(passwordSearchTimeout);
+        passwordSearchTimeout = setTimeout(() => {
+            loadPasswordsPage(1, passwordSearchEl.value);
+        }, 5000);
+    });
+
+    passwordSearchEl?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            if (passwordSearchTimeout) clearTimeout(passwordSearchTimeout);
+            loadPasswordsPage(1, passwordSearchEl.value);
+        }
     });
 
     // Inicializa la lista

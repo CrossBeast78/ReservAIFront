@@ -16,22 +16,21 @@ const token = SessionStorageManager.getSession()?.access_token;
 
         if (!response.ok) {
              if (response.status === 418) {
-                // Redirige al login
                 window.location.href = '/login';
-                return; // Detén la ejecución
+                return; 
         }
             throw new Error(`Error al obtener contraseñas: ${response.status}`);
         }
 
         const result = await response.json();
-        return result; // <-- Devuelve el objeto tal cual
+        return result; 
     }
 
     export async function fetchPasswordById(id) {
         const response = await fetch(`${BASE_URL}/${id}`, { headers: { "Authorization": token } });
         if (response.status === 418) {
             window.location.href = '/login';
-            return; // Detén la ejecución
+            return; 
         }
         if (!response.ok) throw new Error(`Error ${response.status}: no se pudo obtener la contraseña`);
         const data = await response.json();
@@ -74,9 +73,8 @@ const token = SessionStorageManager.getSession()?.access_token;
     });
 
      if (response.status === 418) {
-        // Redirige al login
         window.location.href = '/login';
-        return; // Detén la ejecución
+        return;
     }
     if (!response.ok) {
         const errorText = await response.text();

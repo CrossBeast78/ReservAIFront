@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const verifyBtn = document.querySelector('.btn-verify');
     const errorDiv = document.getElementById('twofa-error');
 
+    // Selecciona el primer input al cargar la página
+    if (inputs.length > 0) inputs[0].focus();
+
     // Quitar error al enfocar cualquier input
     inputs.forEach(input => {
         input.addEventListener('input', () => {
@@ -30,13 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.key === "Backspace" && !input.value && idx > 0) {
                 inputs[idx - 1].focus();
             }
+            if (e.key === "Enter") {
+                verifyBtn.click();
+            }
         });
     });
 
     function showError(message) {
         inputs.forEach(input => {
             input.classList.add("error-input");
-             input.value = ""; 
+            input.value = ""; 
         });
         errorDiv.textContent = message;
         inputs[0].focus();
@@ -68,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.status === 418) {
                 window.location.href = '/login';
-                return; // Detén la ejecución
+                return; 
             }
 
             if (!response.ok) {
@@ -86,15 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     account_name: SessionStorageManager.getSession().account_name
                 });
 
-
                 if (SessionStorageManager.getSession().account_type === "admin") {
                     window.location.href = "/inicioAdmin";
                 } else {
                     window.location.href = "/inicio";
                 }
             } else {
-                 alert("Error: " + err.message);
-                 console.error("Error:", err);
+                alert("Error: " + err.message);
+                console.error("Error:", err);
             }
         } catch (err) {
 

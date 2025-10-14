@@ -1,7 +1,7 @@
 import { fetchAccounts, fetchAccountById } from '../services/adminUserService.js';
 import { renderAdminAccountList, renderAdminPasswordList } from '../service/renderListAdmin.js';
 import { showMessage } from '../service/uiHelpersAdmin.js';
-
+import { openAdminPasswordModal } from './modalControllerAdmin.js';
 function isUUID(str) {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
 }
@@ -41,18 +41,18 @@ export async function setupAdminSearch(elements) {
     });
 
     passwordSearchEl?.addEventListener('input', () => {
-        loadPasswordsPage(1, passwordSearchEl.value);
+        loadPasswordsPage(currentPage, passwordSearchEl ? passwordSearchEl.value : '');
     });
 
     prevBtn?.addEventListener('click', () => {
         if (currentPage > 1) {
-            loadPasswordsPage(currentPage - 1, passwordSearchEl.value);
+            loadPasswordsPage(currentPage - 1, passwordSearchEl ? passwordSearchEl.value : '');
         }
     });
 
     nextBtn?.addEventListener('click', () => {
         if (nextPage && nextPage > currentPage) {
-            loadPasswordsPage(nextPage, passwordSearchEl.value);
+            loadPasswordsPage(currentPage, passwordSearchEl ? passwordSearchEl.value : '');
         }
     });
 
@@ -79,7 +79,7 @@ export async function setupAdminSearch(elements) {
                 if (account) {
                     selectedAccountId = account.id;
                     selectedAccountEl.textContent = ` ${account.email || account.id}`;
-                    loadPasswordsPage(1, passwordSearchEl.value);
+                    loadPasswordsPage(currentPage, passwordSearchEl ? passwordSearchEl.value : '');
                 }
                 // Actualiza paginación de cuentas (solo una cuenta)
                 currentAccountPage = 1;
@@ -120,7 +120,7 @@ export async function setupAdminSearch(elements) {
         selectedAccountId = account.id;
         if (typeof onAccountSelected === "function") onAccountSelected(account.id);
         selectedAccountEl.textContent = ` ${account.email || account.id}`;
-        loadPasswordsPage(1, passwordSearchEl.value);
+        loadPasswordsPage(currentPage, passwordSearchEl ? passwordSearchEl.value : '');
     }
 
     async function loadPasswordsPage(page = 1, search = '') {
@@ -132,6 +132,7 @@ export async function setupAdminSearch(elements) {
         }
         try {
             const response = await fetchAccountById(selectedAccountId, page, search);
+             console.log("Contraseñas después de borrar:", response.data?.passwords);
             currentPasswords = response.data?.passwords || [];
             currentPage = response.current_page || page;
             nextPage = response.next_page || null;
@@ -141,9 +142,7 @@ export async function setupAdminSearch(elements) {
 
             passwordListEl.querySelectorAll('.password-item').forEach(item => {
                 item.addEventListener('click', () => {
-                    import('./modalControllerAdmin.js').then(module => {
-                        module.openAdminPasswordModal(selectedAccountId, item.dataset.id);
-                    });
+                    openAdminPasswordModal(selectedAccountId, item.dataset.id);
                 });
             });
 
@@ -160,7 +159,7 @@ export async function setupAdminSearch(elements) {
     }
 
     document.addEventListener('passwordDeleted', () => {
-        loadPasswordsPage(currentPage, passwordSearchEl.value);
+        loadPasswordsPage(currentPage, passwordSearchEl ? passwordSearchEl.value : '');
     });
 
     // Inicializa

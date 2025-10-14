@@ -36,3 +36,40 @@ export function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+
+export function showDeleteConfirmModal({ title = "¿Estás seguro?", message = "", onConfirm, onCancel }) {
+    const modal = document.getElementById('confirmDeleteModal');
+    const titleEl = document.getElementById('confirmDeleteTitle');
+    const msgEl = document.getElementById('confirmDeleteMsg');
+    const inputEl = document.getElementById('confirmDeleteInput');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
+
+    titleEl.textContent = title;
+    msgEl.innerHTML = message || "Esta acción no se puede deshacer.<br>Escribe <b>eliminar</b> para confirmar.";
+    inputEl.value = "";
+    confirmBtn.disabled = true;
+    modal.style.display = "block";
+
+    inputEl.oninput = () => {
+        confirmBtn.disabled = inputEl.value.trim().toLowerCase() !== "eliminar";
+    };
+
+    function closeModal() {
+        modal.style.display = "none";
+        inputEl.oninput = null;
+        confirmBtn.onclick = null;
+        cancelBtn.onclick = null;
+    }
+
+    confirmBtn.onclick = () => {
+        closeModal();
+        if (typeof onConfirm === "function") onConfirm();
+    };
+
+    cancelBtn.onclick = () => {
+        closeModal();
+        if (typeof onCancel === "function") onCancel();
+    };
+}

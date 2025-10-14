@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ReservAI - Admin</title>
+  <link rel="icon" type="image/x-icon" href="/public/Images/ReservAiLogo.png" />
   <link rel="stylesheet" href="/estilos/StylesInicio.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -51,8 +52,13 @@
       </div>
     </div>
     <div class="modal-full-body">
-      <!-- Aquí va tu bloque funcional -->
-        <input id="search2" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar">
+      
+      <!-- Aquí va el mensaje de cargando -->
+      <div id="passwords-loading" style="display:none; text-align:center; color:#fff; margin: 2em 0;">
+      ⏳Cargando contraseñas...
+      </div>
+
+        <input id="search2" class="searchbar2" type="text" placeholder="Buscar contraseña por nombre..." aria-label="Buscar" style="display: none;">
 
       <ul id="password-list" class="password-list" aria-live="polite"></ul>
       <div class="pagination">
@@ -132,7 +138,19 @@
     </div>
   </div>
 
-  <!-- Modal de página completa para contraseñas de una cuenta -->
+  <!-- Modal de confirmación para eliminar -->
+  <div id="confirmDeleteModal" class="modal" >
+    <div class="modal-contentConfirm">
+      <h3 id="confirmDeleteTitle">¿Estás seguro?</h3>
+      <p id="confirmDeleteMsg">Esta acción no se puede deshacer.<br>Escribe <b>eliminar</b> para confirmar.</p>
+      <input id="confirmDeleteInput" type="text" placeholder="Escribe 'eliminar'" style="width:80%;margin:1em 0;">
+      <div class="modal-footerConfirm" >
+        <button id="confirmDeleteBtn" disabled>Eliminar</button>
+        <button id="cancelDeleteBtn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
 
     <script>
       // Lógica de cierre de modales
@@ -152,7 +170,6 @@
           });
       });
 
-   
     document.addEventListener("DOMContentLoaded", function() {
         const logoutBtn = document.getElementById("logout");
         if (logoutBtn) {

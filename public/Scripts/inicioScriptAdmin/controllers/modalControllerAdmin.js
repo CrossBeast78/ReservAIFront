@@ -1,5 +1,6 @@
 import {createPasswordForAccount as createPasswordAdmin, fetchPasswordById, updatePasswordAttribute, deletePassword} from '../services/adminPasswordService.js';
 import { showMessage } from '../service/uiHelpersAdmin.js';
+import { showDeleteConfirmModal } from '../service/uiHelpersAdmin.js';
 
 
 export function setupAdminModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList, getSelectedAccountId }) {
@@ -103,6 +104,40 @@ export async function openAdminPasswordModal(accountId, passwordId) {
         console.log('fullPass:', fullPass); // Ahora sí, updateableByClient tendrá el valor correcto
         modalBody.innerHTML = fullPass ? fullPass.toHTML() : '<div style="color:red;">❌ Error al cargar la contraseña</div>';
         
+
+        const updateableSwitch2 = document.getElementById('updateableSwitch2');
+        const visibilitySwitch2 = document.getElementById('visibilitySwitch2');
+        if (updateableSwitch2) updateableSwitch2.checked = !!fullPass.updateableByClient;
+        if (visibilitySwitch2) visibilitySwitch2.checked = !!fullPass.visibility;
+
+
+         // --- Listener para actualizar "actualizable por cliente" ---
+        if (updateableSwitch2) {
+            updateableSwitch2.onchange = async function() {
+                try {
+                    await updatePasswordAttribute(accountId, passwordId, "updateablebyclient", this.checked);
+                    showMessage("Permiso de actualización actualizado");
+                } catch (err) {
+                    showMessage("Error al actualizar permiso de actualización");
+                    // Revertir el cambio visual si falla
+                    updateableSwitch2.checked = !this.checked;
+                }
+            };
+        }
+
+        // --- Listener para actualizar "visible para cliente" ---
+        if (visibilitySwitch2) {
+            visibilitySwitch2.onchange = async function() {
+                try {
+                    await updatePasswordAttribute(accountId, passwordId, "visibility", this.checked);
+                    showMessage("Permiso de visibilidad actualizado");
+                } catch (err) {
+                    showMessage("Error al actualizar permiso de visibilidad");
+                    // Revertir el cambio visual si falla
+                    visibilitySwitch2.checked = !this.checked;
+                }
+            };
+        }
 
             // Editar nombre
             const nameDiv = modalBody.querySelector('.password-name');
@@ -316,21 +351,22 @@ export async function openAdminPasswordModal(accountId, passwordId) {
         // Eliminar contraseña
        const deleteBtn = document.getElementById('deletePasswordBtn');
         if (deleteBtn) {
-            // Limpia listeners previos para evitar duplicados
-            deleteBtn.onclick = null;
             deleteBtn.onclick = () => {
-                if (confirm("¿Seguro que quieres eliminar esta contraseña? Esta acción no se puede deshacer.")) {
-                    deletePassword(accountId, passwordId).then(() => {
-                        showMessage("Contraseña eliminada");
-                        viewModal.classList.remove('show');
-                        // Refrescar la lista en la página principal
-                        const event = new Event('passwordDeleted');
-                        document.dispatchEvent(event);
-                    }).catch(err => {
-                        showMessage("Error al eliminar: " + err.message);
-                    });
-                }
-            };
+                showDeleteConfirmModal({
+                    title: "Eliminar contraseña",
+                    message: "¿Seguro que deseas eliminar esta contraseña? Esta acción no se puede deshacer.<br>Escribe <b>eliminar</b> para confirmar.",
+                    onConfirm: async () => {
+                        try {
+                            await deletePassword(accountId, passwordId);
+                            showMessage("Contraseña eliminada");
+                            viewModal.classList.remove('show');
+                            document.dispatchEvent(new CustomEvent('passwordDeleted'));
+                        } catch (err) {
+                            showMessage("Error al eliminar: " + err.message);
+                        }
+                    }
+                });
+                };
         }
     } catch (err) {
         console.error("Error al cargar la contraseña:", err);

@@ -2,6 +2,9 @@ import { fetchAccountById } from '../services/adminUserService.js';
 import { showMessage } from '../service/uiHelpersAdmin.js';
 import { renderAdminPasswordList } from '../service/renderListAdmin.js';
 import { setupAdminModals, openAdminPasswordModal } from './modalControllerAdmin.js';
+import { deleteAccount } from '../services/adminUserService.js';
+import { showDeleteConfirmModal } from '../service/uiHelpersAdmin.js';
+
 
 export async function openAccountPasswordsModal(account) {
     const modal = document.getElementById('accountPasswordsModal');
@@ -22,6 +25,7 @@ export async function openAccountPasswordsModal(account) {
     const prevBtn = document.getElementById('prev');
     const nextBtn = document.getElementById('next');
     const pageInfo = document.getElementById('pageinfo');
+    const loadingEl = document.getElementById('passwords-loading');
 
     emailTitle.textContent = account.email || account.name || account.id;
 
@@ -30,6 +34,10 @@ export async function openAccountPasswordsModal(account) {
     let totalPasswords = 0;
 
     async function loadPasswordsPage(page = 1, search = '') {
+        if (loadingEl) loadingEl.style.display = 'block';
+        passwordList.innerHTML = '';
+        
+
         try {
             const response = await fetchAccountById(account.id, page, search);
             const passwords = response.data?.passwords || [];
@@ -49,8 +57,17 @@ export async function openAccountPasswordsModal(account) {
             if (prevBtn) prevBtn.disabled = currentPage <= 1;
             if (nextBtn) nextBtn.disabled = !nextPage || nextPage <= currentPage;
         } catch (err) {
-            passwordList.innerHTML = '<div style="color:red;">Error al cargar contraseñas</div>';
+            passwordList.innerHTML = '<div >Error al cargar contraseñas</div>';
             if (pageInfo) pageInfo.textContent = '';
+        } finally {
+            if (loadingEl) loadingEl.style.display = 'none';
+            const searchbar2 = document.getElementById('search2');
+            if (searchbar2 && passwordList.children.length > 0 && !passwordList.innerHTML.includes('Error')) {
+                searchbar2.style.display = 'block';
+                searchbar2.value = '';
+            } else if (searchbar2) {
+                searchbar2.style.display = 'none';
+            }
         }
     }
 
@@ -77,9 +94,15 @@ export async function openAccountPasswordsModal(account) {
     // Mostrar modal
     modal.classList.add('show');
 
+
+    // Mostrar barra de búsqueda
+  
+
     // Botón regresar
     backBtn.onclick = () => {
         modal.classList.remove('show');
+        const searchbar2 = document.getElementById('search2');
+        if (searchbar2) searchbar2.style.display = 'none';
     };
 
     // Menú tres puntos
@@ -88,11 +111,25 @@ export async function openAccountPasswordsModal(account) {
     };
 
     // Eliminar cuenta
-    deleteBtn.onclick = () => {
-        if (confirm("¿Seguro que deseas eliminar esta cuenta?")) {
-            showMessage("Cuenta eliminada (implementa la lógica real aquí)");
-            modal.classList.remove('show');
-        }
+    deleteBtn.onclick = async () => {
+        showDeleteConfirmModal({
+            title: "Eliminar cuenta",
+            message: "¿Seguro que deseas eliminar esta cuenta? Esta acción no se puede deshacer.<br>Escribe <b>eliminar</b> para confirmar.",
+            onConfirm: async () => {
+            try {
+                await deleteAccount(account.id);
+                showMessage("Cuenta eliminada correctamente");
+                modal.classList.remove('show');
+                document.dispatchEvent(new CustomEvent('accountDeleted', { detail: account.id }));
+            } catch (err) {
+                showMessage("Error al eliminar la cuenta: " + err.message);
+            }
+        },
+        onCancel: () => {
+            // Acción al cancelar, si es necesario
+
+            }
+        });
     };
 
     // --- Lógica para crear contraseña dentro del modal ---

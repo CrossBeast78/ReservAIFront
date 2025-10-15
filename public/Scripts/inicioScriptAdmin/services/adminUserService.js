@@ -50,7 +50,6 @@ export async function fetchAccounts({ page = 1, search = "" }) {
 
     if (!response.ok) throw new Error(await response.text());
     const result = await response.json();
-    console.log("Fetched accounts:", result);
     return result;
 }
 

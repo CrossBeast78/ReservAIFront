@@ -99,8 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } else {
                 alert("Error: " + err.message);
-                console.error("Error:", err);
-            }
+                showError("Respuesta inválida del servidor.");}
         } catch (err) {
 
         }

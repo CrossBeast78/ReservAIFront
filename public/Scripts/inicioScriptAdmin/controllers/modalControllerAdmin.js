@@ -369,7 +369,6 @@ export async function openAdminPasswordModal(accountId, passwordId) {
                 };
         }
     } catch (err) {
-        console.error("Error al cargar la contraseña:", err);
         modalBody.innerHTML = '<div style="text-align:center;color:red;">❌ Error al cargar la contraseña</div>';
         showMessage("Error al obtener la contraseña");
     }

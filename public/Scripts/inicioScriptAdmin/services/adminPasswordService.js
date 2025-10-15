@@ -30,7 +30,6 @@ export async function createPasswordForAccount({accountId, name, password, descr
     visibility
   };
 
-  console.log("JSON enviado al backend para crear contraseña:", body);
   const url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}`;
   const response = await fetch(url, {
     method: "POST",
@@ -53,7 +52,6 @@ export async function updatePasswordAttribute(accountId, passwordId, attribute, 
   
   const url = `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}?attribute=${encodeURIComponent(attribute)}`;
   const body = { value };
-  console.log("JSON enviado al backend para actualizar atributo de contraseña:", body);
   const response = await fetch(url, {
     method: "PUT",
     headers: {
@@ -68,7 +66,6 @@ export async function updatePasswordAttribute(accountId, passwordId, attribute, 
   }
   if (!response.ok) {
   const errorText = await response.text();
-  console.error("Error del backend:", errorText);
   throw new Error(errorText);
 }
   return await response.json();

@@ -24,69 +24,71 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
         btn.addEventListener('click', () => btn.closest('.modal')?.classList.remove('show'))
     );
 
-       document.querySelectorAll('.closecreate').forEach(btn =>
+    document.querySelectorAll('.closecreate').forEach(btn =>
         btn.addEventListener('click', () => btn.closest('.modalcreate')?.classList.remove('show'))
     );
 
+    // --- IMPORTANTE: Reasignar listeners después de clonar el botón ---
+    let newSaveBtn = savePasswordBtn;
+    if (savePasswordBtn) {
+        newSaveBtn = savePasswordBtn.cloneNode(true);
+        savePasswordBtn.parentNode.replaceChild(newSaveBtn, savePasswordBtn);
+    }
+
+    // Mostrar/ocultar contraseña en crear
     const toggleCreatePasswordBtn = document.getElementById('toggleCreatePassword');
     const eyeIconCreate = toggleCreatePasswordBtn?.querySelector('i');
     if (toggleCreatePasswordBtn && createPasswordInput && eyeIconCreate) {
-        toggleCreatePasswordBtn.addEventListener('click', () => {
+        toggleCreatePasswordBtn.onclick = () => {
             const isHidden = createPasswordInput.type === 'password';
             createPasswordInput.type = isHidden ? 'text' : 'password';
             eyeIconCreate.className = isHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
             toggleCreatePasswordBtn.title = isHidden ? 'Ocultar contraseña' : 'Mostrar contraseña';
-        });
+        };
     }
 
+    // Mostrar/ocultar confirmación en crear
     const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
     const eyeIconConfirm = toggleConfirmPasswordBtn?.querySelector('i');
     if (toggleConfirmPasswordBtn && confirmPassword && eyeIconConfirm) {
-        toggleConfirmPasswordBtn.addEventListener('click', () => {
+        toggleConfirmPasswordBtn.onclick = () => {
             const isHidden = confirmPassword.type === 'password';
             confirmPassword.type = isHidden ? 'text' : 'password';
             eyeIconConfirm.className = isHidden ? 'fas fa-eye-slash' : 'fas fa-eye';
             toggleConfirmPasswordBtn.title = isHidden ? 'Ocultar contraseña' : 'Mostrar contraseña';
-        });
+        };
     }
 
-    if (savePasswordBtn) {
-        const newSaveBtn = savePasswordBtn.cloneNode(true);
-        savePasswordBtn.parentNode.replaceChild(newSaveBtn, savePasswordBtn);
+    newSaveBtn?.addEventListener('click', async () => {
+        const name = createName.value.trim();
+        const pass = createPasswordInput.value;
+        const confirm = confirmPassword.value;
+        const desc = createDescription.value.trim();
+        const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
+        const updateableSwitch = document.getElementById('updateableSwitch');
+        const visibilitySwitch = document.getElementById('visibilitySwitch');
+        const updateablebyclient = updateableSwitch?.checked ?? true;
+        const visibility = visibilitySwitch?.checked ?? true;
 
-        newSaveBtn.addEventListener('click', async () => {
-            const name = createName.value.trim();
-            const pass = createPasswordInput.value;
-            const confirm = confirmPassword.value;
-            const desc = createDescription.value.trim();
-            const accountId = typeof getSelectedAccountId === "function" ? getSelectedAccountId() : null;
-            const updateableSwitch = document.getElementById('updateableSwitch');
-            const visibilitySwitch = document.getElementById('visibilitySwitch');
-            const updateablebyclient = updateableSwitch?.checked ?? true;
-            const visibility = visibilitySwitch?.checked ?? true;
+        if (!name || !pass || !confirm) return showMessage("Todos los campos son obligatorios");
+        if (pass !== confirm) return showMessage("Las contraseñas no coinciden");
 
-            if (!name || !pass || !confirm) return showMessage("Todos los campos son obligatorios");
-            if (pass !== confirm) return showMessage("Las contraseñas no coinciden");
-
-            try {
-                await createPasswordAdmin({
-                    accountId,
-                    name,
-                    password: pass,
-                    description: desc,
-                    updateablebyclient,
-                    visibility
-                });
-                showMessage("Contraseña guardada correctamente");
-                createModal.classList.remove('show');
-                renderList();
-            } catch (err) {
-                showMessage("Error: " + err.message);
-            }
-        });
-    }
-
-    
+        try {
+            await createPasswordAdmin({
+                accountId,
+                name,
+                password: pass,
+                description: desc,
+                updateablebyclient,
+                visibility
+            });
+            showMessage("Contraseña guardada correctamente");
+            createModal.classList.remove('show');
+            renderList();
+        } catch (err) {
+            showMessage("Error: " + err.message);
+        }
+    });
 }
 
 // --- Modal Ver/Editar Contraseña ---
@@ -360,7 +362,7 @@ export async function openAdminPasswordModal(accountId, passwordId) {
                             await deletePassword(accountId, passwordId);
                             showMessage("Contraseña eliminada");
                             viewModal.classList.remove('show');
-                            document.dispatchEvent(new CustomEvent('passwordDeleted'));
+                            document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId } })); // <--- Cambia aquí
                         } catch (err) {
                             showMessage("Error al eliminar: " + err.message);
                         }

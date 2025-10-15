@@ -149,7 +149,7 @@ export async function openAccountPasswordsModal(account) {
                     await deleteAccount(account.id);
                     showMessage("Cuenta eliminada correctamente");
                     modal.classList.remove('show');
-                    document.dispatchEvent(new CustomEvent('accountDeleted', { detail: account.id }));
+                    document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId } }));
                     // Remueve el listener al cerrar el modal
                     document.removeEventListener('passwordUpdated', passwordUpdatedHandler);
                 } catch (err) {

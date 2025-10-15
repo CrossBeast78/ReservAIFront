@@ -56,9 +56,20 @@ export function showDeleteConfirmModal({ title = "¿Estás seguro?", message = "
         confirmBtn.disabled = inputEl.value.trim().toLowerCase() !== "eliminar";
     };
 
+    inputEl.onkeydown = (e) => {
+        if (
+            e.key === "Enter" &&
+            inputEl.value.trim().toLowerCase() === "eliminar" &&
+            !confirmBtn.disabled
+        ) {
+            confirmBtn.click();
+        }
+    };
+
     function closeModal() {
         modal.style.display = "none";
         inputEl.oninput = null;
+        inputEl.onkeydown = null;
         confirmBtn.onclick = null;
         cancelBtn.onclick = null;
     }

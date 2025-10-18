@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (resendBtn) {
     resendBtn.addEventListener("click", async () => {
       try {
-        const response = await fetch("https://app.reservai-passmanager.com/verification", {
+        const response = await fetch("https://app.reservai-passmanager.com/api/verification", {
           method: "GET",
           headers: {
             "Authorization": token,

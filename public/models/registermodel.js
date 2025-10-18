@@ -40,7 +40,7 @@ export default class RegisterInfo {
     }
 
     async register() {
-        const endpointUrl = 'https://app.reservai-passmanager.com/account'; 
+        const endpointUrl = 'https://app.reservai-passmanager.com//api/account'; 
         try {
             const response = await fetch(endpointUrl, {
                 method: 'POST',

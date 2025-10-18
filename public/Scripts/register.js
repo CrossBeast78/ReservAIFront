@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const response = await fetch("https://app.reservai-passmanager.com/account", {
+      const response = await fetch("https://app.reservai-passmanager.com/api/account", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

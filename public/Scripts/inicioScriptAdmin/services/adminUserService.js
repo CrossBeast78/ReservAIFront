@@ -14,7 +14,7 @@ export async function fetchAccountById(accountId, page = 1, search = '') {
     if (search) params.append('search', search);
 
     const response = await fetch(
-        `https://app.reservai-passmanager.com/a/${encodeURIComponent(accountId)}?${params.toString()}`,
+        `https://app.reservai-passmanager.com/api/a/${encodeURIComponent(accountId)}?${params.toString()}`,
         {
             headers: { Authorization: token }
         }
@@ -32,7 +32,7 @@ export async function fetchAccounts({ page = 1, search = "" }) {
     if (!token) throw new Error("No hay sesión de administrador");
 
     let url;
-    url = `https://app.reservai-passmanager.com/a?page=${page}&search=${encodeURIComponent(search)}`;
+    url = `https://app.reservai-passmanager.com/api/a?page=${page}&search=${encodeURIComponent(search)}`;
 
     const response = await fetch(url, {
         method: "GET",
@@ -56,7 +56,7 @@ export async function fetchAccounts({ page = 1, search = "" }) {
 export async function deleteAccount(accountId) {
     const token = SessionStorageManager.getSession()?.access_token;
 
-    const response = await fetch(`https://app.reservai-passmanager.com/account/${encodeURIComponent(accountId)}`, {
+    const response = await fetch(`https://app.reservai-passmanager.com/api/account/${encodeURIComponent(accountId)}`, {
         method: "DELETE",
         headers: {
             "Authorization": token

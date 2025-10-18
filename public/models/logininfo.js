@@ -38,7 +38,7 @@ export default class LoginInfo {
 
     // POST al endpoint /account
     async login() {
-        const endpointUrl = 'https://app.reservai-passmanager.com/account'; 
+        const endpointUrl = 'https://app.reservai-passmanager.com/api/account'; 
         try {
             const response = await fetch(endpointUrl, {
                 method: 'POST',

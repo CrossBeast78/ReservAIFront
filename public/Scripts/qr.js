@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const response = await fetch("https://app.reservai-passmanager.com/twofa", {
+    const response = await fetch("https://app.reservai-passmanager.com/api/twofa", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

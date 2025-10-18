@@ -3,9 +3,7 @@ import { setupAdminModals } from "./controllers/modalControllerAdmin.js";
 import { setupAdminSearch } from "./controllers/passwordListControllerAdmin.js";
 
 const session = SessionStorageManager.getSession();
-if (!session || !session.access_token) {
-    window.location.href = "/login";
-}
+
 document.addEventListener("DOMContentLoaded", () => {
   let selectedAccountId = null; // <-- Declaración global
 

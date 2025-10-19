@@ -41,6 +41,19 @@ app.use('/static', express.static(path.join(__dirname, 'public'), {
 
 app.use('/', router);
 
+
+app.use((req, res) => {
+  console.log(`[404] ${req.method} ${req.originalUrl}`);
+  res.status(404);
+  if (req.accepts('html')) {
+    return res.sendFile(path.join(__dirname, 'public', 'views', '404.html'));
+  }
+  if (req.accepts('json')) {
+    return res.json({ error: 'Ruta no encontrada', path: req.originalUrl, method: req.method });
+  }
+  res.type('txt').send('Not Found');
+});
+
 // ============================
 // INICIO DEL SERVIDOR
 // ============================

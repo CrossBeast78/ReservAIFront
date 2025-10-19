@@ -14,6 +14,7 @@ const token = SessionStorageManager.getSession()?.access_token;
             headers: { Authorization: token }
         });
 
+
         if (!response.ok) {
              if (response.status === 418) {
                 window.location.href = '/login';

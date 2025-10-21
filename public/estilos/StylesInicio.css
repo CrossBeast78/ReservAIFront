@@ -90,10 +90,12 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
 
 .search{
   display: flex;
-  background: var(--text-light);
+  background: var(--bg-dark);
+  color: var(--text-light);
   border-radius: 8px;
   padding: 0.9rem;
-  width: 300px;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .search2{
@@ -106,14 +108,7 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   
 }
 
-.searchbar{
-  display: flex;
-  align-items: center;
-  background: var(--primary);
-  border-radius: 8px;
 
-
-}
 
 .register-btn{
   background: var(--primary);
@@ -1096,4 +1091,42 @@ confirmDeleteModal{
 
 #confirmDeleteBtn:hover:enabled {
   background: #b71c1c;
+}
+
+
+@media (max-width: 600px){
+
+  .container{
+    width: 95%;
+  }
+
+  .logo-img {
+    width: 32px;
+    height: 32px;
+}
+.logo-text {
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.search {
+    width: 100%;
+}
+
+.register-btn{
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  width: 200px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.modal-content {
+  width: 90%;
+}
+.modal-full-body {
+  height: 150vh;
+}
+
 }

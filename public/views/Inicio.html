@@ -100,65 +100,7 @@
         </div>
     </div>
 
-    <script>
-        // Lógica de cierre de modales
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cerrar modal al hacer clic en el botón X
-            document.querySelectorAll('.close').forEach(closeBtn => {
-                closeBtn.addEventListener('click', function() {
-                    const modalId = this.getAttribute('data-close');
-                    const modal = document.getElementById(modalId);
-                    if (modal) {
-                        modal.classList.remove('show');
-                    }
-                });
-            });
 
-            // Cerrar modal al hacer clic en el botón "Cerrar"
-            document.querySelectorAll('.close-btn').forEach(closeBtn => {
-                closeBtn.addEventListener('click', function() {
-                    const modalId = this.getAttribute('data-close');
-                    const modal = document.getElementById(modalId);
-                    if (modal) {
-                        modal.classList.remove('show');
-                    }
-                });
-            });
-
-            // Cerrar modal al hacer clic fuera del contenido
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('show');
-                    }
-                });
-            });
-       
-
-        document.querySelectorAll('.modalcreate').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('show');
-                    }
-                });
-            });
-        });
-
-
-            document.addEventListener("DOMContentLoaded", function() {
-                const logoutBtn = document.getElementById("logout");
-                if (logoutBtn) {
-                logoutBtn.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    sessionStorage.clear();
-                    window.location.href = "/login";
-                });
-                }
-            });
-
-
-        
-    </script>
 
   <script type="module" src="static/Scripts/inicioScript/Inicio.js"></script>
 </body>

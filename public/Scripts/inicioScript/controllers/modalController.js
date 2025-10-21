@@ -4,6 +4,69 @@ import { showError, showMessage } from '../service/uiHelpers.js';
 export function setupModals({ addBtn, createModal, viewModal, fields, listEl, passwords, renderList }) {
     const { createName, createPassword: createPasswordInput, createDescription, confirmPassword, savePasswordBtn } = fields;
 
+    // --- Lógica de cierre de modales ---
+    // Cerrar modal al hacer clic en el botón X
+    document.querySelectorAll('.close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-close');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        });
+    });
+
+    // Cerrar modal al hacer clic en el botón "Cerrar"
+    document.querySelectorAll('.close-btn').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-close');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        });
+    });
+
+    // Cerrar modal de crear contraseña con botón X específico
+    document.querySelectorAll('.closecreate').forEach(btn =>
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modalcreate');
+            if (modal) {
+                modal.classList.remove('show');
+                // Limpiar el formulario al cerrar
+                clearCreatePasswordForm();
+            }
+        })
+    );
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        });
+    });
+
+    document.querySelectorAll('.modalcreate').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+                clearCreatePasswordForm();
+            }
+        });
+    });
+
+    // --- Configurar logout ---
+    const logoutBtn = document.getElementById("logout");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = "/login";
+        });
+    }
+
     // --- Modal Crear ---
     addBtn?.addEventListener('click', () => {
         const overlay = document.getElementById("createLoadingOverlay");
@@ -18,13 +81,7 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
         }, 800); 
     });
 
-    document.querySelectorAll('.close-btn').forEach(btn =>
-        btn.addEventListener('click', () => btn.closest('.modal')?.classList.remove('show'))
-    );
 
-    document.querySelectorAll('.closecreate').forEach(btn =>
-        btn.addEventListener('click', () => btn.closest('.modalcreate')?.classList.remove('show'))
-    );
 
     const toggleCreatePasswordBtn = document.getElementById('toggleCreatePassword');
     const eyeIconCreate = toggleCreatePasswordBtn?.querySelector('i');
@@ -376,4 +433,17 @@ export function setupModals({ addBtn, createModal, viewModal, fields, listEl, pa
             showMessage("Error al obtener la contraseña");
         }
     });
+}
+
+// Función para limpiar el formulario de crear contraseña
+function clearCreatePasswordForm() {
+    const createName = document.getElementById('createName');
+    const createPassword = document.getElementById('createPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const createDescription = document.getElementById('createDescription');
+
+    if (createName) createName.value = '';
+    if (createPassword) createPassword.value = '';
+    if (confirmPassword) confirmPassword.value = '';
+    if (createDescription) createDescription.value = '';
 }

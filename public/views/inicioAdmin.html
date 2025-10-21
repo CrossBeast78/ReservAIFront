@@ -157,66 +157,6 @@
   </div>
 
 
-    <script>
-      // Lógica de cierre de modales
-      document.addEventListener('DOMContentLoaded', function() {
-          document.querySelectorAll('.close, .close-btn').forEach(btn => {
-              btn.addEventListener('click', function() {
-                  const modalId = this.getAttribute('data-close');
-                  const modal = document.getElementById(modalId);
-                  if (modal) modal.classList.remove('show');
-              });
-          });
-
-          // Lógica específica para el botón de cerrar del modal crear contraseña
-          document.querySelector('.closecreate').addEventListener('click', function() {
-              const createModal = document.getElementById('createModal');
-              if (createModal) {
-                  createModal.style.display = 'none';
-                  // Limpiar el formulario al cerrar
-                  document.getElementById('createName').value = '';
-                  document.getElementById('createPassword').value = '';
-                  document.getElementById('confirmPassword').value = '';
-                  document.getElementById('createDescription').value = '';
-                  document.getElementById('updateableSwitch').checked = true;
-                  document.getElementById('visibilitySwitch').checked = true;
-              }
-          });
-
-          document.querySelectorAll('.modal').forEach(modal => {
-              modal.addEventListener('click', function(e) {
-                  if (e.target === this) this.classList.remove('show');
-              });
-          });
-
-          // Cerrar modal de crear contraseña al hacer click fuera
-          document.getElementById('createModal').addEventListener('click', function(e) {
-              if (e.target === this) {
-                  this.style.display = 'none';
-                  // Limpiar el formulario al cerrar
-                  document.getElementById('createName').value = '';
-                  document.getElementById('createPassword').value = '';
-                  document.getElementById('confirmPassword').value = '';
-                  document.getElementById('createDescription').value = '';
-                  document.getElementById('updateableSwitch').checked = true;
-                  document.getElementById('visibilitySwitch').checked = true;
-              }
-          });
-      });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const logoutBtn = document.getElementById("logout");
-        if (logoutBtn) {
-        logoutBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            sessionStorage.clear();
-            window.location.href = "/login";
-        });
-        }
-    });
-  
-  </script>
-
 
 
   <script type="module" src="static/Scripts/inicioScriptAdmin/inicioadmin.js"></script>

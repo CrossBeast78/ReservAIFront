@@ -25,8 +25,23 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
     );
 
     document.querySelectorAll('.closecreate').forEach(btn =>
-        btn.addEventListener('click', () => btn.closest('.modalcreate')?.classList.remove('show'))
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modalcreate');
+            if (modal) {
+                modal.style.display = 'none';
+                // Limpiar el formulario al cerrar
+                clearCreatePasswordForm();
+            }
+        })
     );
+
+    // Cerrar modal de crear contraseña al hacer click fuera
+    createModal?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+            clearCreatePasswordForm();
+        }
+    });
 
     // --- IMPORTANTE: Reasignar listeners después de clonar el botón ---
     let newSaveBtn = savePasswordBtn;
@@ -374,4 +389,21 @@ export async function openAdminPasswordModal(accountId, passwordId) {
         modalBody.innerHTML = '<div style="text-align:center;color:red;">❌ Error al cargar la contraseña</div>';
         showMessage("Error al obtener la contraseña");
     }
+}
+
+// Función para limpiar el formulario de crear contraseña
+function clearCreatePasswordForm() {
+    const createName = document.getElementById('createName');
+    const createPassword = document.getElementById('createPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const createDescription = document.getElementById('createDescription');
+    const updateableSwitch = document.getElementById('updateableSwitch');
+    const visibilitySwitch = document.getElementById('visibilitySwitch');
+
+    if (createName) createName.value = '';
+    if (createPassword) createPassword.value = '';
+    if (confirmPassword) confirmPassword.value = '';
+    if (createDescription) createDescription.value = '';
+    if (updateableSwitch) updateableSwitch.checked = true;
+    if (visibilitySwitch) visibilitySwitch.checked = true;
 }

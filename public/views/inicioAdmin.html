@@ -168,10 +168,39 @@
               });
           });
 
+          // Lógica específica para el botón de cerrar del modal crear contraseña
+          document.querySelector('.closecreate').addEventListener('click', function() {
+              const createModal = document.getElementById('createModal');
+              if (createModal) {
+                  createModal.style.display = 'none';
+                  // Limpiar el formulario al cerrar
+                  document.getElementById('createName').value = '';
+                  document.getElementById('createPassword').value = '';
+                  document.getElementById('confirmPassword').value = '';
+                  document.getElementById('createDescription').value = '';
+                  document.getElementById('updateableSwitch').checked = true;
+                  document.getElementById('visibilitySwitch').checked = true;
+              }
+          });
+
           document.querySelectorAll('.modal').forEach(modal => {
               modal.addEventListener('click', function(e) {
                   if (e.target === this) this.classList.remove('show');
               });
+          });
+
+          // Cerrar modal de crear contraseña al hacer click fuera
+          document.getElementById('createModal').addEventListener('click', function(e) {
+              if (e.target === this) {
+                  this.style.display = 'none';
+                  // Limpiar el formulario al cerrar
+                  document.getElementById('createName').value = '';
+                  document.getElementById('createPassword').value = '';
+                  document.getElementById('confirmPassword').value = '';
+                  document.getElementById('createDescription').value = '';
+                  document.getElementById('updateableSwitch').checked = true;
+                  document.getElementById('visibilitySwitch').checked = true;
+              }
           });
       });
 

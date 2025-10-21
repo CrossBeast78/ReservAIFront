@@ -4,7 +4,15 @@ import SessionStorageManager from "./AppStorage.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const qrCodeDiv = document.querySelector(".qr-code");
   const qrMessage = document.querySelector(".qr-message");
+  const nextBtn = document.getElementById('nextBtn');
   const token = SessionStorageManager.getSession().access_token;
+
+  // Configurar event listener para el botón "Siguiente"
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      window.location.href = "/twofa";
+    });
+  }
 
   if (!token) {
     qrMessage.textContent = "No hay sesión activa. Inicia sesión de nuevo.";

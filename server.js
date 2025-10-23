@@ -7,8 +7,10 @@ const app = express();
 // Puerto configurable desde argumento o por defecto 3000
 const PORT = process.argv[2] || 3000;
 
-// Detectar entorno de producción
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction_ = process.argv[3] || process.env.NODE_ENV || 'dev'
+
+let isProduction = isProduction_ === 'production'
+
 
 // Importar router principal (ajusta ruta si es diferente)
 const router = require('./public/Scripts/router');

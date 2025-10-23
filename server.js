@@ -124,6 +124,14 @@ if (isProduction) {
 // Aplicar rate limiter a todos los assets
 app.use('/static', assetsLimiter);
 
+// Bloquear archivos source map en producción antes de servir archivos estáticos
+app.use('/static', (req, res, next) => {
+  if (isProduction && req.path.endsWith('.map')) {
+    return res.status(404).send('Not Found');
+  }
+  next();
+});
+
 app.use('/static', express.static(path.join(__dirname, 'public'), {
   dotfiles: 'ignore',
   index: false,
@@ -145,14 +153,6 @@ app.use('/static', express.static(path.join(__dirname, 'public'), {
       if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
         res.setHeader('X-Robots-Tag', 'noindex, nofollow, nosnippet, noarchive');
         res.setHeader('Referrer-Policy', 'no-referrer');
-
-        // Asegurar tipos MIME válidos para que los módulos JS se carguen correctamente
-        // No use application/octet-stream para .js — los navegadores requieren application/javascript
-        if (filePath.endsWith('.js')) {
-          res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-        } else if (filePath.endsWith('.css')) {
-          res.setHeader('Content-Type', 'text/css; charset=utf-8');
-        }
       }
     } else {
       // En desarrollo, cache más corto

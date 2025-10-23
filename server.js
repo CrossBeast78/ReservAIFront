@@ -140,15 +140,18 @@ app.use('/static', express.static(path.join(__dirname, 'public'), {
       // En producción, headers más estrictos
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-      
+
       // Para archivos JS y CSS, headers adicionales de protección
       if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
         res.setHeader('X-Robots-Tag', 'noindex, nofollow, nosnippet, noarchive');
         res.setHeader('Referrer-Policy', 'no-referrer');
-        
-        // Ocultar tipo de archivo para ofuscación básica
+
+        // Asegurar tipos MIME válidos para que los módulos JS se carguen correctamente
+        // No use application/octet-stream para .js — los navegadores requieren application/javascript
         if (filePath.endsWith('.js')) {
-          res.setHeader('Content-Type', 'application/octet-stream');
+          res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+        } else if (filePath.endsWith('.css')) {
+          res.setHeader('Content-Type', 'text/css; charset=utf-8');
         }
       }
     } else {

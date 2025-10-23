@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Activar Doble Factor</title>
-  <link rel="icon" type="image/x-icon" href="/public/Images/ReservAiLogo.png" />
-  <link rel="stylesheet" href="../estilos/QR.css">
+  <link rel="icon" type="image/x-icon" href="static/Images/ReservAiLogo.png" />
+  <link rel="stylesheet" href="static/estilos/QR.css">
 </head>
 <body>
   <div class="qr-container">
@@ -22,11 +22,6 @@
 
     <button id="nextBtn" class="qr-next-btn">Siguiente</button>
   </div>
-  <script type="module" src="../Scripts/qr.js"></script>
-  <script>
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      window.location.href = "../views/twofa.html";
-    });
-  </script>
+  <script type="module" src="static/Scripts/qr.js"></script>
 </body>
 </html>

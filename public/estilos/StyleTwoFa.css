@@ -19,8 +19,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
+  margin:0;
+  min-height: 100vh;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
 }
+
 
 .verify-container {
   background: var(--bg-dark);
@@ -145,4 +151,70 @@ input.error-input::placeholder {
 
 .btn-verify:hover {
   background: #008bbd;
+}
+
+@media (max-width: 600px) {
+  html, body {
+    align-items: flex-start;
+    padding-top: 36px;
+    height: auto;
+    min-height: 200vh;
+  }
+
+  .verify-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 22px 18px;
+    border-radius: 14px;
+    box-shadow:
+      20px 20px 40px rgba(28,76,93,0.25),
+      -20px -20px 40px rgba(9,131,214,0.12);
+    margin: 0 8px;
+  }
+
+  .logo img {
+    width: 44px;
+    height: 44px;
+    margin-right: 6px;
+  }
+
+  .logo h1 {
+    font-size: 1.6rem;
+  }
+
+  .instruction {
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+
+  .code-inputs {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .code-inputs input {
+    width: 48px;
+    height: 64px;
+    font-size: 1.25rem;
+    border-radius: 6px;
+  }
+
+  .code-inputs input:focus {
+    transform: none; /* evitar escalado en móvil */
+    border: 2px solid var(--color-primary);
+  }
+
+  .twofa-error {
+    font-size: 0.9rem;
+    min-height: 18px;
+  }
+
+  .btn-verify {
+    width: 100%;
+    height: 56px;
+    padding: 0.6rem;
+    font-size: 1.05rem;
+    border-radius: 8px;
+  }
+
 }

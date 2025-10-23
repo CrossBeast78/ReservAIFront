@@ -1,13 +1,20 @@
 /* Estilos específicos para la página de términos y condiciones */
 
+:root {
+  --primary:  #0983d6;
+  --bg-dark: #0D0D0D;
+  --bg-card: #1A1A1A;
+  --text-light: #FFFFFF;
+  --text-gray: #A0A0A0;
+}
+
 /* Logo y título */
 .logo-section {
   text-align: center;
-  margin-bottom: 2rem;
-  padding: 2rem;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0.1rem;
+  padding: 0.1rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--text-gray);
   backdrop-filter: blur(10px);
 }
 
@@ -24,7 +31,7 @@
 }
 
 .app-name {
-  color: #4a90e2;
+  color: var(--text-light);
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;

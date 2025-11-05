@@ -21,12 +21,56 @@ export function setupAdminModals({ addBtn, createModal, viewModal, fields, listE
     });
 
     document.querySelectorAll('.close-btn').forEach(btn =>
-        btn.addEventListener('click', () => btn.closest('.modal')?.classList.remove('show'))
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-close');
+            const modal = modalId ? document.getElementById(modalId) : btn.closest('.modal');
+            if (modal) modal.classList.remove('show');
+        })
+    );
+
+    // Event listeners para cerrar modales con la X
+    document.querySelectorAll('.close').forEach(btn =>
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-close');
+            const modal = modalId ? document.getElementById(modalId) : btn.closest('.modal');
+            if (modal) modal.classList.remove('show');
+        })
     );
 
     document.querySelectorAll('.closecreate').forEach(btn =>
-        btn.addEventListener('click', () => btn.closest('.modalcreate')?.classList.remove('show'))
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modalcreate');
+            if (modal) {
+                modal.style.display = 'none';
+                // Limpiar el formulario al cerrar
+                clearCreatePasswordForm();
+            }
+        })
     );
+
+    // Cerrar modal de crear contraseña al hacer click fuera
+    createModal?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+            clearCreatePasswordForm();
+        }
+    });
+
+    // Cerrar modal de ver contraseña al hacer click fuera
+    viewModal?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.remove('show');
+        }
+    });
+
+    // Cerrar otros modales al hacer click fuera
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        });
+    });
 
     // --- IMPORTANTE: Reasignar listeners después de clonar el botón ---
     let newSaveBtn = savePasswordBtn;
@@ -375,3 +419,32 @@ export async function openAdminPasswordModal(accountId, passwordId) {
         showMessage("Error al obtener la contraseña");
     }
 }
+
+// Función para limpiar el formulario de crear contraseña
+function clearCreatePasswordForm() {
+    const createName = document.getElementById('createName');
+    const createPassword = document.getElementById('createPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const createDescription = document.getElementById('createDescription');
+    const updateableSwitch = document.getElementById('updateableSwitch');
+    const visibilitySwitch = document.getElementById('visibilitySwitch');
+
+    if (createName) createName.value = '';
+    if (createPassword) createPassword.value = '';
+    if (confirmPassword) confirmPassword.value = '';
+    if (createDescription) createDescription.value = '';
+    if (updateableSwitch) updateableSwitch.checked = true;
+    if (visibilitySwitch) visibilitySwitch.checked = true;
+}
+
+// Configurar logout cuando se carga el DOM
+document.addEventListener("DOMContentLoaded", function() {
+    const logoutBtn = document.getElementById("logout");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = "/login";
+        });
+    }
+});

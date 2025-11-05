@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ReservAI - Admin</title>
-  <link rel="icon" type="image/x-icon" href="/public/Images/ReservAiLogo.png" />
-  <link rel="stylesheet" href="/estilos/StylesInicio.css" />
+  <link rel="icon" type="image/x-icon" href="static/Images/ReservAiLogo.png" />
+  <link rel="stylesheet" href="static/estilos/StylesInicio.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
@@ -13,11 +13,8 @@
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <img src="/Images/ReservAiLogo.png" alt="ReservAI logo" class="logo-img">
+      <img src="static/Images/ReservAiLogo.png" alt="ReservAI logo" class="logo-img">
       <span class="logo-text">ReservAI Admin</span>
-    </div>
-    <div class="searchbar">
-      <input id="account-search" class="search" type="text" placeholder="Buscar cuenta por nombre..." aria-label="Buscar cuentas">
     </div>
     <a href="/register" id="registerBtn" class="register-btn">Registrar nueva cuenta</a>
     <div class="profile">
@@ -33,6 +30,9 @@
   <!-- Main -->
   <main class="container">
       <h1>Gestión de Cuentas</h1>
+      <div class="searchbar">
+        <input id="account-search" class="search" type="text" placeholder="Buscar cuenta por nombre..." aria-label="Buscar cuentas">
+      </div>
       <div id="accounts-loading" style="display:none; text-align:center; color:#fff; margin: 2em 0;">
         ⏳Cargando cuentas...
       </div>
@@ -157,39 +157,8 @@
   </div>
 
 
-    <script>
-      // Lógica de cierre de modales
-      document.addEventListener('DOMContentLoaded', function() {
-          document.querySelectorAll('.close, .close-btn').forEach(btn => {
-              btn.addEventListener('click', function() {
-                  const modalId = this.getAttribute('data-close');
-                  const modal = document.getElementById(modalId);
-                  if (modal) modal.classList.remove('show');
-              });
-          });
-
-          document.querySelectorAll('.modal').forEach(modal => {
-              modal.addEventListener('click', function(e) {
-                  if (e.target === this) this.classList.remove('show');
-              });
-          });
-      });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const logoutBtn = document.getElementById("logout");
-        if (logoutBtn) {
-        logoutBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            sessionStorage.clear();
-            window.location.href = "/login";
-        });
-        }
-    });
-  
-  </script>
 
 
-
-  <script type="module" src="../Scripts/inicioScriptAdmin/inicioadmin.js"></script>
+  <script type="module" src="static/Scripts/inicioScriptAdmin/inicioadmin.js"></script>
 </body>
 </html>

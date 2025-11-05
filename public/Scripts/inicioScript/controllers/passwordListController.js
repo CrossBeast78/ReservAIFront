@@ -7,13 +7,13 @@ export async function setupPasswordList(elements) {
     let currentPage = 1;
     let searchTimeout = null;
     let pageSize = 5; 
+    let totalPages = 1;
 
 
  
 
     async function loadPage(page = 1, search = '') {
         if (listEl) listEl.innerHTML = '<div style="text-align:center; margin:2em 0;">Cargando contraseñas...</div>';
-
         const pagination = document.querySelector('.pagination');
         if (pagination) pagination.style.display = 'none';
         try {

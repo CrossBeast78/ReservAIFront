@@ -85,31 +85,24 @@ app.disable('x-powered-by');
 // CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS
 // ============================
 
-// En producción servimos los minificados desde /dist
-if (isProduction) {
-  app.use(express.static(path.join(__dirname, 'dist'), {
-    index: false,
-    maxAge: '1y',
-    setHeaders: (res, filePath) => {
-      res.setHeader('X-Content-Type-Options', 'nosniff');
-      res.setHeader('X-Frame-Options', 'DENY');
-      res.setHeader('X-XSS-Protection', '1; mode=block');
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-      if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
-        res.setHeader('X-Robots-Tag', 'noindex, nofollow, nosnippet, noarchive');
-        res.setHeader('Referrer-Policy', 'no-referrer');
-      }
+// Servir archivos estáticos desde /public (tanto en desarrollo como en producción)
+app.use('/static', express.static(path.join(__dirname, 'public'), {
+  maxAge: isProduction ? '1y' : '1d',
+  setHeaders: isProduction ? (res, filePath) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow, nosnippet, noarchive');
+      res.setHeader('Referrer-Policy', 'no-referrer');
     }
-  }));
+  } : undefined
+}));
 
-  // Bloquear acceso a código fuente o rutas internas
-  app.use(['/static', '/src', '/models', '/config'], (req, res) => {
-    console.log(`[BLOCKED] Intento de acceso a archivos fuente: ${req.ip} -> ${req.originalUrl}`);
-    res.status(404).send('Not Found');
-  });
-} else {
-  // En desarrollo sí se permite servir los archivos originales
+// En desarrollo también servir desde raíz
+if (!isProduction) {
   app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 }
 

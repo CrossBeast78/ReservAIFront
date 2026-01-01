@@ -110,7 +110,7 @@ if (isProduction) {
   });
 } else {
   // En desarrollo sí se permite servir los archivos originales
-  app.use('/static', express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
+  app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 }
 
 // ============================

@@ -50,7 +50,7 @@ app.set('trust proxy', 1);
 
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 50,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { status: 429, error: 'Too many requests, please try again later.', retryAfter: '15 minutes' },

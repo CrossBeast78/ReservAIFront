@@ -242,6 +242,8 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 /* Modal header */
@@ -267,6 +269,9 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   justify-content: center;
   min-height: 100px;
   font-size: 1.1rem;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Modal footer */
@@ -285,32 +290,7 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   background: var(--bg-card);
   border-radius: 8px;
   border: 1px solid var(--bg-input);
-}
-
-.editable-field {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3em;
-}
-.edit-icon {
-    cursor: pointer;
-    font-size: 1em;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    margin-left: 0.2em;
-}
-.edit-icon:hover {
-    opacity: 1;
-    color: #007bff;
-}
-.edit-input, textarea.edit-input {
-    
-    padding: 2px 4px;
-    margin-left: 0;
-    margin-right: 0;
-}
-.password-info {
-  margin-right: 2rem; /* Espacio para el icono de editar */
+  overflow: hidden;
 }
 
 .password-name,
@@ -321,6 +301,9 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
   background: var(--bg-dark);
   border-radius: 6px;
   border-left: 3px solid var(--primary);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .password-value-container {
@@ -403,6 +386,10 @@ h2 { margin-bottom: .5rem; color: var(--text-light); }
 .password-description {
   font-style: italic;
   color: var(--text-gray);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
 }
 
 /* Close button */

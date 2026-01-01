@@ -2,6 +2,7 @@ import SessionStorageManager from "./AppStorage.js";
 
 
 const session = SessionStorageManager.getSession();
+const BASE_URL = "https://passmanager.reservai.com.mx/api";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (resendBtn) {
     resendBtn.addEventListener("click", async () => {
       try {
-        const response = await fetch("https://app.reservai-passmanager.com/api/verification", {
+        const response = await fetch(`${BASE_URL}/verification`, {
           method: "GET",
           headers: {
             "Authorization": token,

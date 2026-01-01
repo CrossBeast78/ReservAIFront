@@ -25,7 +25,7 @@ const helmetOptions = {
       scriptSrc: isProduction ? ["'self'"] : ["'self'", "'unsafe-eval'"],
       scriptSrcAttr: isProduction ? ["'none'"] : ["'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://app.reservai-passmanager.com"],
+      connectSrc: ["'self'", "https://passmanager.reservai.com.mx"],
       fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "data:"],
       objectSrc: ["'none'"],
       mediaSrc: ["'self'"],

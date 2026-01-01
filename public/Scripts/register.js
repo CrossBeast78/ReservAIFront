@@ -1,6 +1,9 @@
 import SessionStorageManager from "./AppStorage.js";
 
 const session = SessionStorageManager.getSession();
+
+const BASE_URL = "https://passmanager.reservai.com.mx/api";
+
 if (!session || !session.access_token) {
     window.location.href = "/login";
 }
@@ -103,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const response = await fetch("https://app.reservai-passmanager.com/api/account", {
+      const response = await fetch(`${BASE_URL}/account`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

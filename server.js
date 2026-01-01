@@ -142,7 +142,8 @@ app.use((req, res) => {
 // INICIO DEL SERVIDOR
 // ============================
 app.listen(PORT, () => {
-  console.log(`✅ Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`✅ Servidor corriendo en https://passmanager.reservai.com.mx`);
+  console.log(`🚀 Puerto: ${PORT}`);
   console.log(`🔒 Modo: ${isProduction ? 'PRODUCCIÓN' : 'DESARROLLO'}`);
   if (isProduction) {
     console.log('🛡️  Protecciones activas:');

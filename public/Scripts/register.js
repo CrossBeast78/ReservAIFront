@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (pass !== confirm ) {
       showError(confirmPasswordInput, "Las contraseñas no coinciden");
+      showError(passwordInput, "Las contraseñas no coinciden");
       valid = false;
     }
     if (!valid) return;
@@ -120,6 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeOfAccount = SessionStorageManager.getSession()?.account_type;
     if (typeOfAccount !== "admin") {
       showError(emailInput, "No tienes permisos para crear cuentas");
+      showError(passwordInput, "No tienes permisos para crear cuentas");
+      showError(confirmPasswordInput, "No tienes permisos para crear cuentas");
+      showError(nameInput, "No tienes permisos para crear cuentas");
       return;
     }
 
@@ -155,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Si el error es "Invalid password", mostrarlo en el password y limpiar ese campo
             if (result.error && result.error.toLowerCase().includes('invalid password')) {
               showError(passwordInput, result.error || result.message || "Error al registrar");
+              showError(confirmPasswordInput, result.error || result.message || "Error al registrar");
               passwordInput.value = "";
             } else {
               showError(emailInput, result.error || result.message || "Error al registrar");

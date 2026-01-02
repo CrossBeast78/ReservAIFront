@@ -8,24 +8,20 @@ if (!session || !session.access_token) {
     window.location.href = "/login";
 }
 
-// Mapeo de iconos para diferentes servicios
-const serviceIcons = {
-    'netflix': '🎬',
-    'spotify': '🎵',
-    'amazon': '📦',
-    'microsoft': '🖥️',
-    'disney': '🎭',
-    'hulu': '📺',
-    'max': '🎥',
-    'default': '📋'
+// Mapeo de iconos para diferentes planes
+const planIcons = {
+    'basico': '/static/Images/LogoReservAi.png',
+    'basic': '/static/Images/LogoReservAi.png',
+    'pro': '/static/Images/LogoReservAi.png',
+    'default': '/static/Images/LogoReservAi.png'
 };
 
-function getServiceIcon(name) {
-    const serviceName = (name || '').toLowerCase();
-    for (const [key, icon] of Object.entries(serviceIcons)) {
-        if (serviceName.includes(key)) return icon;
+function getPlanIcon(name) {
+    const planName = (name || '').toLowerCase();
+    for (const [key, icon] of Object.entries(planIcons)) {
+        if (planName.includes(key)) return icon;
     }
-    return serviceIcons.default;
+    return planIcons.default;
 }
 
 function formatDate(dateString) {
@@ -57,9 +53,9 @@ async function fetchSubscriptions(page = 1) {
     try {
         const token = SessionStorageManager.getSession().access_token;
         
-        // Endpoint para obtener suscripciones del usuario
+        // Endpoint para obtener planes del usuario
         const response = await fetch(
-            `${BASE_URL}/subscriptions?page=${page}`,
+            `${BASE_URL}/billing/plans?page=${page}`,
             {
                 method: "GET",
                 headers: {
@@ -74,38 +70,40 @@ async function fetchSubscriptions(page = 1) {
         }
 
         if (!response.ok) {
-            throw new Error('No se pudieron cargar las suscripciones');
+            throw new Error('No se pudieron cargar los planes');
         }
 
         const data = await response.json();
-        const subscriptions = data.data || data.subscriptions || [];
+        const plans = data.data || data.plans || [];
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;
 
         // Renderizar tabla
-        if (subscriptions.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>No tienes suscripciones registradas</p></td></tr>';
+        if (plans.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>No tienes planes activos</p></td></tr>';
         } else {
-            tableBody.innerHTML = subscriptions.map(sub => `
+            tableBody.innerHTML = plans.map(plan => `
                 <tr>
                     <td>
                         <div class="subscription-name">
-                            <span class="subscription-icon">${getServiceIcon(sub.plan_name || sub.name)}</span>
-                            <span>${sub.plan_name || sub.name || 'Suscripción'}</span>
+                            <span class="subscription-icon">
+                                <img src="${getPlanIcon(plan.plan_name || plan.name)}" alt="${plan.plan_name || plan.name}" style="width: 32px; height: 32px; object-fit: contain;">
+                            </span>
+                            <span>${plan.plan_name || plan.name || 'Plan'}</span>
                         </div>
                     </td>
                     <td>
-                        <span class="cost">$${(sub.amount || 0).toFixed(2)} / mes</span>
+                        <span class="cost">$${(plan.price || plan.amount || 0).toFixed(2)} / mes</span>
                     </td>
                     <td>
-                        <span class="date">Inicio: ${formatDate(sub.current_period_start)}</span>
+                        <span class="date">Inicio: ${formatDate(plan.start_date || plan.current_period_start)}</span>
                     </td>
                     <td>
-                        <span class="date">Fin: ${formatDate(sub.current_period_end)}</span>
+                        <span class="date">Fin: ${formatDate(plan.end_date || plan.current_period_end)}</span>
                     </td>
                     <td>
-                        <span class="status-badge ${getStatusBadge(sub.status).class}">
-                            ${getStatusBadge(sub.status).text}
+                        <span class="status-badge ${getStatusBadge(plan.status).class}">
+                            ${getStatusBadge(plan.status).text}
                         </span>
                     </td>
                 </tr>
@@ -118,7 +116,7 @@ async function fetchSubscriptions(page = 1) {
         
         if (paginationEl && pageInfoEl) {
             pageInfoEl.textContent = `Página ${currentPage}`;
-            paginationEl.style.display = subscriptions.length > 0 ? 'flex' : 'none';
+            paginationEl.style.display = plans.length > 0 ? 'flex' : 'none';
             
             const prevBtn = document.getElementById('prevBilling');
             const nextBtn = document.getElementById('nextBilling');
@@ -132,12 +130,12 @@ async function fetchSubscriptions(page = 1) {
         window.nextBillingPage = nextPage;
 
     } catch (err) {
-        console.error("Error al cargar suscripciones:", err);
+        console.error("Error al cargar planes:", err);
         if (errorEl) {
             errorEl.style.display = 'block';
             errorEl.textContent = '❌ ' + err.message;
         }
-        tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>Error al cargar suscripciones</p></td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>Error al cargar planes</p></td></tr>';
     } finally {
         if (loadingEl) loadingEl.style.display = 'none';
     }
@@ -170,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Endpoint para abrir la página de gestión de pagos
             // TODO: Implementar cuando el endpoint esté disponible
             // window.location.href = `${BASE_URL}/billing/manage`;
-            alert("Funcionalidad de gestión de pagos en desarrollo");
+            alert("Funcionalidad de gestión de planes en desarrollo");
         });
     }
 

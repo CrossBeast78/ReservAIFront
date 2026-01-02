@@ -53,27 +53,52 @@ async function fetchSubscriptions(page = 1) {
     try {
         const token = SessionStorageManager.getSession().access_token;
         
-        // Endpoint para obtener planes del usuario
-        const response = await fetch(
-            `${BASE_URL}/billing/plans?page=${page}`,
-            {
-                method: "GET",
-                headers: {
-                    "Authorization": token
+        // DATOS DE PRUEBA - Eliminar cuando el endpoint esté disponible
+        const mockData = {
+            data: [
+                {
+                    id: 1,
+                    plan_name: "Plan Básico",
+                    price: 4.99,
+                    start_date: "2024-01-15",
+                    end_date: "2025-01-15",
+                    status: "active"
+                },
+                {
+                    id: 2,
+                    plan_name: "Plan Pro",
+                    price: 9.99,
+                    start_date: "2023-06-20",
+                    end_date: "2026-06-20",
+                    status: "active"
                 }
-            }
-        );
+            ],
+            current_page: page,
+            next_page: null
+        };
 
-        if (response.status === 418) {
-            window.location.href = '/login';
-            return;
-        }
+        // Endpoint para obtener planes del usuario
+        // const response = await fetch(
+        //     `${BASE_URL}/billing/plans?page=${page}`,
+        //     {
+        //         method: "GET",
+        //         headers: {
+        //             "Authorization": token
+        //         }
+        //     }
+        // );
 
-        if (!response.ok) {
-            throw new Error('No se pudieron cargar los planes');
-        }
+        // if (response.status === 418) {
+        //     window.location.href = '/login';
+        //     return;
+        // }
 
-        const data = await response.json();
+        // if (!response.ok) {
+        //     throw new Error('No se pudieron cargar los planes');
+        // }
+
+        // const data = await response.json();
+        const data = mockData; // USAR DATOS DE PRUEBA
         const plans = data.data || data.plans || [];
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;

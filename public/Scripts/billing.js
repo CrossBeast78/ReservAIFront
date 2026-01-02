@@ -197,7 +197,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // Paginación
+/*     const prevBtn = document.getElementById('prevBilling');
+    const nextBtn = document.getElementById('nextBilling');
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            const currentPage = window.currentBillingPage || 1;
+            if (currentPage > 1) {
+                fetchSubscriptions(currentPage - 1);
+            }
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const nextPage = window.nextBillingPage;
+            if (nextPage) {
+                fetchSubscriptions(nextPage);
+            }
+        });
+    }
+ */
 
     // Cargar datos iniciales
     fetchSubscriptions(1);

@@ -158,20 +158,20 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!response.ok) {
             const errorMsg = (result.error || result.message || "Error al registrar").toLowerCase();
             
-            // Si el error es "Invalid password", mostrarlo en el password y limpiar ese campo
-            if (errorMsg.includes('invalid password')) {
+            // Si el error contiene "name", mostrarlo en el campo name
+            if (errorMsg.includes('name')) {
+              showError(nameInput, result.error || result.message || "Error al registrar");
+            } 
+            // Si el error contiene "password", mostrarlo en el campo password
+            else if (errorMsg.includes('password')) {
               showError(passwordInput, result.error || result.message || "Error al registrar");
               showError(confirmPasswordInput, result.error || result.message || "Error al registrar");
             } 
-            // Si el error es "Invalid name", mostrarlo en el name y limpiar ese campo
-            else if (errorMsg.includes('invalid name')) {
-              showError(nameInput, result.error || result.message || "Error al registrar");
-            } 
-            // Si el error es "Invalid email", mostrarlo en el email
-            else if (errorMsg.includes('invalid email')) {
+            // Si el error contiene "email", mostrarlo en el campo email
+            else if (errorMsg.includes('email')) {
               showError(emailInput, result.error || result.message || "Error al registrar");
             }
-            // Otros errores en email
+            // Otros errores en email por defecto
             else {
               showError(emailInput, result.error || result.message || "Error al registrar");
             }

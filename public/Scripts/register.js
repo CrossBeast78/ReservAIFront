@@ -152,10 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
          
 
           if (!response.ok) {
-            // Si el error es "Invalid password", mostrarlo en el email y limpiar el campo
+            // Si el error es "Invalid password", mostrarlo en el password y limpiar ese campo
             if (result.error && result.error.toLowerCase().includes('invalid password')) {
-              showError(emailInput, result.error || result.message || "Error al registrar");
-              emailInput.value = "";
+              showError(passwordInput, result.error || result.message || "Error al registrar");
+              passwordInput.value = "";
             } else {
               showError(emailInput, result.error || result.message || "Error al registrar");
             }

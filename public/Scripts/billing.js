@@ -59,7 +59,7 @@ async function fetchSubscriptions(page = 1) {
                 {
                     id: 1,
                     plan_name: "Plan Básico",
-                    price: 4.99,
+                    price: 1699.99,
                     start_date: "2024-01-15",
                     end_date: "2025-01-15",
                     status: "active"
@@ -67,7 +67,7 @@ async function fetchSubscriptions(page = 1) {
                 {
                     id: 2,
                     plan_name: "Plan Pro",
-                    price: 9.99,
+                    price: 2699.99,
                     start_date: "2023-06-20",
                     end_date: "2026-06-20",
                     status: "active"

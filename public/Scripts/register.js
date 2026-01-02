@@ -161,7 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
               showError(passwordInput, result.error || result.message || "Error al registrar");
               showError(confirmPasswordInput, result.error || result.message || "Error al registrar");
               passwordInput.value = "";
-            } else {
+            } else if (result.error && result.error.toLowerCase().includes('invalid name')) {
+              showError(nameInput, result.error || result.message || "Error al registrar");
+            }else {
               showError(emailInput, result.error || result.message || "Error al registrar");
             }
             return;

@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           showMessage("Cuenta creada con éxito", 'success', 4000);
           setTimeout(() => {
-            window.location.href = "/verify_email";
+            window.location.href = "/login";
           }, 1500);
         } catch (err) {
           showError(emailInput, "Error: " + err.message);

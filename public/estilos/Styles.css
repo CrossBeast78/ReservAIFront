@@ -293,6 +293,7 @@ input:-webkit-autofill:active {
   pointer-events: none;
 }
 
+/* Mensaje individual */
 .message {
   padding: 12px 24px;
   border-radius: 8px;
@@ -302,8 +303,10 @@ input:-webkit-autofill:active {
   pointer-events: auto;
   max-width: 400px;
   word-break: break-word;
+  will-change: transform, opacity;
 }
 
+/* Variantes */
 .message-success {
   background: #4CAF50;
   color: #fff;
@@ -324,25 +327,25 @@ input:-webkit-autofill:active {
   color: #fff;
 }
 
+/* Animaciones */
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translate3d(-50%, -20px, 0);
+    transform: translate3d(0, -20px, 0);
   }
   to {
     opacity: 1;
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes slideOut {
   from {
     opacity: 1;
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
   to {
     opacity: 0;
-    transform: translate3d(-50%, -20px, 0);
+    transform: translate3d(0, -20px, 0);
   }
 }
-

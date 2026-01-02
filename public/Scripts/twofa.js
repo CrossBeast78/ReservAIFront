@@ -101,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href = "/inicio";
                 }
             } else {
-                alert("Error: " + err.message);
-                showError("Respuesta inválida del servidor.");}
+                showError("Respuesta inválida del servidor.");
+            }
         } catch (err) {
 
         }

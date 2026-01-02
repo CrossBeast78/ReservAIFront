@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ReservAI - Billing</title>
+  <link rel="icon" type="image/x-icon" href="/static/Images/ReservAiLogo.png" />
+  <link rel="stylesheet" href="/static/estilos/StylesBilling.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">
+      <img src="/static/Images/ReservAiLogo.png" alt="ReservAI logo" class="logo-img">
+      <span class="logo-text">ReservAI</span>
+    </div>
+
+    <div class="profile">
+      <button class="profile-btn" aria-haspopup="true" aria-expanded="false">
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="profile-icon" alt="Perfil">
+      </button>
+      <div class="dropdown" role="menu">
+        <a href="#" id="inicioLink">Inicio</a>
+        <a href="#" id="logout">Cerrar sesión</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="container">
+    <div class="billing-header">
+      <div class="billing-info">
+        <h1>Resumen de Pagos</h1>
+        <p class="billing-description">Resumen de tus suscripciones y pagos recurrentes.</p>
+      </div>
+      <button class="btn-manage" id="manageBillingBtn">
+        <i class="fas fa-cog"></i> Gestionar Pagos
+      </button>
+    </div>
+
+    <div class="billing-content">
+      <table class="billing-table">
+        <thead>
+          <tr>
+            <th>Suscripción</th>
+            <th>Costo</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Fin</th>
+            <th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody id="billingTableBody">
+          <!-- Los datos se cargarán dinámicamente aquí -->
+        </tbody>
+      </table>
+
+      <div class="pagination" style="display: none;">
+        <button id="prevBilling" type="button" class="pagination-btn"><</button>
+        <span id="billingPageInfo">Página 1</span>
+        <button id="nextBilling" type="button" class="pagination-btn">></button>
+      </div>
+    </div>
+
+    <div id="billingLoading" style="display: none; text-align: center; color: #fff; margin: 2em 0;">
+      ⏳ Cargando datos de facturación...
+    </div>
+
+    <div id="billingError" style="display: none; text-align: center; color: #f44336; margin: 2em 0;">
+      <!-- Error messages here -->
+    </div>
+  </main>
+
+  <script type="module" src="/static/Scripts/billing.js"></script>
+</body>
+</html>

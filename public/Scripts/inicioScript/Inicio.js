@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    // Navegar a Billing
+    const billingLink = document.getElementById("billingLink");
+    if (billingLink) {
+        billingLink.addEventListener("click", function(e) {
+            e.preventDefault();
+            window.location.href = "/billing";
+        });
+    }
+
     const elements = {
         listEl: document.getElementById('password-list'),
         searchEl: document.getElementById('search'),

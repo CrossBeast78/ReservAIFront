@@ -8,6 +8,24 @@ if (!session || !session.access_token) {
     window.location.href = "/login";
 }
 
+// Función para mostrar mensajes en la interfaz
+function showMessage(message, type = 'info', duration = 3000) {
+  const container = document.getElementById('messageContainer');
+  if (!container) return;
+
+  const messageEl = document.createElement('div');
+  messageEl.className = `message message-${type}`;
+  messageEl.textContent = message;
+  messageEl.style.animation = 'slideIn 0.3s ease-in-out';
+
+  container.appendChild(messageEl);
+
+  setTimeout(() => {
+    messageEl.style.animation = 'slideOut 0.3s ease-in-out';
+    setTimeout(() => messageEl.remove(), 300);
+  }, duration);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const nameInput = document.getElementById('name');
   const emailInput = document.getElementById('email');
@@ -134,12 +152,20 @@ document.addEventListener('DOMContentLoaded', () => {
          
 
           if (!response.ok) {
-            showError(emailInput, result.error || result.message || "Error al registrar");
+            // Si el error es "Invalid password", mostrarlo en el email y limpiar el campo
+            if (result.error && result.error.toLowerCase().includes('invalid password')) {
+              showError(emailInput, result.error || result.message || "Error al registrar");
+              emailInput.value = "";
+            } else {
+              showError(emailInput, result.error || result.message || "Error al registrar");
+            }
             return;
           }
 
-          alert("Cuenta creada con éxito");
-          window.location.href = "/verify_email";
+          showMessage("Cuenta creada con éxito", 'success', 4000);
+          setTimeout(() => {
+            window.location.href = "/verify_email";
+          }, 1500);
         } catch (err) {
           showError(emailInput, "Error: " + err.message);
         }

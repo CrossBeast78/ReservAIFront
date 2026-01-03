@@ -53,6 +53,9 @@ async function fetchSubscriptions(page = 1) {
     try {
         const token = SessionStorageManager.getSession().access_token;
         
+        // SIMULACIÓN DE ERROR 404 - Eliminar cuando el endpoint esté disponible
+        throw new Error('404');
+        
         // DATOS DE PRUEBA - Eliminar cuando el endpoint esté disponible
         const mockData = {
             data: [
@@ -158,7 +161,38 @@ async function fetchSubscriptions(page = 1) {
         console.error("Error al cargar planes:", err);
         if (errorEl) {
             errorEl.style.display = 'block';
-            errorEl.textContent = '❌ ' + err.message;
+            // Si es error 404, mostrar mensaje personalizado de Stripe
+            if (err.message.includes('404') || err.status === 404) {
+                errorEl.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">⚠️ No ha configurado su perfil en Stripe</p>
+                        <p style="color: #A0A0A0; margin-bottom: 1.5rem;">Para ver tus planes y gestionar tus pagos, necesitas configurar tu perfil.</p>
+                        <a href="#" id="stripeConfigLink" style="
+                            display: inline-block;
+                            background: var(--primary);
+                            color: #fff;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            cursor: pointer;
+                            transition: background 0.3s;
+                        ">Configurar Stripe</a>
+                    </div>
+                `;
+                
+                // Event listener para el link de Stripe
+                const stripeConfigLink = document.getElementById('stripeConfigLink');
+                if (stripeConfigLink) {
+                    stripeConfigLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        // TODO: Reemplazar con la URL correcta de Stripe cuando esté disponible
+                        // window.location.href = `${BASE_URL}/billing/stripe/setup`;
+                        alert("Redirigiendo a configuración de Stripe...");
+                    });
+                }
+            } else {
+                errorEl.textContent = '❌ ' + err.message;
+            }
         }
         tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>Error al cargar planes</p></td></tr>';
     } finally {

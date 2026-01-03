@@ -53,8 +53,6 @@ async function fetchSubscriptions(page = 1) {
     try {
         const token = SessionStorageManager.getSession().access_token;
         
-        // SIMULACIÓN DE ERROR 404 - Eliminar cuando el endpoint esté disponible
-        throw new Error('404');
         
         // DATOS DE PRUEBA - Eliminar cuando el endpoint esté disponible
         const mockData = {
@@ -139,7 +137,7 @@ async function fetchSubscriptions(page = 1) {
             tableBody.style.display = 'table-row-group';
         }
 
-        // Actualizar paginación
+  /*       // Actualizar paginación
         const paginationEl = document.querySelector('.pagination');
         const pageInfoEl = document.getElementById('billingPageInfo');
         
@@ -156,7 +154,7 @@ async function fetchSubscriptions(page = 1) {
 
         // Guardar estado de paginación
         window.currentBillingPage = currentPage;
-        window.nextBillingPage = nextPage;
+        window.nextBillingPage = nextPage; */
 
     } catch (err) {
         console.error("Error al cargar planes:", err);

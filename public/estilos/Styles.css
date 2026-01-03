@@ -43,6 +43,18 @@ body {
   box-shadow:50px 50px 100px #1c4c5d,
              -50px -50px 100px var(--primary);
   text-align: center;
+  animation: slideInLoginBox 0.5s ease-out;
+}
+
+@keyframes slideInLoginBox {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .logo {

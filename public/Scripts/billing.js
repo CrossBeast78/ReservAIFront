@@ -136,6 +136,7 @@ async function fetchSubscriptions(page = 1) {
                     </td>
                 </tr>
             `).join('');
+            tableBody.style.display = 'table-row-group';
         }
 
         // Actualizar paginación
@@ -161,11 +162,12 @@ async function fetchSubscriptions(page = 1) {
         console.error("Error al cargar planes:", err);
         if (errorEl) {
             errorEl.style.display = 'block';
+            tableBody.style.display = 'none';
             // Si es error 404, mostrar mensaje personalizado de Stripe
             if (err.message.includes('404') || err.status === 404) {
                 errorEl.innerHTML = `
                     <div style="text-align: center; padding: 2rem;">
-                        <p style="font-size: 1.1rem; margin-bottom: 1rem;">⚠️ No ha configurado su perfil en Stripe</p>
+                        <p style="font-size: 1.1rem; margin-bottom: 1rem; color: #f44336;">No ha configurado su perfil en Stripe</p>
                         <p style="color: #A0A0A0; margin-bottom: 1.5rem;">Para ver tus planes y gestionar tus pagos, necesitas configurar tu perfil.</p>
                         <a href="#" id="stripeConfigLink" style="
                             display: inline-block;
@@ -194,7 +196,6 @@ async function fetchSubscriptions(page = 1) {
                 errorEl.textContent = '❌ ' + err.message;
             }
         }
-        tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>Error al cargar planes</p></td></tr>';
     } finally {
         if (loadingEl) loadingEl.style.display = 'none';
     }

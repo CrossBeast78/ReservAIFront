@@ -167,19 +167,47 @@ async function fetchSubscriptions(page = 1) {
             // Si es error 404, mostrar mensaje personalizado de Stripe
             if (err.message.includes('404') || err.status === 404) {
                 errorEl.innerHTML = `
-                    <div style="text-align: center; padding: 2rem;">
-                        <p style="font-size: 1.1rem; margin-bottom: 1rem; color: #f44336;">No ha configurado su perfil en Stripe</p>
-                        <p style="color: #A0A0A0; margin-bottom: 1.5rem;">Para ver tus planes y gestionar tus pagos, necesitas configurar tu perfil.</p>
+                    <div style="
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 3rem 2rem;
+                        gap: 1.5rem;
+                        min-height: 300px;
+                    ">
+                        <div style="font-size: 3.5rem; opacity: 0.8;">⚠️</div>
+                        <div style="text-align: center;">
+                            <h2 style="
+                                font-size: 1.5rem;
+                                margin: 0 0 0.5rem 0;
+                                color: #f44336;
+                                font-weight: 600;
+                            ">Configuración de Stripe Requerida</h2>
+                            <p style="
+                                color: #A0A0A0;
+                                margin: 0 0 1.5rem 0;
+                                font-size: 1rem;
+                                line-height: 1.6;
+                            ">Para acceder a tus planes y gestionar tus pagos, necesitas configurar tu perfil en Stripe.</p>
+                        </div>
                         <a href="#" id="stripeConfigLink" style="
-                            display: inline-block;
-                            background: var(--primary);
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            background: linear-gradient(135deg, var(--primary), #0668b8);
                             color: #fff;
-                            padding: 0.75rem 1.5rem;
+                            padding: 0.9rem 2rem;
                             border-radius: 8px;
                             text-decoration: none;
                             cursor: pointer;
-                            transition: background 0.3s;
-                        ">Configurar Stripe</a>
+                            font-weight: 600;
+                            font-size: 1rem;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 4px 15px rgba(9, 131, 214, 0.3);
+                        ">
+                            <i class="fas fa-cog"></i> Configurar Stripe
+                        </a>
                     </div>
                 `;
                 

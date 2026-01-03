@@ -39,6 +39,14 @@
       </button>
     </div>
 
+    <div id="billingLoading" style="display: none; text-align: center; color: #fff; margin: 2em 0;">
+      ⏳ Cargando datos de facturación...
+    </div>
+
+    <div id="billingError" style="display: none; text-align: center; color: #f44336; margin: 2em 0;">
+      <!-- Error messages here -->
+    </div>
+
     <div class="billing-content">
       <table class="billing-table">
         <thead>
@@ -61,14 +69,6 @@
         <button id="nextBilling" type="button" class="pagination-btn">></button>
       </div>
     </div> -->
-
-    <div id="billingLoading" style="display: none; text-align: center; color: #fff; margin: 2em 0;">
-      ⏳ Cargando datos de facturación...
-    </div>
-
-    <div id="billingError" style="display: none; text-align: center; color: #f44336; margin: 2em 0;">
-      <!-- Error messages here -->
-    </div>
   </main>
 
   <script type="module" src="/static/Scripts/billing.js"></script>

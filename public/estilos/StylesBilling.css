@@ -244,8 +244,8 @@ body {
 #billingError {
   padding: 0;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(244, 67, 54, 0.05) 100%);
-  border: 2px solid #f44336;
+  background: linear-gradient(135deg, rgba(9, 131, 214, 0.1) 0%, rgba(9, 131, 214, 0.05) 100%);
+  border: 1px solid rgba(9, 131, 214, 0.3);
   animation: slideInError 0.4s ease-out;
 }
 
@@ -264,35 +264,33 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, var(--primary), #0668b8);
+  background: var(--primary);
   color: #fff;
-  padding: 0.9rem 2rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 500;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
   border: none;
-  box-shadow: 0 4px 15px rgba(9, 131, 214, 0.3);
 }
 
 #billingError a:hover {
-  background: linear-gradient(135deg, var(--primary-hover), #005aa8);
+  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(9, 131, 214, 0.4);
 }
 
 #billingError h2 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin: 0 0 0.5rem 0;
-  color: #f44336;
+  color: var(--text-light);
   font-weight: 600;
 }
 
 #billingError p {
   color: var(--text-gray);
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }

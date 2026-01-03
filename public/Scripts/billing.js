@@ -172,42 +172,41 @@ async function fetchSubscriptions(page = 1) {
                         flex-direction: column;
                         align-items: center;
                         justify-content: center;
-                        padding: 3rem 2rem;
-                        gap: 1.5rem;
-                        min-height: 300px;
+                        padding: 2.5rem 2rem;
+                        gap: 1rem;
+                        min-height: 250px;
                     ">
-                        <div style="font-size: 3.5rem; opacity: 0.8;">⚠️</div>
+                        <div style="font-size: 3rem; opacity: 0.9;">💳</div>
                         <div style="text-align: center;">
                             <h2 style="
-                                font-size: 1.5rem;
+                                font-size: 1.3rem;
                                 margin: 0 0 0.5rem 0;
-                                color: #f44336;
+                                color: var(--text-light);
                                 font-weight: 600;
-                            ">Configuración de Stripe Requerida</h2>
+                            ">Configura tu método de pago</h2>
                             <p style="
                                 color: #A0A0A0;
-                                margin: 0 0 1.5rem 0;
-                                font-size: 1rem;
-                                line-height: 1.6;
-                            ">Para acceder a tus planes y gestionar tus pagos, necesitas configurar tu perfil en Stripe.</p>
+                                margin: 0;
+                                font-size: 0.95rem;
+                                line-height: 1.5;
+                            ">Completa la configuración de Stripe para comenzar a usar tus planes.</p>
                         </div>
                         <a href="#" id="stripeConfigLink" style="
                             display: inline-flex;
                             align-items: center;
                             gap: 0.5rem;
-                            background: linear-gradient(135deg, var(--primary), #0668b8);
+                            background: var(--primary);
                             color: #fff;
-                            padding: 0.9rem 2rem;
+                            padding: 0.75rem 1.75rem;
                             border-radius: 8px;
                             text-decoration: none;
                             cursor: pointer;
-                            font-weight: 600;
-                            font-size: 1rem;
+                            font-weight: 500;
+                            font-size: 0.95rem;
                             transition: all 0.3s ease;
-                            box-shadow: 0 4px 15px rgba(9, 131, 214, 0.3);
-                        ">
-                            <i class="fas fa-cog"></i> Configurar Stripe
-                        </a>
+                            border: none;
+                            margin-top: 0.5rem;
+                        ">Configurar ahora →</a>
                     </div>
                 `;
                 

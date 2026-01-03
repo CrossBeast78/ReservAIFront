@@ -161,9 +161,11 @@ async function fetchSubscriptions(page = 1) {
     } catch (err) {
         console.error("Error al cargar planes:", err);
         const billingContent = document.querySelector('.billing-content');
+        const manageBillingBtn = document.getElementById('manageBillingBtn');
         if (errorEl) {
             errorEl.style.display = 'block';
             if (billingContent) billingContent.style.display = 'none';
+            if (manageBillingBtn) manageBillingBtn.style.display = 'none';
             // Si es error 404, mostrar mensaje personalizado de Stripe
             if (err.message.includes('404') || err.status === 404) {
                 errorEl.innerHTML = `

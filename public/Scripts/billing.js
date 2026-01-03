@@ -56,7 +56,7 @@ async function fetchSubscriptions(page = 1) {
 
          
         // SIMULACIÓN DE ERROR 404 - Eliminar cuando el endpoint esté disponible
-        throw new Error('404');
+        //throw new Error('404');
         
         // DATOS DE PRUEBA - Eliminar cuando el endpoint esté disponible
         const mockData = {

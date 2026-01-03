@@ -109,6 +109,18 @@ body {
   border-radius: 12px;
   overflow: hidden;
   padding: 0;
+  animation: slideInContent 0.5s ease-out;
+}
+
+@keyframes slideInContent {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Billing Table */

@@ -137,6 +137,12 @@ async function fetchSubscriptions(page = 1) {
             tableBody.style.display = 'table-row-group';
         }
 
+        // Agregar animación a la tabla
+        const billingContent = document.querySelector('.billing-content');
+        if (billingContent) {
+            billingContent.style.animation = 'slideInContent 0.5s ease-out';
+        }
+
   /*       // Actualizar paginación
         const paginationEl = document.querySelector('.pagination');
         const pageInfoEl = document.getElementById('billingPageInfo');

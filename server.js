@@ -7,8 +7,10 @@ const app = express();
 // Puerto configurable desde argumento o por defecto 3000
 const PORT = process.argv[2] || 3000;
 
-// Detectar entorno de producción
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction_ = process.argv[3] || process.env.NODE_ENV || 'dev'
+
+let isProduction = isProduction_ === 'production'
+
 
 // Importar router principal (ajusta ruta si es diferente)
 const router = require('./public/Scripts/router');
@@ -122,6 +124,14 @@ if (isProduction) {
 // Aplicar rate limiter a todos los assets
 app.use('/static', assetsLimiter);
 
+// Bloquear archivos source map en producción antes de servir archivos estáticos
+app.use('/static', (req, res, next) => {
+  if (isProduction && req.path.endsWith('.map')) {
+    return res.status(404).send('Not Found');
+  }
+  next();
+});
+
 app.use('/static', express.static(path.join(__dirname, 'public'), {
   dotfiles: 'ignore',
   index: false,
@@ -138,16 +148,11 @@ app.use('/static', express.static(path.join(__dirname, 'public'), {
       // En producción, headers más estrictos
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-      
+
       // Para archivos JS y CSS, headers adicionales de protección
       if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
         res.setHeader('X-Robots-Tag', 'noindex, nofollow, nosnippet, noarchive');
         res.setHeader('Referrer-Policy', 'no-referrer');
-        
-        // Ocultar tipo de archivo para ofuscación básica
-        if (filePath.endsWith('.js')) {
-          res.setHeader('Content-Type', 'application/octet-stream');
-        }
       }
     } else {
       // En desarrollo, cache más corto

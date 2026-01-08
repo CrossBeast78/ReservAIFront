@@ -148,14 +148,10 @@ export async function openAccountPasswordsModal(account) {
                 try {
                     await deleteAccount(account.id);
                     showMessage("Cuenta eliminada correctamente");
-                    modal.classList.remove('show');
-                    document.dispatchEvent(new CustomEvent('passwordUpdated', { detail: { accountId } }));
-                    // Remueve el listener al cerrar el modal
-                    document.removeEventListener('passwordUpdated', passwordUpdatedHandler);
-                    // Recarga la página después de 1 segundo para que desaparezca la cuenta
+                    // Recarga la página inmediatamente
                     setTimeout(() => {
-                        location.reload();
-                    }, 1000);
+                        window.location.reload();
+                    }, 500);
                 } catch (err) {
                     showMessage("Error al eliminar la cuenta: " + err.message);
                 }

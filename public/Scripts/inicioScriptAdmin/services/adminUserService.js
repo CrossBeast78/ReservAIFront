@@ -2,6 +2,8 @@ import SessionStorageManager from "../../AppStorage.js";
 
 const session = SessionStorageManager.getSession();
 
+const BASE_URL = "https://passmanager.reservai.com.mx/api";
+
 // Utilidad para detectar UUID v4
 function isUUID(str) {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
@@ -14,7 +16,7 @@ export async function fetchAccountById(accountId, page = 1, search = '') {
     if (search) params.append('search', search);
 
     const response = await fetch(
-        `https://app.reservai-passmanager.com/api/a/${encodeURIComponent(accountId)}?${params.toString()}`,
+        `${BASE_URL}/a/${encodeURIComponent(accountId)}?${params.toString()}`,
         {
             headers: { Authorization: token }
         }
@@ -32,7 +34,7 @@ export async function fetchAccounts({ page = 1, search = "" }) {
     if (!token) throw new Error("No hay sesión de administrador");
 
     let url;
-    url = `https://app.reservai-passmanager.com/api/a?page=${page}&search=${encodeURIComponent(search)}`;
+    url = `${BASE_URL}/a?page=${page}&search=${encodeURIComponent(search)}`;
 
     const response = await fetch(url, {
         method: "GET",
@@ -56,7 +58,7 @@ export async function fetchAccounts({ page = 1, search = "" }) {
 export async function deleteAccount(accountId) {
     const token = SessionStorageManager.getSession()?.access_token;
 
-    const response = await fetch(`https://app.reservai-passmanager.com/api/account/${encodeURIComponent(accountId)}`, {
+    const response = await fetch(`${BASE_URL}/account/${encodeURIComponent(accountId)}`, {
         method: "DELETE",
         headers: {
             "Authorization": token

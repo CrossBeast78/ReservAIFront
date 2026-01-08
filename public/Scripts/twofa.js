@@ -1,6 +1,9 @@
 import SessionStorageManager from "./AppStorage.js";
 
 const session = SessionStorageManager.getSession();
+
+const BASE_URL = "https://passmanager.reservai.com.mx/api";
+
 if (!session || !session.access_token) {
     window.location.href = "/login";
 }
@@ -63,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("https://app.reservai-passmanager.com/api/twofa", {
+            const response = await fetch(`${BASE_URL}/twofa`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,8 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.location.href = "/inicio";
                 }
             } else {
-                alert("Error: " + err.message);
-                showError("Respuesta inválida del servidor.");}
+                showError("Respuesta inválida del servidor.");
+            }
         } catch (err) {
 
         }

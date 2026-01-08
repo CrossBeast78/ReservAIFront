@@ -1,14 +1,14 @@
 import SessionStorageManager from '../../AppStorage.js';
 import Password from '../../../models/passwords.js';
 
-const BASE_URL = "https://app.reservai-passmanager.com/api/p";
+const BASE_URL = "https://passmanager.reservai.com.mx/api/p";
 const token = SessionStorageManager.getSession()?.access_token;
 
     export async function fetchPasswords(page = 1, search = '') {
         const token = SessionStorageManager.getSession()?.access_token;
         if (!token) throw new Error("No hay sesión activa");
 
-        const url = `https://app.reservai-passmanager.com/api/p?page=${page}&search=${encodeURIComponent(search)}`;
+        const url = `${BASE_URL}?page=${page}&search=${encodeURIComponent(search)}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: { Authorization: token }
@@ -64,7 +64,7 @@ const token = SessionStorageManager.getSession()?.access_token;
     export async function updatePasswordAttribute(id, attribute, value) {
     const token = SessionStorageManager.getSession()?.access_token;
     
-    const response = await fetch(`https://app.reservai-passmanager.com/api/p/${id}?attribute=${attribute}`, {
+    const response = await fetch(`${BASE_URL}/${id}?attribute=${attribute}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

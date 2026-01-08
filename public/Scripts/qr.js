@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const qrMessage = document.querySelector(".qr-message");
   const nextBtn = document.getElementById('nextBtn');
   const token = SessionStorageManager.getSession().access_token;
+  const BASE_URL = "https://passmanager.reservai.com.mx/api";
 
   // Configurar event listener para el botón "Siguiente"
   if (nextBtn) {
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const response = await fetch("https://app.reservai-passmanager.com/api/twofa", {
+    const response = await fetch(`${BASE_URL}/twofa`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

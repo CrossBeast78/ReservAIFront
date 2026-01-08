@@ -1,10 +1,12 @@
 import SessionStorageManager from "../../AppStorage.js";
 import Password from "../../../models/passwordsAdmin.js";
 
+const BASE_URL = "https://passmanager.reservai.com.mx/api";
+
 export async function fetchPasswordById(accountId, passwordId) {
     const token = SessionStorageManager.getSession()?.access_token;
     if (!token) throw new Error("No hay sesión activa");
-    const url = `https://app.reservai-passmanager.com/api/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}`;
+    const url = `${BASE_URL}/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}`;
     const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -30,7 +32,7 @@ export async function createPasswordForAccount({accountId, name, password, descr
     visibility
   };
 
-  const url = `https://app.reservai-passmanager.com/api/a/${encodeURIComponent(accountId)}`;
+  const url = `${BASE_URL}/a/${encodeURIComponent(accountId)}`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -50,7 +52,7 @@ export async function createPasswordForAccount({accountId, name, password, descr
 export async function updatePasswordAttribute(accountId, passwordId, attribute, value) {
   const token = SessionStorageManager.getSession()?.access_token;
   
-  const url = `https://app.reservai-passmanager.com/api/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}?attribute=${encodeURIComponent(attribute)}`;
+  const url = `${BASE_URL}/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}?attribute=${encodeURIComponent(attribute)}`;
   const body = { value };
   const response = await fetch(url, {
     method: "PUT",
@@ -74,7 +76,7 @@ export async function updatePasswordAttribute(accountId, passwordId, attribute, 
 
 export async function deletePassword(accountId, passwordId) {
   const token = SessionStorageManager.getSession()?.access_token;
-  const url = `https://app.reservai-passmanager.com/api/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}`;
+  const url = `${BASE_URL}/a/${encodeURIComponent(accountId)}/${encodeURIComponent(passwordId)}`;
   const response = await fetch(url, {
     method: "DELETE",
     headers: {

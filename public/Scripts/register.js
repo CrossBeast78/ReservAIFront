@@ -1,8 +1,29 @@
 import SessionStorageManager from "./AppStorage.js";
 
 const session = SessionStorageManager.getSession();
+
+const BASE_URL = "https://passmanager.reservai.com.mx/api";
+
 if (!session || !session.access_token) {
     window.location.href = "/login";
+}
+
+// Función para mostrar mensajes en la interfaz
+function showMessage(message, type = 'info', duration = 3000) {
+  const container = document.getElementById('messageContainer');
+  if (!container) return;
+
+  const messageEl = document.createElement('div');
+  messageEl.className = `message message-${type}`;
+  messageEl.textContent = message;
+  messageEl.style.animation = 'slideIn 0.3s ease-in-out';
+
+  container.appendChild(messageEl);
+
+  setTimeout(() => {
+    messageEl.style.animation = 'slideOut 0.3s ease-in-out';
+    setTimeout(() => messageEl.remove(), 300);
+  }, duration);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -83,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (pass !== confirm ) {
       showError(confirmPasswordInput, "Las contraseñas no coinciden");
+      showError(passwordInput, "Las contraseñas no coinciden");
       valid = false;
     }
     if (!valid) return;
@@ -99,11 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeOfAccount = SessionStorageManager.getSession()?.account_type;
     if (typeOfAccount !== "admin") {
       showError(emailInput, "No tienes permisos para crear cuentas");
+      showError(passwordInput, "No tienes permisos para crear cuentas");
+      showError(confirmPasswordInput, "No tienes permisos para crear cuentas");
+      showError(nameInput, "No tienes permisos para crear cuentas");
       return;
     }
 
     try {
-      const response = await fetch("https://app.reservai-passmanager.com/api/account", {
+      const response = await fetch(`${BASE_URL}/account`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -131,12 +156,32 @@ document.addEventListener('DOMContentLoaded', () => {
          
 
           if (!response.ok) {
-            showError(emailInput, result.error || result.message || "Error al registrar");
+            const errorMsg = (result.error || result.message || "Error al registrar").toLowerCase();
+            
+            // Si el error contiene "name", mostrarlo en el campo name
+            if (errorMsg.includes('name')) {
+              showError(nameInput, result.error || result.message || "Error al registrar");
+            } 
+            // Si el error contiene "password", mostrarlo en el campo password
+            else if (errorMsg.includes('password')) {
+              showError(passwordInput, result.error || result.message || "Error al registrar");
+              showError(confirmPasswordInput, result.error || result.message || "Error al registrar");
+            } 
+            // Si el error contiene "email", mostrarlo en el campo email
+            else if (errorMsg.includes('email')) {
+              showError(emailInput, result.error || result.message || "Error al registrar");
+            }
+            // Otros errores en email por defecto
+            else {
+              showError(emailInput, result.error || result.message || "Error al registrar");
+            }
             return;
           }
 
-          alert("Cuenta creada con éxito");
-          window.location.href = "/verify_email";
+          showMessage("Cuenta creada con éxito", 'success', 4000);
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1500);
         } catch (err) {
           showError(emailInput, "Error: " + err.message);
         }

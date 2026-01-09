@@ -50,7 +50,7 @@ export async function createStripeCustomer() {
     if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
     if (stripeLoadingText) {
         stripeLoadingText.textContent = 'Creando customer en Stripe...';
-        stripeLoadingText.style.color = '#222';
+        stripeLoadingText.style.color = '#fff';
     }
     try {
         const token = SessionStorageManager.getSession().access_token;
@@ -82,14 +82,14 @@ export async function createStripeCustomer() {
             }
             if (stripeLoadingText) {
                 stripeLoadingText.textContent = 'Error: ' + msg;
-                stripeLoadingText.style.color = '#c00';
+                stripeLoadingText.style.color = '#fff';
             }
             throw new Error(msg);
         }
         const data = await response.json();
         if (stripeLoadingText) {
             stripeLoadingText.textContent = '¡Customer creado correctamente!';
-            stripeLoadingText.style.color = '#1a7f37';
+            stripeLoadingText.style.color = '#fff';
         }
         return data;
     } catch (err) {

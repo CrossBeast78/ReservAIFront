@@ -48,6 +48,7 @@ export async function createStripeCustomer() {
     const stripeLoadingModal = document.getElementById('stripeLoadingModal');
     const stripeLoadingText = document.getElementById('stripeLoadingText');
     const stripeModalIcon = document.getElementById('stripeModalSpinner');
+    console.log('[createStripeCustomer] Iniciando creación de customer en Stripe');
     if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
     if (stripeModalIcon) {
         stripeModalIcon.style.display = 'block';
@@ -58,8 +59,11 @@ export async function createStripeCustomer() {
     }
     try {
         const token = SessionStorageManager.getSession().access_token;
+        console.log('[createStripeCustomer] Token:', token ? 'presente' : 'ausente');
+        const url = `${BASE_URL}/billing/customer`;
+        console.log('[createStripeCustomer] Llamando a:', url);
         const response = await fetch(
-            `${BASE_URL}/billing/customer`,
+            url,
             {
                 method: "POST",
                 headers: {
@@ -68,8 +72,10 @@ export async function createStripeCustomer() {
                 }
             }
         );
+        console.log('[createStripeCustomer] Status de respuesta:', response.status);
         if (!response.ok) {
             const errorText = await response.text();
+            console.log('[createStripeCustomer] Error response:', errorText);
             let msg = '';
             if (response.status === 400 && errorText.includes('already exists')) {
                 msg = 'El customer ya existe para esta cuenta';
@@ -92,9 +98,11 @@ export async function createStripeCustomer() {
             if (stripeModalIcon) {
                 stripeModalIcon.style.display = 'none';
             }
+            console.log('[createStripeCustomer] Lanzando error:', msg);
             throw new Error(msg);
         }
         const data = await response.json();
+        console.log('[createStripeCustomer] Respuesta exitosa:', data);
         if (stripeLoadingText) {
             stripeLoadingText.textContent = '¡Customer creado correctamente!';
             stripeLoadingText.classList.remove('error');
@@ -105,6 +113,7 @@ export async function createStripeCustomer() {
         }
         return data;
     } catch (err) {
+        console.error('[createStripeCustomer] Error en catch:', err);
         // El mensaje de error ya se muestra en el modal
         throw err;
     }

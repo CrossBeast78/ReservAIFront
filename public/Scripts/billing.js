@@ -44,10 +44,14 @@ function getStatusBadge(status) {
 
 // Crear customer en Stripe
 export async function createStripeCustomer() {
-    const loadingEl = document.getElementById('billingLoading');
-    const errorEl = document.getElementById('billingError');
-    if (loadingEl) loadingEl.style.display = 'block';
-    if (errorEl) errorEl.style.display = 'none';
+    // Usar el modal de carga de Stripe si existe
+    const stripeLoadingModal = document.getElementById('stripeLoadingModal');
+    const stripeLoadingText = document.getElementById('stripeLoadingText');
+    if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
+    if (stripeLoadingText) {
+        stripeLoadingText.textContent = 'Creando customer en Stripe...';
+        stripeLoadingText.style.color = '#222';
+    }
     try {
         const token = SessionStorageManager.getSession().access_token;
         const response = await fetch(
@@ -62,31 +66,35 @@ export async function createStripeCustomer() {
         );
         if (!response.ok) {
             const errorText = await response.text();
+            let msg = '';
             if (response.status === 400 && errorText.includes('already exists')) {
-                throw new Error('El customer ya existe para esta cuenta');
+                msg = 'El customer ya existe para esta cuenta';
             } else if (response.status === 400) {
-                throw new Error('La cuenta no existe en la base de datos');
+                msg = 'La cuenta no existe en la base de datos';
             } else if (response.status === 403) {
-                throw new Error('La cuenta no es de tipo cliente');
+                msg = 'La cuenta no es de tipo cliente';
             } else if (response.status === 418) {
-                throw new Error('No se envió el token');
+                msg = 'No se envió el token';
             } else if (response.status === 500) {
-                throw new Error('Error creando el customer en Stripe');
+                msg = 'Error creando el customer en Stripe';
+            } else {
+                msg = `Error ${response.status}: ${errorText}`;
             }
-            throw new Error(`Error ${response.status}: ${errorText}`);
+            if (stripeLoadingText) {
+                stripeLoadingText.textContent = 'Error: ' + msg;
+                stripeLoadingText.style.color = '#c00';
+            }
+            throw new Error(msg);
         }
         const data = await response.json();
-        // Mensaje de éxito
-        alert('Customer creado correctamente en Stripe');
+        if (stripeLoadingText) {
+            stripeLoadingText.textContent = '¡Customer creado correctamente!';
+            stripeLoadingText.style.color = '#1a7f37';
+        }
         return data;
     } catch (err) {
-        if (errorEl) {
-            errorEl.style.display = 'block';
-            errorEl.textContent = '❌ ' + err.message;
-        }
+        // El mensaje de error ya se muestra en el modal
         throw err;
-    } finally {
-        if (loadingEl) loadingEl.style.display = 'none';
     }
 }
 async function fetchSubscriptions(page = 1) {

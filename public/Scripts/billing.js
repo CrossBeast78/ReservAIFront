@@ -239,16 +239,36 @@ async function fetchSubscriptions(page = 1) {
                             margin-top: 0.5rem;
                         ">Configurar ahora →</a>
                     </div>
+                    <div id="stripeLoadingModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
+                        <div style="background:#fff;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 16px #0002;text-align:center;min-width:220px;">
+                            <div style="font-size:2.2rem;margin-bottom:0.5rem;">⏳</div>
+                            <div id="stripeLoadingText" style="color:#222;font-size:1.1rem;">Creando customer en Stripe...</div>
+                        </div>
+                    </div>
                 `;
-                
                 // Event listener para el link de Stripe
                 const stripeConfigLink = document.getElementById('stripeConfigLink');
+                const stripeLoadingModal = document.getElementById('stripeLoadingModal');
+                const stripeLoadingText = document.getElementById('stripeLoadingText');
                 if (stripeConfigLink) {
-                    stripeConfigLink.addEventListener('click', (e) => {
+                    stripeConfigLink.addEventListener('click', async (e) => {
                         e.preventDefault();
-                        // TODO: Reemplazar con la URL correcta de Stripe cuando esté disponible
-                        // window.location.href = `${BASE_URL}/billing/stripe/setup`;
-                        alert("Redirigiendo a configuración de Stripe...");
+                        if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
+                        if (stripeLoadingText) stripeLoadingText.textContent = 'Creando customer en Stripe...';
+                        try {
+                            await createStripeCustomer();
+                            if (stripeLoadingText) stripeLoadingText.textContent = '¡Customer creado correctamente!';
+                            setTimeout(() => {
+                                if (stripeLoadingModal) stripeLoadingModal.style.display = 'none';
+                                // Recargar la página para que se refleje el cambio
+                                window.location.reload();
+                            }, 1200);
+                        } catch (err) {
+                            if (stripeLoadingText) stripeLoadingText.textContent = 'Error: ' + (err.message || 'No se pudo crear el customer');
+                            setTimeout(() => {
+                                if (stripeLoadingModal) stripeLoadingModal.style.display = 'none';
+                            }, 2200);
+                        }
                     });
                 }
             } else {

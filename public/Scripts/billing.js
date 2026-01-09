@@ -1,3 +1,4 @@
+
 import SessionStorageManager from "./AppStorage.js";
 
 const BASE_URL = "https://passmanager.reservai.com.mx/api";
@@ -40,6 +41,59 @@ function getStatusBadge(status) {
         return { class: 'status-pending', text: 'Pendiente' };
     }
     return { class: 'status-inactive', text: statusLower };
+}
+
+// Crear sesión del portal de facturación y redirigir al usuario
+export async function openStripeBillingPortal() {
+    const token = SessionStorageManager.getSession().access_token;
+    const url = `${BASE_URL}/billing/portal`;
+    console.log('[openStripeBillingPortal] Llamando a:', url);
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+        console.log('[openStripeBillingPortal] Status de respuesta:', response.status);
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            data = {};
+        }
+        if (response.status === 200 && data.session && data.session.url) {
+            console.log('[openStripeBillingPortal] Redirigiendo a:', data.session.url);
+            window.location.href = data.session.url;
+            return;
+        }
+        // Manejo de errores según la tabla proporcionada
+        let msg = '';
+        if (response.status === 400) {
+            msg = 'La cuenta no existe en la base de datos';
+        } else if (response.status === 403 && (text.includes('not a client') || text.includes('Account is not a client'))) {
+            msg = 'La cuenta no es de tipo cliente';
+        } else if (response.status === 403) {
+            msg = 'Path traversal detectado (Forbidden)';
+        } else if (response.status === 404) {
+            msg = 'No existe un customer asociado';
+        } else if (response.status === 418 && text.includes('Token is required')) {
+            msg = 'No se envió el token';
+        } else if (response.status === 418) {
+            msg = 'El token es inválido';
+        } else if (response.status === 500) {
+            msg = 'Error creando la sesión del portal en Stripe';
+        } else {
+            msg = `Error ${response.status}: ${text}`;
+        }
+        console.error('[openStripeBillingPortal] Error:', msg);
+        alert('No se pudo abrir el portal de facturación: ' + msg);
+    } catch (err) {
+        console.error('[openStripeBillingPortal] Error en catch:', err);
+        alert('No se pudo abrir el portal de facturación: ' + (err.message || err));
+    }
 }
 
 // Crear customer en Stripe
@@ -343,40 +397,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Gestionar Pagos (placeholder para futura funcionalidad)
+    // Gestionar Pagos: abrir portal de Stripe
     const manageBillingBtn = document.getElementById("manageBillingBtn");
     if (manageBillingBtn) {
         manageBillingBtn.addEventListener("click", async () => {
-            // Endpoint para abrir la página de gestión de pagos
-            // TODO: Implementar cuando el endpoint esté disponible
-            // window.location.href = `${BASE_URL}/billing/manage`;
-            alert("Funcionalidad de gestión de planes en desarrollo");
+            await openStripeBillingPortal();
         });
     }
-
-    // Paginación
-/*     const prevBtn = document.getElementById('prevBilling');
-    const nextBtn = document.getElementById('nextBilling');
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            const currentPage = window.currentBillingPage || 1;
-            if (currentPage > 1) {
-                fetchSubscriptions(currentPage - 1);
-            }
-        });
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const nextPage = window.nextBillingPage;
-            if (nextPage) {
-                fetchSubscriptions(nextPage);
-            }
-        });
-    }
- */
-
     // Cargar datos iniciales
     fetchSubscriptions(1);
 });

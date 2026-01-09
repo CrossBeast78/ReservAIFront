@@ -65,8 +65,8 @@ export async function openStripeBillingPortal() {
             data = {};
         }
         if (response.status === 200 && data.session && data.session.url) {
-            console.log('[openStripeBillingPortal] Redirigiendo a:', data.session.url);
-            window.location.href = data.session.url;
+            console.log('[openStripeBillingPortal] Abriendo nueva pestaña:', data.session.url);
+            window.open(data.session.url, '_blank');
             return;
         }
         // Manejo de errores según la tabla proporcionada

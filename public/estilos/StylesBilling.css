@@ -48,10 +48,30 @@ body {
   align-items: center;
 }
 
-#stripeLoadingModal .stripe-modal-icon {
-  font-size: 2.5rem;
+
+/* Spinner for Stripe modal */
+#stripeModalSpinner.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #eee;
+  border-top: 5px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
   margin-bottom: 0.7rem;
-  color: var(--primary);
+  display: block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Success and error message colors for Stripe modal */
+#stripeLoadingText.success {
+  color: #4CAF50 !important;
+}
+#stripeLoadingText.error {
+  color: #f44336 !important;
 }
 
 #stripeLoadingText {

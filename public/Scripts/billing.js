@@ -47,10 +47,14 @@ export async function createStripeCustomer() {
     // Usar el modal de carga de Stripe si existe
     const stripeLoadingModal = document.getElementById('stripeLoadingModal');
     const stripeLoadingText = document.getElementById('stripeLoadingText');
+    const stripeModalIcon = document.getElementById('stripeModalSpinner');
     if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
+    if (stripeModalIcon) {
+        stripeModalIcon.style.display = 'block';
+    }
     if (stripeLoadingText) {
         stripeLoadingText.textContent = 'Creando customer en Stripe...';
-        stripeLoadingText.style.color = '#fff';
+        stripeLoadingText.classList.remove('success', 'error');
     }
     try {
         const token = SessionStorageManager.getSession().access_token;
@@ -82,14 +86,22 @@ export async function createStripeCustomer() {
             }
             if (stripeLoadingText) {
                 stripeLoadingText.textContent = 'Error: ' + msg;
-                stripeLoadingText.style.color = '#fff';
+                stripeLoadingText.classList.remove('success');
+                stripeLoadingText.classList.add('error');
+            }
+            if (stripeModalIcon) {
+                stripeModalIcon.style.display = 'none';
             }
             throw new Error(msg);
         }
         const data = await response.json();
         if (stripeLoadingText) {
             stripeLoadingText.textContent = '¡Customer creado correctamente!';
-            stripeLoadingText.style.color = '#fff';
+            stripeLoadingText.classList.remove('error');
+            stripeLoadingText.classList.add('success');
+        }
+        if (stripeModalIcon) {
+            stripeModalIcon.style.display = 'none';
         }
         return data;
     } catch (err) {
@@ -249,7 +261,7 @@ async function fetchSubscriptions(page = 1) {
                     </div>
                     <div id="stripeLoadingModal">
                         <div class="stripe-modal-content">
-                            <div class="stripe-modal-icon">⏳</div>
+                            <div id="stripeModalSpinner" class="spinner" style="display: block;"></div>
                             <div id="stripeLoadingText">Creando customer en Stripe...</div>
                         </div>
                     </div>
@@ -258,21 +270,35 @@ async function fetchSubscriptions(page = 1) {
                 const stripeConfigLink = document.getElementById('stripeConfigLink');
                 const stripeLoadingModal = document.getElementById('stripeLoadingModal');
                 const stripeLoadingText = document.getElementById('stripeLoadingText');
+                const stripeModalIcon = document.getElementById('stripeModalSpinner');
                 if (stripeConfigLink) {
                     stripeConfigLink.addEventListener('click', async (e) => {
                         e.preventDefault();
                         if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
-                        if (stripeLoadingText) stripeLoadingText.textContent = 'Creando customer en Stripe...';
+                        if (stripeModalIcon) stripeModalIcon.style.display = 'block';
+                        if (stripeLoadingText) {
+                            stripeLoadingText.textContent = 'Creando customer en Stripe...';
+                            stripeLoadingText.classList.remove('success', 'error');
+                        }
                         try {
                             await createStripeCustomer();
-                            if (stripeLoadingText) stripeLoadingText.textContent = '¡Customer creado correctamente!';
+                            if (stripeLoadingText) {
+                                stripeLoadingText.textContent = '¡Customer creado correctamente!';
+                                stripeLoadingText.classList.remove('error');
+                                stripeLoadingText.classList.add('success');
+                            }
+                            if (stripeModalIcon) stripeModalIcon.style.display = 'none';
                             setTimeout(() => {
                                 if (stripeLoadingModal) stripeLoadingModal.style.display = 'none';
-                                // Recargar la página para que se refleje el cambio
                                 window.location.reload();
                             }, 1200);
                         } catch (err) {
-                            if (stripeLoadingText) stripeLoadingText.textContent = 'Error: ' + (err.message || 'No se pudo crear el customer');
+                            if (stripeLoadingText) {
+                                stripeLoadingText.textContent = 'Error: ' + (err.message || 'No se pudo crear el customer');
+                                stripeLoadingText.classList.remove('success');
+                                stripeLoadingText.classList.add('error');
+                            }
+                            if (stripeModalIcon) stripeModalIcon.style.display = 'none';
                             setTimeout(() => {
                                 if (stripeLoadingModal) stripeLoadingModal.style.display = 'none';
                             }, 2200);

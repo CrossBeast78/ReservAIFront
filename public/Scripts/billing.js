@@ -47,9 +47,8 @@ async function fetchSubscriptions(page = 1) {
     const errorEl = document.getElementById('billingError');
     const tableBody = document.getElementById('billingTableBody');
     const billingTable = document.querySelector('.billing-table');
-    // Oculta el cuerpo de la tabla mientras carga
-    if (tableBody) tableBody.style.display = 'none';
-    if (billingTable) billingTable.style.opacity = '0.5';
+    // Oculta toda la tabla mientras carga
+    if (billingTable) billingTable.style.display = 'none';
     if (loadingEl) loadingEl.style.display = 'block';
     if (errorEl) errorEl.style.display = 'none';
     
@@ -132,9 +131,8 @@ async function fetchSubscriptions(page = 1) {
                 </tr>
             `).join('');
         }
-        // Mostrar el cuerpo de la tabla y restaurar opacidad
-        if (tableBody) tableBody.style.display = 'table-row-group';
-        if (billingTable) billingTable.style.opacity = '1';
+        // Mostrar la tabla cuando termina de cargar
+        if (billingTable) billingTable.style.display = '';
 
         // Agregar animación a la tabla
         const billingContent = document.querySelector('.billing-content');

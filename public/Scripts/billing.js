@@ -53,57 +53,37 @@ async function fetchSubscriptions(page = 1) {
     try {
         const token = SessionStorageManager.getSession().access_token;
         
-
-         
-        // SIMULACIÓN DE ERROR 404 - Eliminar cuando el endpoint esté disponible
-        //throw new Error('404');
-        
-        // DATOS DE PRUEBA - Eliminar cuando el endpoint esté disponible
-        const mockData = {
-            data: [
-                {
-                    id: 1,
-                    plan_name: "Plan Básico",
-                    price: 1699.99,
-                    start_date: "2024-01-15",
-                    end_date: "2025-01-15",
-                    status: "active"
-                },
-                {
-                    id: 2,
-                    plan_name: "Plan Pro",
-                    price: 2699.99,
-                    start_date: "2023-06-20",
-                    end_date: "2026-06-20",
-                    status: "active"
-                }
-            ],
-            current_page: page,
-            next_page: null
-        };
-
         // Endpoint para obtener planes del usuario
-        // const response = await fetch(
-        //     `${BASE_URL}/billing/plans?page=${page}`,
-        //     {
-        //         method: "GET",
-        //         headers: {
-        //             "Authorization": token
-        //         }
-        //     }
-        // );
+        const response = await fetch(
+            `${BASE_URL}/billing/status`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+            }
+        );
 
-        // if (response.status === 418) {
-        //     window.location.href = '/login';
-        //     return;
-        // }
+        if (response.status === 418) {
+            window.location.href = '/login';
+            return;
+        }
 
-        // if (!response.ok) {
-        //     throw new Error('No se pudieron cargar los planes');
-        // }
+        if (!response.ok) {
+            if (response.status === 400) {
+                throw new Error('Account does not exist');
+            } else if (response.status === 403) {
+                throw new Error('Account is not a client');
+            } else if (response.status === 404) {
+                throw new Error('404');
+            } else if (response.status === 500) {
+                throw new Error('Internal server error');
+            }
+            throw new Error('No se pudieron cargar los planes');
+        }
 
-        // const data = await response.json();
-        const data = mockData; // USAR DATOS DE PRUEBA
+        const data = await response.json();
         const plans = data.data || data.plans || [];
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;
@@ -146,25 +126,6 @@ async function fetchSubscriptions(page = 1) {
         if (billingContent) {
             billingContent.style.animation = 'slideInContent 0.5s ease-out';
         }
-
-  /*       // Actualizar paginación
-        const paginationEl = document.querySelector('.pagination');
-        const pageInfoEl = document.getElementById('billingPageInfo');
-        
-        if (paginationEl && pageInfoEl) {
-            pageInfoEl.textContent = `Página ${currentPage}`;
-            paginationEl.style.display = plans.length > 0 ? 'flex' : 'none';
-            
-            const prevBtn = document.getElementById('prevBilling');
-            const nextBtn = document.getElementById('nextBilling');
-            
-            if (prevBtn) prevBtn.disabled = currentPage <= 1;
-            if (nextBtn) nextBtn.disabled = !nextPage;
-        }
-
-        // Guardar estado de paginación
-        window.currentBillingPage = currentPage;
-        window.nextBillingPage = nextPage; */
 
     } catch (err) {
         console.error("Error al cargar planes:", err);

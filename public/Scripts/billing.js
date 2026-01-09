@@ -42,6 +42,53 @@ function getStatusBadge(status) {
     return { class: 'status-inactive', text: statusLower };
 }
 
+// Crear customer en Stripe
+export async function createStripeCustomer() {
+    const loadingEl = document.getElementById('billingLoading');
+    const errorEl = document.getElementById('billingError');
+    if (loadingEl) loadingEl.style.display = 'block';
+    if (errorEl) errorEl.style.display = 'none';
+    try {
+        const token = SessionStorageManager.getSession().access_token;
+        const response = await fetch(
+            `${BASE_URL}/billing/customer`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+            }
+        );
+        if (!response.ok) {
+            const errorText = await response.text();
+            if (response.status === 400 && errorText.includes('already exists')) {
+                throw new Error('El customer ya existe para esta cuenta');
+            } else if (response.status === 400) {
+                throw new Error('La cuenta no existe en la base de datos');
+            } else if (response.status === 403) {
+                throw new Error('La cuenta no es de tipo cliente');
+            } else if (response.status === 418) {
+                throw new Error('No se envió el token');
+            } else if (response.status === 500) {
+                throw new Error('Error creando el customer en Stripe');
+            }
+            throw new Error(`Error ${response.status}: ${errorText}`);
+        }
+        const data = await response.json();
+        // Mensaje de éxito
+        alert('Customer creado correctamente en Stripe');
+        return data;
+    } catch (err) {
+        if (errorEl) {
+            errorEl.style.display = 'block';
+            errorEl.textContent = '❌ ' + err.message;
+        }
+        throw err;
+    } finally {
+        if (loadingEl) loadingEl.style.display = 'none';
+    }
+}
 async function fetchSubscriptions(page = 1) {
     const loadingEl = document.getElementById('billingLoading');
     const errorEl = document.getElementById('billingError');

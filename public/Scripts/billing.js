@@ -247,10 +247,10 @@ async function fetchSubscriptions(page = 1) {
                             margin-top: 0.5rem;
                         ">Configurar ahora →</a>
                     </div>
-                    <div id="stripeLoadingModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:9999;align-items:center;justify-content:center;">
-                        <div style="background:#fff;padding:2rem 2.5rem;border-radius:12px;box-shadow:0 2px 16px #0002;text-align:center;min-width:220px;">
-                            <div style="font-size:2.2rem;margin-bottom:0.5rem;">⏳</div>
-                            <div id="stripeLoadingText" style="color:#222;font-size:1.1rem;">Creando customer en Stripe...</div>
+                    <div id="stripeLoadingModal">
+                        <div class="stripe-modal-content">
+                            <div class="stripe-modal-icon">⏳</div>
+                            <div id="stripeLoadingText">Creando customer en Stripe...</div>
                         </div>
                     </div>
                 `;

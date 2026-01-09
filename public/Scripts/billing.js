@@ -46,12 +46,18 @@ async function fetchSubscriptions(page = 1) {
     const loadingEl = document.getElementById('billingLoading');
     const errorEl = document.getElementById('billingError');
     const tableBody = document.getElementById('billingTableBody');
-    
+    const billingTable = document.querySelector('.billing-table');
+    // Oculta el cuerpo de la tabla mientras carga
+    if (tableBody) tableBody.style.display = 'none';
+    if (billingTable) billingTable.style.opacity = '0.5';
     if (loadingEl) loadingEl.style.display = 'block';
     if (errorEl) errorEl.style.display = 'none';
     
     try {
         const token = SessionStorageManager.getSession().access_token;
+        
+        console.log('Token:', token ? 'presente' : 'ausente');
+        console.log('Llamando a:', `${BASE_URL}/billing/status`);
         
         // Endpoint para obtener planes del usuario
         const response = await fetch(
@@ -65,12 +71,17 @@ async function fetchSubscriptions(page = 1) {
             }
         );
 
+        console.log('Status de respuesta:', response.status);
+
         if (response.status === 418) {
             window.location.href = '/login';
             return;
         }
 
         if (!response.ok) {
+            const errorText = await response.text();
+            console.log('Error response:', errorText);
+            
             if (response.status === 400) {
                 throw new Error('Account does not exist');
             } else if (response.status === 403) {
@@ -80,10 +91,12 @@ async function fetchSubscriptions(page = 1) {
             } else if (response.status === 500) {
                 throw new Error('Internal server error');
             }
-            throw new Error('No se pudieron cargar los planes');
+            throw new Error(`Error ${response.status}: No se pudieron cargar los planes`);
         }
 
         const data = await response.json();
+        console.log('Datos recibidos:', data);
+        
         const plans = data.data || data.plans || [];
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;
@@ -118,8 +131,10 @@ async function fetchSubscriptions(page = 1) {
                     </td>
                 </tr>
             `).join('');
-            tableBody.style.display = 'table-row-group';
         }
+        // Mostrar el cuerpo de la tabla y restaurar opacidad
+        if (tableBody) tableBody.style.display = 'table-row-group';
+        if (billingTable) billingTable.style.opacity = '1';
 
         // Agregar animación a la tabla
         const billingContent = document.querySelector('.billing-content');

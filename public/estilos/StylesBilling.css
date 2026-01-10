@@ -1,72 +1,3 @@
-/* Mejoras visuales para el modal de selección de plan */
-#planModal .modal-content {
-  max-width: 700px;
-  min-width: 480px;
-  padding: 2.2rem 3.5rem 2.2rem 3.5rem;
-  background: var(--bg-dark);
-  box-shadow: 0 8px 40px #000b;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#planModal .modal-logo {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  margin-bottom: 1.1rem;
-  margin-top: -0.5rem;
-  filter: drop-shadow(0 2px 8px #0008);
-}
-
-.plan-options-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.3rem;
-  margin-top: 0.2rem;
-}
-
-.plan-option {
-  background: #181c22;
-  border-radius: 12px;
-  padding: 1.2rem 2.2rem 1.2rem 2.2rem;
-  text-align: center;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: background 0.2s, border 0.2s, box-shadow 0.2s, transform 0.15s;
-  font-size: 1.13rem;
-  font-weight: 600;
-  outline: none;
-  box-shadow: 0 2px 12px #0003;
-  position: relative;
-}
-.plan-option:focus, .plan-option:hover {
-  background: var(--primary);
-  color: #fff;
-  border: 2px solid var(--primary);
-  box-shadow: 0 4px 18px #0983d688;
-  transform: translateY(-2px) scale(1.03);
-}
-.plan-title {
-  font-size: 1.18rem;
-  font-weight: 700;
-  margin-bottom: 0.3rem;
-  color: #fff;
-  letter-spacing: 0.01em;
-}
-.plan-price {
-  font-size: 1.05rem;
-  color: #b3d6f7;
-  font-weight: 500;
-  margin-bottom: 0.15rem;
-}
-.plan-desc {
-  color: #b0b0b0;
-  font-size: 0.93rem;
-  margin-top: 0.3rem;
-}
 
 :root {
   --primary:  #0983d6;
@@ -545,40 +476,72 @@ body {
 .modal-btn:hover {
   background: #333a44;
 }
-
-/* Plan selection modal */
+/* Mejoras visuales para el modal de selección de plan */
 #planModal .modal-content {
-  max-width: 400px;
-  padding: 2rem 1.5rem 2rem 1.5rem;
+  max-width: 700px;
+  min-width: 480px;
+  padding: 2.2rem 3.5rem 2.2rem 3.5rem;
+  background: var(--bg-dark);
+  box-shadow: 0 8px 40px #000b;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+#planModal .modal-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 1.1rem;
+  margin-top: -0.5rem;
+  filter: drop-shadow(0 2px 8px #0008);
+}
+
+.plan-options-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  margin-top: 0.2rem;
+}
+
 .plan-option {
   background: #181c22;
   border-radius: 12px;
-  margin-bottom: 1.2rem;
-  padding: 1.3rem 1.2rem;
+  padding: 1.2rem 2.2rem 1.2rem 2.2rem;
   text-align: center;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: background 0.2s, border 0.2s;
-  font-size: 1.15rem;
+  transition: background 0.2s, border 0.2s, box-shadow 0.2s, transform 0.15s;
+  font-size: 1.13rem;
   font-weight: 600;
   outline: none;
-}
-.plan-option:last-child {
-  margin-bottom: 0;
+  box-shadow: 0 2px 12px #0003;
+  position: relative;
 }
 .plan-option:focus, .plan-option:hover {
   background: var(--primary);
   color: #fff;
   border: 2px solid var(--primary);
+  box-shadow: 0 4px 18px #0983d688;
+  transform: translateY(-2px) scale(1.03);
 }
 .plan-title {
-  font-size: 1.25rem;
+  font-size: 1.18rem;
   font-weight: 700;
   margin-bottom: 0.3rem;
+  color: #fff;
+  letter-spacing: 0.01em;
 }
 .plan-price {
   font-size: 1.05rem;
   color: #b3d6f7;
   font-weight: 500;
+  margin-bottom: 0.15rem;
+}
+.plan-desc {
+  color: #b0b0b0;
+  font-size: 0.93rem;
+  margin-top: 0.3rem;
 }

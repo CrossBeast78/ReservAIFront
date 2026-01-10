@@ -1,19 +1,3 @@
-// --------- MODAL DE ERROR GLOBAL ---------
-function showError(message) {
-    let errorModal = document.getElementById('globalErrorModal');
-    if (!errorModal) {
-        errorModal = document.createElement('div');
-        errorModal.id = 'globalErrorModal';
-        errorModal.className = 'global-error-modal';
-        document.body.appendChild(errorModal);
-    }
-    errorModal.textContent = message;
-    errorModal.style.display = 'block';
-    setTimeout(() => {
-        errorModal.style.display = 'none';
-    }, 4000);
-}
-
 import SessionStorageManager from "./AppStorage.js";
 
 const BASE_URL = "https://passmanager.reservai.com.mx/api";
@@ -31,6 +15,23 @@ const planIcons = {
     'pro': '/static/Images/LogoReservAi.png',
     'default': '/static/Images/LogoReservAi.png'
 };
+
+// --------- MODAL DE ERROR GLOBAL ---------
+function showError(message) {
+    let errorModal = document.getElementById('globalErrorModal');
+    if (!errorModal) {
+        errorModal = document.createElement('div');
+        errorModal.id = 'globalErrorModal';
+        errorModal.className = 'global-error-modal';
+        document.body.appendChild(errorModal);
+    }
+    errorModal.textContent = message;
+    errorModal.style.display = 'block';
+    setTimeout(() => {
+        errorModal.style.display = 'none';
+    }, 4000);
+}
+
 
 function getPlanIcon(name) {
     const planName = (name || '').toLowerCase();
@@ -71,7 +72,7 @@ function hideModal(modalId) {
 // Obtener links de pago desde el endpoint /links
 async function fetchPaymentLinks() {
     const token = SessionStorageManager.getSession().access_token;
-    const url = `${BASE_URL}/links`;
+    const url = `${BASE_URL}/billing/links`;
     try {
         const response = await fetch(url, {
             method: 'GET',

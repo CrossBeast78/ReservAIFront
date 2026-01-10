@@ -1,9 +1,9 @@
 /* Mejoras visuales para el modal de selección de plan */
 #planModal .modal-content {
-  max-width: 520px;
-  min-width: 340px;
-  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
-  background: var(--bg-card);
+  max-width: 390px;
+  min-width: 300px;
+  padding: 2rem 1.5rem 2rem 1.5rem;
+  background: var(--bg-dark);
   box-shadow: 0 8px 40px #000b;
   position: relative;
   display: flex;
@@ -12,60 +12,60 @@
 }
 
 #planModal .modal-logo {
-  width: 90px;
-  height: 90px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
-  margin-bottom: 1.2rem;
-  margin-top: -1.2rem;
-  filter: drop-shadow(0 2px 12px #0008);
+  margin-bottom: 1.1rem;
+  margin-top: -0.5rem;
+  filter: drop-shadow(0 2px 8px #0008);
 }
 
 .plan-options-list {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
+  gap: 1.1rem;
+  margin-top: 0.2rem;
 }
 
 .plan-option {
-  background: linear-gradient(120deg, #181c22 80%, #0983d6 120%);
-  border-radius: 16px;
-  padding: 1.7rem 1.2rem 1.5rem 1.2rem;
+  background: #181c22;
+  border-radius: 12px;
+  padding: 1.1rem 1rem 1.1rem 1rem;
   text-align: center;
   cursor: pointer;
   border: 2px solid transparent;
   transition: background 0.2s, border 0.2s, box-shadow 0.2s, transform 0.15s;
-  font-size: 1.18rem;
+  font-size: 1.13rem;
   font-weight: 600;
   outline: none;
-  box-shadow: 0 2px 16px #0004;
+  box-shadow: 0 2px 12px #0003;
   position: relative;
 }
 .plan-option:focus, .plan-option:hover {
-  background: linear-gradient(120deg, var(--primary) 80%, #181c22 120%);
+  background: var(--primary);
   color: #fff;
   border: 2px solid var(--primary);
-  box-shadow: 0 4px 24px #0983d6aa;
+  box-shadow: 0 4px 18px #0983d688;
   transform: translateY(-2px) scale(1.03);
 }
 .plan-title {
-  font-size: 1.35rem;
+  font-size: 1.18rem;
   font-weight: 700;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   color: #fff;
   letter-spacing: 0.01em;
 }
 .plan-price {
-  font-size: 1.12rem;
+  font-size: 1.05rem;
   color: #b3d6f7;
   font-weight: 500;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
 }
 .plan-desc {
   color: #b0b0b0;
-  font-size: 0.98rem;
-  margin-top: 0.5rem;
+  font-size: 0.93rem;
+  margin-top: 0.3rem;
 }
 
 :root {
@@ -473,7 +473,7 @@ body {
 }
 
 .modal-content {
-  background: var(--bg-card);
+  background: var(--bg-dark);
   border-radius: 18px;
   box-shadow: 0 8px 32px #000a;
   padding: 2.2rem 2.5rem 2rem 2.5rem;

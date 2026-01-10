@@ -1,3 +1,25 @@
+
+:root {
+  --primary:  #0983d6;
+  --primary-hover: #008bbd;
+  --bg-dark: #0D0D0D;
+  --bg-card: #1A1A1A;
+  --bg-input: #2C2C2C;
+  --bg-hover: #3A3A3A;
+  --text-light: #FFFFFF;
+  --text-gray: #A0A0A0;
+}
+
+/* Reset básico */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", sans-serif; }
+
+body {
+  background: linear-gradient(2deg, var(--bg-dark), #0983d6);
+  color: var(--text-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 /* --------- CARDS DE SUSCRIPCIÓN --------- */
 .billing-cards-list {
   display: flex;
@@ -9,7 +31,7 @@
 }
 
 .subscription-card {
-  background: rgba(22,32,42,0.82);
+  background: var(--bg-dark);
   border-radius: 22px;
   box-shadow: 0 8px 40px #0007;
   padding: 2.2rem 3.5rem 1.7rem 3.5rem;
@@ -266,28 +288,6 @@
   }
 }
 
-:root {
-  --primary:  #0983d6;
-  --primary-hover: #008bbd;
-  --bg-dark: #0D0D0D;
-  --bg-card: #1A1A1A;
-  --bg-input: #2C2C2C;
-  --bg-hover: #3A3A3A;
-  --text-light: #FFFFFF;
-  --text-gray: #A0A0A0;
-}
-
-/* Reset básico */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", sans-serif; }
-
-body {
-  background: linear-gradient(2deg, var(--bg-dark), #0983d6);
-  color: var(--text-light);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Modal de carga Stripe */
 #stripeLoadingModal {
   display: none;
@@ -437,7 +437,7 @@ body {
 
 /* Billing Content */
 .billing-content {
-  background: var(--bg-card);
+  background: transparent;
   border-radius: 12px;
   overflow: hidden;
   padding: 0;

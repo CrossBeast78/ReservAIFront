@@ -299,9 +299,37 @@ async function fetchSubscriptions(page = 1) {
         const data = await response.json();
         console.log('Datos recibidos:', data);
         
-        const plans = data.data || data.plans || [];
+
+        let plans = data.data || data.plans || [];
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;
+
+        // Si no hay planes, usar datos de ejemplo para mostrar el diseño
+        if (!plans || plans.length === 0) {
+            plans = [
+                {
+                    plan_name: "Plan Básico",
+                    amount: 169900, // en centavos
+                    current_period_start: "2024-01-14T00:00:00Z",
+                    current_period_end: "2025-01-14T00:00:00Z",
+                    status: "active"
+                },
+                {
+                    plan_name: "Plan Pro",
+                    amount: 269900, // en centavos
+                    current_period_start: "2023-06-19T00:00:00Z",
+                    current_period_end: "2026-06-19T00:00:00Z",
+                    status: "inactive"
+                },
+                {
+                    plan_name: "Plan Premium",
+                    amount: 399900, // en centavos
+                    current_period_start: "2024-03-01T00:00:00Z",
+                    current_period_end: "2025-03-01T00:00:00Z",
+                    status: "pending"
+                }
+            ];
+        }
 
         // Renderizar tarjetas de suscripción
         if (!cardsContainer) return;

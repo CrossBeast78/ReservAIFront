@@ -318,7 +318,7 @@ async function fetchSubscriptions(page = 1) {
                     <span class="card-icon"><img src="${getPlanIcon(plan.plan_name)}" alt="${plan.plan_name}" style="width: 32px; height: 32px; object-fit: contain;"></span>
                     <div>
                       <div class="card-title">${plan.plan_name || 'Plan'}</div>
-                      <div class="card-price">$${(plan.amount / 100).toFixed(2)} / mes</div>
+                      <div class="card-price">$${plan.amount} / mes</div>
                     </div>
                   </div>
                   <div class="${statusClass}">${badge.text.toUpperCase()}</div>

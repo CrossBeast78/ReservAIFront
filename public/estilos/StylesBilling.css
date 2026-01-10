@@ -1,3 +1,117 @@
+/* ------------------ RESPONSIVE DESIGN ------------------ */
+@media (max-width: 900px) {
+  .container {
+    padding: 1.2rem;
+    max-width: 100vw;
+  }
+  .billing-header {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+  .btn-manage {
+    width: 100%;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    min-width: 100vw;
+    font-size: 0.98rem;
+  }
+  .container {
+    padding: 0.5rem;
+    max-width: 100vw;
+  }
+  .billing-header {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+    margin-bottom: 1.2rem;
+  }
+  .billing-info h1 {
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .billing-description {
+    font-size: 0.95rem;
+  }
+  .btn-manage {
+    width: 100%;
+    font-size: 0.98rem;
+    padding: 0.6rem 0.7rem;
+  }
+  .billing-content {
+    border-radius: 8px;
+    padding: 0;
+  }
+  .billing-table th, .billing-table td {
+    padding: 0.7rem 0.3rem;
+    font-size: 0.93rem;
+  }
+  .billing-table {
+    font-size: 0.93rem;
+    border-radius: 8px;
+    min-width: 100vw;
+    overflow-x: auto;
+    display: block;
+  }
+  .subscription-name {
+    gap: 0.5rem;
+    font-size: 0.97rem;
+  }
+  .subscription-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 1rem;
+  }
+  .status-badge {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    min-width: 60px;
+  }
+  .fab {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
+    right: 1rem;
+    bottom: 1rem;
+  }
+  #planModal .modal-content {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+  }
+  #planModal .modal-logo {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.7rem;
+  }
+  .plan-options-list {
+    gap: 0.7rem;
+  }
+  .plan-option {
+    padding: 0.7rem 1rem 0.7rem 1rem;
+    font-size: 1rem;
+  }
+  .plan-title {
+    font-size: 1.05rem;
+  }
+  .plan-price {
+    font-size: 0.97rem;
+  }
+  .plan-desc {
+    font-size: 0.89rem;
+  }
+  .modal-content {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+  }
+}
 
 :root {
   --primary:  #0983d6;

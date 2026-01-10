@@ -164,10 +164,10 @@ export async function openStripeBillingPortal() {
             msg = `Error ${response.status}: ${text}`;
         }
         console.error('[openStripeBillingPortal] Error:', msg);
-        alert('No se pudo abrir el portal de facturación: ' + msg);
+        showError('No se pudo abrir el portal de facturación: ' + msg);
     } catch (err) {
         console.error('[openStripeBillingPortal] Error en catch:', err);
-        alert('No se pudo abrir el portal de facturación: ' + (err.message || err));
+        showError('No se pudo abrir el portal de facturación: ' + (err.message || err));
     }
 }
 
@@ -305,7 +305,7 @@ async function fetchSubscriptions(page = 1) {
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;
 
-        // Renderizar tabla
+        // Renderizar tabla con los campos del endpoint
         if (plans.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>No tienes planes activos</p></td></tr>';
         } else {
@@ -314,19 +314,19 @@ async function fetchSubscriptions(page = 1) {
                     <td>
                         <div class="subscription-name">
                             <span class="subscription-icon">
-                                <img src="${getPlanIcon(plan.plan_name || plan.name)}" alt="${plan.plan_name || plan.name}" style="width: 32px; height: 32px; object-fit: contain;">
+                                <img src="${getPlanIcon(plan.plan_name)}" alt="${plan.plan_name}" style="width: 32px; height: 32px; object-fit: contain;">
                             </span>
-                            <span>${plan.plan_name || plan.name || 'Plan'}</span>
+                            <span>${plan.plan_name || 'Plan'}</span>
                         </div>
                     </td>
                     <td>
-                        <span class="cost">$${(plan.price || plan.amount || 0).toFixed(2)} / mes</span>
+                        <span class="cost">$${(plan.amount / 100).toFixed(2)} / mes</span>
                     </td>
                     <td>
-                        <span class="date">Inicio: ${formatDate(plan.start_date || plan.current_period_start)}</span>
+                        <span class="date">${formatDate(plan.current_period_start)}</span>
                     </td>
                     <td>
-                        <span class="date">Fin: ${formatDate(plan.end_date || plan.current_period_end)}</span>
+                        <span class="date">${formatDate(plan.current_period_end)}</span>
                     </td>
                     <td>
                         <span class="status-badge ${getStatusBadge(plan.status).class}">

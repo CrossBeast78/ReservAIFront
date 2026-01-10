@@ -1,3 +1,4 @@
+
 :root {
   --primary:  #0983d6;
   --primary-hover: #008bbd;
@@ -384,4 +385,131 @@ body {
   font-size: 28px;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(0,0,0,.8);
+}
+
+
+/* --------- MODALES DE SUSCRIPCIÓN --------- */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(13, 13, 13, 0.7);
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #000a;
+  padding: 2.2rem 2.5rem 2rem 2.5rem;
+  min-width: 320px;
+  max-width: 95vw;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.modal-icon {
+  font-size: 2rem;
+  color: #FFC107;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text-light);
+}
+
+.modal-body {
+  margin-top: 1.2rem;
+  color: var(--text-light);
+  font-size: 1.05rem;
+  text-align: left;
+}
+.modal-body a {
+  color: #2196F3;
+  text-decoration: underline;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.modal-btn {
+  padding: 0.7rem 2.2rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #23272f;
+  color: var(--text-light);
+  transition: background 0.2s, color 0.2s;
+}
+.modal-btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+.modal-btn.primary:hover {
+  background: var(--primary-hover);
+}
+.modal-btn:hover {
+  background: #333a44;
+}
+
+/* Plan selection modal */
+#planModal .modal-content {
+  max-width: 400px;
+  padding: 2rem 1.5rem 2rem 1.5rem;
+}
+.plan-option {
+  background: #181c22;
+  border-radius: 12px;
+  margin-bottom: 1.2rem;
+  padding: 1.3rem 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background 0.2s, border 0.2s;
+  font-size: 1.15rem;
+  font-weight: 600;
+  outline: none;
+}
+.plan-option:last-child {
+  margin-bottom: 0;
+}
+.plan-option:focus, .plan-option:hover {
+  background: var(--primary);
+  color: #fff;
+  border: 2px solid var(--primary);
+}
+.plan-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.plan-price {
+  font-size: 1.05rem;
+  color: #b3d6f7;
+  font-weight: 500;
 }

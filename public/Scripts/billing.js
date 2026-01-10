@@ -1,3 +1,18 @@
+// --------- MODAL DE ERROR GLOBAL ---------
+function showError(message) {
+    let errorModal = document.getElementById('globalErrorModal');
+    if (!errorModal) {
+        errorModal = document.createElement('div');
+        errorModal.id = 'globalErrorModal';
+        errorModal.className = 'global-error-modal';
+        document.body.appendChild(errorModal);
+    }
+    errorModal.textContent = message;
+    errorModal.style.display = 'block';
+    setTimeout(() => {
+        errorModal.style.display = 'none';
+    }, 4000);
+}
 
 import SessionStorageManager from "./AppStorage.js";
 
@@ -42,6 +57,65 @@ function getStatusBadge(status) {
     }
     return { class: 'status-inactive', text: statusLower };
 }
+
+// --------- MODALES DE SUSCRIPCIÓN ---------
+function showModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'flex';
+}
+function hideModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'none';
+}
+
+// Obtener links de pago desde el endpoint /links
+async function fetchPaymentLinks() {
+    const token = SessionStorageManager.getSession().access_token;
+    const url = `${BASE_URL}/links`;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            data = {};
+        }
+        if (response.status === 200 && data.paymentLinks) {
+            return data.paymentLinks;
+        }
+        let msg = '';
+        if (response.status === 400) {
+            msg = 'La cuenta no existe en la base de datos';
+        } else if (response.status === 403 && (text.includes('not a client') || text.includes('Account is not a client'))) {
+            msg = 'La cuenta no es de tipo cliente';
+        } else if (response.status === 403) {
+            msg = 'Path traversal detectado (Forbidden)';
+        } else if (response.status === 404) {
+            msg = 'No existe un customer asociado';
+        } else if (response.status === 418 && text.includes('Token is required')) {
+            msg = 'No se envió el token';
+        } else if (response.status === 418) {
+            msg = 'El token es inválido';
+        } else if (response.status === 500) {
+            msg = 'Error creando sesiones o links de pago';
+        } else {
+            msg = `Error ${response.status}: ${text}`;
+        }
+        showError('No se pudieron obtener los links de pago: ' + msg);
+        return null;
+    } catch (err) {
+        showError('No se pudieron obtener los links de pago: ' + (err.message || err));
+        return null;
+    }
+}
+
 
 // Crear sesión del portal de facturación y redirigir al usuario
 export async function openStripeBillingPortal() {
@@ -378,6 +452,63 @@ async function fetchSubscriptions(page = 1) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+        // FAB y modales de suscripción
+        const fabBtn = document.getElementById('addSubscriptionBtn');
+        const warningModal = document.getElementById('warningModal');
+        const warningContinueBtn = document.getElementById('warningContinueBtn');
+        const warningCancelBtn = document.getElementById('warningCancelBtn');
+        const planModal = document.getElementById('planModal');
+        const planBasicOption = document.getElementById('planBasicOption');
+        const planPremiumOption = document.getElementById('planPremiumOption');
+        let paymentLinksCache = null;
+
+        if (fabBtn) {
+            fabBtn.addEventListener('click', () => {
+                showModal('warningModal');
+            });
+        }
+        if (warningCancelBtn) {
+            warningCancelBtn.addEventListener('click', () => {
+                hideModal('warningModal');
+            });
+        }
+        if (warningContinueBtn) {
+            warningContinueBtn.addEventListener('click', async () => {
+                hideModal('warningModal');
+                // Obtener links de pago y mostrar modal de planes
+                paymentLinksCache = await fetchPaymentLinks();
+                if (paymentLinksCache) {
+                    showModal('planModal');
+                }
+            });
+        }
+        // Cerrar modal de planes al hacer click fuera del contenido
+        if (planModal) {
+            planModal.addEventListener('click', (e) => {
+                if (e.target === planModal) hideModal('planModal');
+            });
+        }
+        // Selección de plan
+        if (planBasicOption) {
+            planBasicOption.addEventListener('click', () => {
+                if (paymentLinksCache && paymentLinksCache.basico && paymentLinksCache.basico.url) {
+                    window.open(paymentLinksCache.basico.url, '_blank');
+                    hideModal('planModal');
+                } else {
+                    showError('No se encontró el link de pago para el plan Básico.');
+                }
+            });
+        }
+        if (planPremiumOption) {
+            planPremiumOption.addEventListener('click', () => {
+                if (paymentLinksCache && paymentLinksCache.premium && paymentLinksCache.premium.url) {
+                    window.open(paymentLinksCache.premium.url, '_blank');
+                    hideModal('planModal');
+                } else {
+                    showError('No se encontró el link de pago para el plan Premium.');
+                }
+            });
+        }
     // Logout
     const logoutBtn = document.getElementById("logout");
     if (logoutBtn) {

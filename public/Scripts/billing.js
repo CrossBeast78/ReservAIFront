@@ -300,10 +300,7 @@ async function fetchSubscriptions(page = 1) {
         console.log('Datos recibidos:', data);
         
 
-        let plans = data.data || data.plans || [];
-        const currentPage = data.current_page || page;
-        const nextPage = data.next_page || null;
-
+        let plans = data.data || data.subscriptions || [];
 
         // Renderizar tarjetas de suscripción
         if (!cardsContainer) return;

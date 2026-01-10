@@ -337,8 +337,8 @@ async function fetchSubscriptions(page = 1) {
                 `;
             }).join('');
         }
-        // Mostrar la tabla cuando termina de cargar
-        if (billingTable) billingTable.style.display = '';
+        // Mostrar el contenedor de tarjetas cuando termina de cargar
+        // (No es necesario mostrar/ocultar billingTable, ya no existe)
 
         // Agregar animación a la tabla
         const billingContent = document.querySelector('.billing-content');

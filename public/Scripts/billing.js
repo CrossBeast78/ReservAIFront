@@ -250,10 +250,8 @@ export async function createStripeCustomer() {
 async function fetchSubscriptions(page = 1) {
     const loadingEl = document.getElementById('billingLoading');
     const errorEl = document.getElementById('billingError');
-    const tableBody = document.getElementById('billingTableBody');
-    const billingTable = document.querySelector('.billing-table');
-    // Oculta toda la tabla mientras carga
-    if (billingTable) billingTable.style.display = 'none';
+    const cardsContainer = document.getElementById('billingCardsContainer');
+    if (cardsContainer) cardsContainer.innerHTML = '';
     if (loadingEl) loadingEl.style.display = 'block';
     if (errorEl) errorEl.style.display = 'none';
     
@@ -305,36 +303,39 @@ async function fetchSubscriptions(page = 1) {
         const currentPage = data.current_page || page;
         const nextPage = data.next_page || null;
 
-        // Renderizar tabla con los campos del endpoint
+        // Renderizar tarjetas de suscripción
+        if (!cardsContainer) return;
         if (plans.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5" class="empty-message"><p>No tienes planes activos</p></td></tr>';
+            cardsContainer.innerHTML = '<div class="empty-message"><p>No tienes planes activos</p></div>';
         } else {
-            tableBody.innerHTML = plans.map(plan => `
-                <tr>
-                    <td>
-                        <div class="subscription-name">
-                            <span class="subscription-icon">
-                                <img src="${getPlanIcon(plan.plan_name)}" alt="${plan.plan_name}" style="width: 32px; height: 32px; object-fit: contain;">
-                            </span>
-                            <span>${plan.plan_name || 'Plan'}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="cost">$${(plan.amount / 100).toFixed(2)} / mes</span>
-                    </td>
-                    <td>
-                        <span class="date">${formatDate(plan.current_period_start)}</span>
-                    </td>
-                    <td>
-                        <span class="date">${formatDate(plan.current_period_end)}</span>
-                    </td>
-                    <td>
-                        <span class="status-badge ${getStatusBadge(plan.status).class}">
-                            ${getStatusBadge(plan.status).text}
-                        </span>
-                    </td>
-                </tr>
-            `).join('');
+            cardsContainer.innerHTML = plans.map(plan => {
+                const badge = getStatusBadge(plan.status);
+                let statusClass = 'card-status';
+                if (badge.class === 'status-inactive') statusClass += ' inactive';
+                if (badge.class === 'status-pending') statusClass += ' pending';
+                return `
+                <div class="subscription-card">
+                  <div class="card-header">
+                    <span class="card-icon"><img src="${getPlanIcon(plan.plan_name)}" alt="${plan.plan_name}" style="width: 32px; height: 32px; object-fit: contain;"></span>
+                    <div>
+                      <div class="card-title">${plan.plan_name || 'Plan'}</div>
+                      <div class="card-price">$${(plan.amount / 100).toFixed(2)} / mes</div>
+                    </div>
+                  </div>
+                  <div class="${statusClass}">${badge.text.toUpperCase()}</div>
+                  <div class="card-dates">
+                    <div>
+                      <div class="card-date-label"><i class="fa-regular fa-calendar"></i> FECHA DE INICIO</div>
+                      <div class="card-date-value">${formatDate(plan.current_period_start)}</div>
+                    </div>
+                    <div>
+                      <div class="card-date-label"><i class="fa-regular fa-calendar"></i> FECHA DE FIN</div>
+                      <div class="card-date-value">${formatDate(plan.current_period_end)}</div>
+                    </div>
+                  </div>
+                </div>
+                `;
+            }).join('');
         }
         // Mostrar la tabla cuando termina de cargar
         if (billingTable) billingTable.style.display = '';

@@ -134,7 +134,6 @@ async function fetchPaymentLinks() {
 export async function openStripeBillingPortal() {
     const token = SessionStorageManager.getSession().access_token;
     const url = `${BASE_URL}/billing/portal`;
-    console.log('[openStripeBillingPortal] Llamando a:', url);
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -143,7 +142,6 @@ export async function openStripeBillingPortal() {
                 'Authorization': token
             }
         });
-        console.log('[openStripeBillingPortal] Status de respuesta:', response.status);
         const text = await response.text();
         
         if (response.status === 418) {
@@ -158,7 +156,6 @@ export async function openStripeBillingPortal() {
             data = {};
         }
         if (response.status === 200 && data.session && data.session.url) {
-            console.log('[openStripeBillingPortal] Abriendo nueva pestaña:', data.session.url);
             window.open(data.session.url, '_blank');
             return;
         }
@@ -195,7 +192,6 @@ export async function createStripeCustomer() {
     const stripeLoadingModal = document.getElementById('stripeLoadingModal');
     const stripeLoadingText = document.getElementById('stripeLoadingText');
     const stripeModalIcon = document.getElementById('stripeModalSpinner');
-    console.log('[createStripeCustomer] Iniciando creación de customer en Stripe');
     if (stripeLoadingModal) stripeLoadingModal.style.display = 'flex';
     if (stripeModalIcon) {
         stripeModalIcon.style.display = 'block';
@@ -206,9 +202,7 @@ export async function createStripeCustomer() {
     }
     try {
         const token = SessionStorageManager.getSession().access_token;
-        console.log('[createStripeCustomer] Token:', token ? 'presente' : 'ausente');
         const url = `${BASE_URL}/billing/customer`;
-        console.log('[createStripeCustomer] Llamando a:', url);
         const response = await fetch(
             url,
             {
@@ -219,7 +213,6 @@ export async function createStripeCustomer() {
                 }
             }
         );
-        console.log('[createStripeCustomer] Status de respuesta:', response.status);
         
         if (response.status === 418) {
             window.location.href = '/login';
@@ -228,7 +221,6 @@ export async function createStripeCustomer() {
         
         if (!response.ok) {
             const errorText = await response.text();
-            console.log('[createStripeCustomer] Error response:', errorText);
             let msg = '';
             if (response.status === 400 && errorText.includes('already exists')) {
                 msg = 'El customer ya existe para esta cuenta';
@@ -251,11 +243,9 @@ export async function createStripeCustomer() {
             if (stripeModalIcon) {
                 stripeModalIcon.style.display = 'none';
             }
-            console.log('[createStripeCustomer] Lanzando error:', msg);
             throw new Error(msg);
         }
         const data = await response.json();
-        console.log('[createStripeCustomer] Respuesta exitosa:', data);
         if (stripeLoadingText) {
             stripeLoadingText.textContent = '¡Customer creado correctamente!';
             stripeLoadingText.classList.remove('error');
@@ -282,8 +272,6 @@ async function fetchSubscriptions(page = 1) {
     try {
         const token = SessionStorageManager.getSession().access_token;
         
-        console.log('Token:', token ? 'presente' : 'ausente');
-        console.log('Llamando a:', `${BASE_URL}/billing/status`);
         
         // Endpoint para obtener planes del usuario
         const response = await fetch(
@@ -297,7 +285,6 @@ async function fetchSubscriptions(page = 1) {
             }
         );
 
-        console.log('Status de respuesta:', response.status);
 
         if (response.status === 418) {
             window.location.href = '/login';
@@ -306,7 +293,6 @@ async function fetchSubscriptions(page = 1) {
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.log('Error response:', errorText);
             
             if (response.status === 400) {
                 throw new Error('Account does not exist');
@@ -321,7 +307,6 @@ async function fetchSubscriptions(page = 1) {
         }
 
         const data = await response.json();
-        console.log('Datos recibidos:', data);
         
 
         let plans = data.data || data.subscriptions || [];

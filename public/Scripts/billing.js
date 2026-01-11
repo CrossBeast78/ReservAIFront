@@ -47,8 +47,14 @@ function formatDate(dateString) {
     return date.toLocaleDateString('es-ES');
 }
 
-function getStatusBadge(status) {
+function getStatusBadge(status, cancelAtPeriodEnd = false) {
     const statusLower = (status || '').toLowerCase();
+    
+    // Si está marcado para cancelar al final del período pero está activo
+    if (cancelAtPeriodEnd && (statusLower === 'active' || statusLower === 'activo')) {
+        return { class: 'status-pending', text: 'Cancelado/Activo' };
+    }
+    
     if (statusLower === 'active' || statusLower === 'activo') {
         return { class: 'status-active', text: 'Activo' };
     } else if (statusLower === 'inactive' || statusLower === 'inactivo') {
@@ -308,7 +314,7 @@ async function fetchSubscriptions(page = 1) {
             cardsContainer.innerHTML = '<div class="empty-message"><p>No tienes planes activos</p></div>';
         } else {
             cardsContainer.innerHTML = plans.map(plan => {
-                const badge = getStatusBadge(plan.status);
+                const badge = getStatusBadge(plan.status, plan.cancel_at_period_end);
                 let statusClass = 'card-status';
                 if (badge.class === 'status-inactive') statusClass += ' inactive';
                 if (badge.class === 'status-pending') statusClass += ' pending';

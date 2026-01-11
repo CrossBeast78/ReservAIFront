@@ -88,6 +88,12 @@ async function fetchPaymentLinks() {
             }
         });
         const text = await response.text();
+        
+        if (response.status === 418) {
+            window.location.href = '/login';
+            return null;
+        }
+        
         let data;
         try {
             data = JSON.parse(text);
@@ -139,6 +145,12 @@ export async function openStripeBillingPortal() {
         });
         console.log('[openStripeBillingPortal] Status de respuesta:', response.status);
         const text = await response.text();
+        
+        if (response.status === 418) {
+            window.location.href = '/login';
+            return;
+        }
+        
         let data;
         try {
             data = JSON.parse(text);
@@ -208,6 +220,12 @@ export async function createStripeCustomer() {
             }
         );
         console.log('[createStripeCustomer] Status de respuesta:', response.status);
+        
+        if (response.status === 418) {
+            window.location.href = '/login';
+            return null;
+        }
+        
         if (!response.ok) {
             const errorText = await response.text();
             console.log('[createStripeCustomer] Error response:', errorText);
